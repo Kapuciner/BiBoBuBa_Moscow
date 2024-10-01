@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2370ea0e3e975c4fa186f1b5f1b9176, type: 3}
+  m_Name: Garlic
+  m_EditorClassIdentifier: 
+  DeathSound: {fileID: 8300000, guid: 599789c292910ea41a443cf13554bf5c, type: 3}
+  ShootSound: {fileID: 8300000, guid: 56cb38d98b627d24b9f62a5069fffaa1, type: 3}
+  AbilitySound: {fileID: 8300000, guid: ec68aa2cf99ed8e478a6e3ccb0090c14, type: 3}
+  Skills: 2
+  Portrait: {fileID: -1001892587, guid: 401eca8bc55905d41b6e8c7569a7c0d7, type: 3}
+  Sprite: {fileID: -253795864, guid: 38ea6f530ab934d41abe9f2912145098, type: 3}
+  mass: 2
+  speed: 0.15
+  health: 2
+  abilityCooldown: 10
+  attackCooldown: 2
+  Animator: {fileID: 9100000, guid: a2d38aa6d81e038489ba31c14557f83d, type: 2}

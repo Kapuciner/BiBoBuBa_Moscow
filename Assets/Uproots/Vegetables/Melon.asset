@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2370ea0e3e975c4fa186f1b5f1b9176, type: 3}
+  m_Name: Melon
+  m_EditorClassIdentifier: 
+  DeathSound: {fileID: 8300000, guid: c8ecd9241fd05fc4199778adef100118, type: 3}
+  ShootSound: {fileID: 8300000, guid: 9a8da37c30681464a8d99fa91c5eb5e8, type: 3}
+  AbilitySound: {fileID: 8300000, guid: 9a8da37c30681464a8d99fa91c5eb5e8, type: 3}
+  Skills: 1
+  Portrait: {fileID: 564062008, guid: 401eca8bc55905d41b6e8c7569a7c0d7, type: 3}
+  Sprite: {fileID: -1292445135, guid: 1992840e8149c91488c4d8fb1ed80020, type: 3}
+  mass: 10
+  speed: 0.05
+  health: 6
+  abilityCooldown: 10
+  attackCooldown: 1
+  Animator: {fileID: 9100000, guid: c61203b9f9b777e4fb9a18b7cb0afcce, type: 2}
