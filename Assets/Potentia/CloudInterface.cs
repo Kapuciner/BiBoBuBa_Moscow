@@ -57,11 +57,17 @@ public class CloudInterface : MonoBehaviour
         //}
     }
 
-    public void getEnergy()
+    public bool TryAddEnergy()
     {
-        if (currentEnergy <= 5)
+        bool returnVal;
+        if (currentEnergy < 5) {
             currentEnergy++;
+            returnVal = true;
+        }
+        else returnVal = false;
         UpdateInterface();
+        return returnVal;
+        
     }
 
     bool useAbility()

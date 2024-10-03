@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Potentia/FinalScene/Menu.unity
     guid: f9b2a97e31736934e82d19a0a8e28a29
   - enabled: 1
-    path: Assets/Potentia/CODE2/CODE2.unity
-    guid: 586975a9ffe76c248801de4b87ae697b
+    path: Assets/Potentia/BuildTry2/CODE21.unity
+    guid: bd718a28cd0e8a0429cdbb9142f7184c
   m_configObjects: {}

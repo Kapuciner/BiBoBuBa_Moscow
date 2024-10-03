@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PlayerManager : MonoBehaviour
 
     
     [SerializeField] private float speed;
-    private Vector3 move;
+    private Vector3 move = Vector3.zero;
     [SerializeField] float icedMass;
     [SerializeField] LayerMask iceLayers;
     public bool iceMove = false;
@@ -87,6 +88,7 @@ public class PlayerManager : MonoBehaviour
                 _rb.MovePosition(_rb.position + move * speed * Time.deltaTime);
             }
         }
+        
     }
 
     public float GetVelocity()
@@ -99,9 +101,59 @@ public class PlayerManager : MonoBehaviour
         return vel;
     }
 
+    public void MoveMage(Vector2 moveVector) {
+        move = Vector3.zero;
+        move += new Vector3(moveVector.x, 0, moveVector.y);
+        move.Normalize();
+        move = Quaternion.Euler(0, 45, 0) * move;
+    }
+
+    public void TryDash() {
+        if (canDash && GetVelocity() != 0 && gotAbilityDash)
+        {
+            audioSource.clip = dashA;
+            audioSource.Play();
+            ParticleSystem dashPart = Instantiate(dashParticle);
+            dashPart.transform.position = this.transform.position;
+            Destroy(dashPart.gameObject, 2f);
+
+            speed *= dashSpeed;
+            Invoke("StopDash", dashTime);
+            canDash = false;
+            dashImage.SetActive(false);
+            StartCoroutine(CooldownRoutine(dashCooldown, dashCooldownTimer, dashImage, "canDash"));
+        }
+    }
+
+    public void TryFireball() {
+        if (gotAbilityAttack && canAttack)
+        {
+            audioSource.clip = attackA;
+            audioSource.Play();
+            fireball.SetActive(true);
+            canAttack = false;
+            Invoke("FireballCooldown", fireballDuration);
+            attackImage.SetActive(false);
+            StartCoroutine(CooldownRoutine(attackCooldown, attackCooldownTimer, attackImage, "canAttack"));
+        }
+    }
+
+    public void TryShield() {
+         if (gotAbilityShield && canDefend)
+        {
+            audioSource.clip = shieldA;
+            audioSource.Play();
+            shield.SetActive(true);
+            playerMage.shieldOn = true;
+            canDefend = false;
+            Invoke("ShieldCooldown", shieldDuration);
+            shieldImage.SetActive(false);
+            StartCoroutine(CooldownRoutine(shieldCooldown, shieldCooldownTimer, shieldImage, "canDefend"));
+        }
+    }
     private void HandleInput()
     {
-
+        
         move = Vector3.zero;
         if (Input.GetKey(up))
         {
@@ -122,7 +174,7 @@ public class PlayerManager : MonoBehaviour
             _sr.flipX = true;
         }
 
-        move.Normalize();
+        move.Normalize(); 
 
         if (Input.GetKeyDown(dashKey) && canDash && GetVelocity() != 0 && gotAbilityDash)
         {

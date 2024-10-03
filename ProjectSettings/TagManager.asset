@@ -16,6 +16,7 @@ TagManager:
   - faliant
   - fireball
   - spawner
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Priority
+    uniqueID: 2918969279
     locked: 0

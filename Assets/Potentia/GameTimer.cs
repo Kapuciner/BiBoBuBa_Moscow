@@ -12,7 +12,7 @@ public class GameTimer : MonoBehaviour
 
     void Start()
     {
-        // Запуск таймера
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         timerIsRunning = true;
         UpdateTimerDisplay();
     }
@@ -36,6 +36,10 @@ public class GameTimer : MonoBehaviour
         }
     }
 
+    public void StopTimer()
+    {
+        timerIsRunning = false;
+    }
     void UpdateTimerDisplay()
     {
         int minutes = Mathf.FloorToInt(timeRemaining / 60);

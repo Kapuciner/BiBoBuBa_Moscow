@@ -87,7 +87,7 @@ public class player : MonoBehaviour
 
     public void Die()
     {
-        faliants = GameObject.FindGameObjectsWithTag("faliants");
+        faliants = GameObject.FindGameObjectsWithTag("faliant");
         for (int i = 0; i < faliants.Length; i++)
         {
             faliants[i].GetComponent<Falliant>().ReturnToTheStart();
