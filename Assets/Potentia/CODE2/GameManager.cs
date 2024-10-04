@@ -7,6 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameTimer timer;
     [SerializeField] private Animator txt;
 
     public bool gameOver = false;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        int countdown = 5; // Таймер на 3 секунды
+        int countdown = 5; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
         while (countdown > 0)
         {
@@ -32,12 +33,12 @@ public class GameManager : MonoBehaviour
             countdown--; 
         }
 
-        startTXT.text = "Go!"; // Сообщение о старте игры
-        yield return new WaitForSecondsRealtime(1); // Ожидание дополнительной секунды, если нужно показать сообщение "Go!"
+        startTXT.text = "Go!"; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+        yield return new WaitForSecondsRealtime(1); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "Go!"
 
-        Time.timeScale = 1; // Снимаем игру с паузы
-        cs.canMove = true; // Разрешаем движение
-        startTXT.text = ""; // Очищаем текст таймера
+        Time.timeScale = 1; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+        cs.canMove = true; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        startTXT.text = ""; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     }
 
     public void MageWon()
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         txt.Play("TxTappear");
         mageWon = true;
         cs.canMove = false;
+        timer.StopTimer();
     }
 
     private void Update()
