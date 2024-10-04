@@ -27,6 +27,8 @@ public class PlayerChoose : MonoBehaviour
         choose2.SetVegetable(VegetableTypes[0]);
         id1 = 0;
         id2 = 0;
+        //choose1.Select(choose1.VegetableType);
+        //choose2.Select(choose2.VegetableType);
     }
 
     private void Update()
@@ -90,7 +92,15 @@ public class PlayerChoose : MonoBehaviour
         choose1.SetVegetable(VegetableTypes[id1]);
         choose2.SetVegetable(VegetableTypes[id2]);
 
-        if (Input.GetKeyDown(P1.controller.attack))
+        if (choose1.SelectedType != null && choose2.SelectedType != null)
+        {
+            StartGame();
+        }
+    }
+
+    public void SelectPlayer(int index)
+    {
+        if (index == 0)
         {
             if (choose1.SelectedType == null)
             {
@@ -98,24 +108,15 @@ public class PlayerChoose : MonoBehaviour
                 SoundPlayer.Play(select);
             }
             else choose1.Unselect();
-
+            return;
         }
-        if (Input.GetKeyDown(P2.controller.attack))
+        if (choose2.SelectedType == null)
         {
-            if (choose2.SelectedType == null)
-            {
-                choose2.Select(choose2.VegetableType);
-                SoundPlayer.Play(select);
-            }
-            else choose2.Unselect();
+            choose2.Select(choose2.VegetableType);
+            SoundPlayer.Play(select);
         }
-
-        if (choose1.SelectedType != null && choose2.SelectedType != null)
-        {
-            StartGame();
-        }
+        else choose2.Unselect();
     }
-
     private void StartGame()
     {
         StartCoroutine(StartG());

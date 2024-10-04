@@ -126,16 +126,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        if (Input.GetKeyDown(attack) && _attackTimer == 0 && CanAttack)
-        {
-            Attack();
-            PlayerAttacks?.Invoke();
-        }
-        if (Input.GetKeyDown(skill) && _abilityTimer == 0 && CanCast)
-        {
-            Cast();
-            PlayerCasts?.Invoke();
-        }
 
         if (_abilityTimer > 0)
         {
@@ -168,15 +158,18 @@ public class PlayerController : MonoBehaviour
     {
         _move = Vector3.zero;
     }
-    private void Attack()
+
+    public void Attack()
     {
         // Projectile p = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         // p.Launch(_move.normalized, 10f, GetComponent<Player>());
-        
-        GetComponent<Player>().SoundPlayer.Play(_type.ShootSound);
-        
-        PlayerAttack.Execute();
-        _attackTimer = _type.attackCooldown;
+        if (_attackTimer == 0 && CanAttack)
+        {
+            PlayerAttacks?.Invoke();
+            GetComponent<Player>().SoundPlayer.Play(_type.ShootSound);
+            PlayerAttack.Execute();
+            _attackTimer = _type.attackCooldown;
+        }
     }
 
     public int GetDamage()
@@ -189,20 +182,25 @@ public class PlayerController : MonoBehaviour
         _rb.MovePosition(_rb.position + _move * _speedMultiplier * _type.speed);
     }
 
-    private void Cast()
+    public void Cast()
     {
+        if (_abilityTimer != 0 || !CanCast)
+        {
+            return;
+        }
+        PlayerCasts?.Invoke();
         PlayerAbility.Cast();
 
         if (_type.Skills != VegetableType.SkillSet.watermelon)
         {
             GetComponent<Player>().SoundPlayer.Play(_type.AbilitySound);
         }
-
         _abilityTimer = _type.abilityCooldown;
     }
 
     private void HandleInput()
     {
+        return;
         Vector3 newMove;
         newMove = Vector3.zero;
         if (Input.GetKey(up))
@@ -233,6 +231,23 @@ public class PlayerController : MonoBehaviour
             newMove = Vector3.zero;
         }
         StartCoroutine(LerpMove(newMove));
+        StartCoroutine(SmoothDirection());
+    }
+
+    public void Move(Vector2 dir2D)
+    {
+        Vector3 direction = new Vector3(dir2D.x, 0, dir2D.y);
+        direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
+        if (direction.magnitude != 0)
+        {
+            _lastDirection = direction;
+        }
+
+        if (_canMove == false)
+        {
+            direction = Vector3.zero;
+        }
+        StartCoroutine(LerpMove(direction));
         StartCoroutine(SmoothDirection());
     }
 
