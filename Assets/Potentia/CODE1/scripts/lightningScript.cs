@@ -46,8 +46,6 @@ public class lightningScript : MonoBehaviour
         {
             if (collider.CompareTag("Mage"))
             {
-                print(collider);
-                print(collider.gameObject.GetComponent<player>());
                 collider.gameObject.GetComponent<player>().TakeDamage(lightningDamage);
             }
         }

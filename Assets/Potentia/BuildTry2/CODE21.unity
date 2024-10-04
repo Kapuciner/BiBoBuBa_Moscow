@@ -1530,10 +1530,22 @@ PrefabInstance:
       propertyPath: gm
       value: 
       objectReference: {fileID: 1589680609}
+    - target: {fileID: 4687458424706820585, guid: 39feac317515c454181a643b8184af71, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5034023026220404252, guid: 39feac317515c454181a643b8184af71, type: 3}
       propertyPath: gm
       value: 
       objectReference: {fileID: 1589680609}
+    - target: {fileID: 5034023026220404252, guid: 39feac317515c454181a643b8184af71, type: 3}
+      propertyPath: pushForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034023026220404252, guid: 39feac317515c454181a643b8184af71, type: 3}
+      propertyPath: pushRadius
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2026,6 +2038,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 375293374}
+    - target: {fileID: 3810056622990583074, guid: ab34bf45c73cb8547bb31c2ebefd363e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6670215670649075264, guid: ab34bf45c73cb8547bb31c2ebefd363e, type: 3}
       propertyPath: m_Name
       value: Level_gd 1
