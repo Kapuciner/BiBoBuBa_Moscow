@@ -5,11 +5,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class Player : MonoBehaviour
 {
     public VegetableType VegetableType;
     
     [SerializeField] public PlayerController controller;
+    [SerializeField] private int index;
 
     public SoundPlayer SoundPlayer;
     
@@ -104,6 +106,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    public PlayerController GetController()
+    {
+        return controller;
+    }
 
     public void SetDamage(int d)
     {
@@ -212,5 +218,10 @@ public class Player : MonoBehaviour
         {
             GameObject.Destroy(system);
         }
+    }
+
+    public int GetIndex()
+    {
+        return index;
     }
 }

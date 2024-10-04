@@ -5,7 +5,6 @@ using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
 public class MapEventManager : MonoBehaviour
 {
     public float baseChance;
