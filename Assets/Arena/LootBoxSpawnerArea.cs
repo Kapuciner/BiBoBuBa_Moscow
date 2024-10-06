@@ -10,6 +10,7 @@ public class LootBoxSpawnerArea : MonoBehaviour
     [SerializeField] private MeshCollider targetCollider; 
     [SerializeField] private float spawnInterval = 5f; 
     [SerializeField] private GameObject lootBox;
+    private Vector3 secondsLootBoxPosition;
 
     [SerializeField] private TMP_Text timerText;
     private float timer; 
@@ -53,8 +54,9 @@ public class LootBoxSpawnerArea : MonoBehaviour
     {
         if (other.CompareTag("spawner"))
         {
-
+            secondsLootBoxPosition = new Vector3(-SpawnCheckObject.transform.position.x, SpawnCheckObject.transform.position.y, -SpawnCheckObject.transform.position.z);
             Instantiate(lootBox, SpawnCheckObject.transform.position, Quaternion.identity);
+            Instantiate(lootBox, secondsLootBoxPosition, Quaternion.identity);
             goodPlaceToSpawn = true; 
             SpawnCheckObject.transform.position += Vector3.up * 50;
         }
