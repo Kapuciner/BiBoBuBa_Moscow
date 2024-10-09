@@ -10,14 +10,16 @@ public class SessionLogic : MonoBehaviour
     public float PointsToWin;
     public float PointsPerSecond;
 
-    public Player P1;
-    public Player P2;
+    public R_Player P1;
+    public R_Player P2;
     
     private RootZone zone;
 
     public TextMeshProUGUI Timer;
     private float _time;
     public float GameTime = 240f;
+
+    private bool _gameFinished = false;
     private void Start()
     {
         zone = GameObject.FindObjectOfType<RootZone>();
@@ -43,20 +45,24 @@ public class SessionLogic : MonoBehaviour
             }
         }
 
-        _time -= Time.deltaTime;
-        Timer.text = Mathf.RoundToInt(_time).ToString();
-        if (_time <= 0)
+        if (_gameFinished == false)
         {
-            FinishGame(GetPlayerWithMaximumPoints());
+            _time -= Time.deltaTime;
+            Timer.text = Mathf.RoundToInt(_time).ToString();
+            if (_time <= 0)
+            {
+                FinishGame(GetPlayerWithMaximumPoints());
+            }
         }
     }
 
-    private void FinishGame(Player winner)
+    private void FinishGame(R_Player winner)
     {
+        _gameFinished = true;
         GameObject.FindObjectOfType<Victory>().FinishGame(winner);
     }
 
-    private Player GetPlayerWithMaximumPoints()
+    private R_Player GetPlayerWithMaximumPoints()
     {
         if (P1.Points >= P2.Points)
         {
@@ -65,7 +71,7 @@ public class SessionLogic : MonoBehaviour
 
         return P2;
     }
-    private IEnumerator DeathRoutine(Player player)
+    private IEnumerator DeathRoutine(R_Player player)
     {
         TextMeshProUGUI text = player.RespawnTimer.GetComponent<TextMeshProUGUI>();
         player.RespawnTimer.SetActive(true);

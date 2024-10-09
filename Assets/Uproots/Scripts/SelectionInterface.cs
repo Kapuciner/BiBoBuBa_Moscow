@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Choose : MonoBehaviour
+public class SelectionInterface : MonoBehaviour
 {
     public VegetableType VegetableType;
     public Image image;
@@ -12,6 +12,8 @@ public class Choose : MonoBehaviour
     public VegetableType SelectedType;
     public Image ready;
     public Image P;
+
+    public int CorrespondingPlayerIndex;
     
     public void SetVegetable(VegetableType vegetableType)
     {

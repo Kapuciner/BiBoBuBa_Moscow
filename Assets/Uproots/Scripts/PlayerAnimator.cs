@@ -15,7 +15,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     [SerializeField] private PlayerController _controller;
-    [SerializeField] private Player _player;
+    [SerializeField] private R_Player _player;
 
     private bool canAnimationBeChanged = true;
 

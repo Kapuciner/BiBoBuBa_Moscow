@@ -9,7 +9,7 @@ public class Pomidor : Ability
     GameObject projectile =
         Resources.Load("Projectile") as GameObject;
 
-    public Pomidor(int _num, float _speed, float _damage, float _pushForce, Player caster)
+    public Pomidor(int _num, float _speed, float _damage, float _pushForce, R_Player caster)
     {
         numDirections = _num;
         speed = _speed;
@@ -19,7 +19,7 @@ public class Pomidor : Ability
 
     }
 
-    private Player caster;
+    private R_Player caster;
     private int numDirections;
     private float speed;
     private float damage;

@@ -9,7 +9,7 @@ public class Roots : MonoBehaviour
     public int N;
     public LineRenderer Prefab;
     public LineRenderer[] LineRenderer;
-    public Player player;
+    public R_Player player;
     private Vector3[] lastDir;
     private Vector3[] lastPos;
     private float stepLength = 0.1f;
@@ -29,7 +29,7 @@ public class Roots : MonoBehaviour
         }
     }
 
-    public void Setup(Player _player)
+    public void Setup(R_Player _player)
     {
         if (_player == null)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Heal : Powerup
 {
-    public override void OnPicked(Player player)
+    public override void OnPicked(R_Player player)
     {
         player.RestoreHealth();
     }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ShadowImage : MonoBehaviour
 {
-    public Player p;
+    public R_Player p;
     public Sprite small;
     public Sprite big;
 

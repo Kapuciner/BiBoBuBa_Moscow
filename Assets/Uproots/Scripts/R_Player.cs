@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class Player : MonoBehaviour
+public class R_Player : MonoBehaviour
 {
     public VegetableType VegetableType;
     

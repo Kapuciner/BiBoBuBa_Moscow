@@ -17,6 +17,7 @@ TagManager:
   - fireball
   - spawner
   - Block
+  - Lobby_Dummy
   layers:
   - Default
   - TransparentFX

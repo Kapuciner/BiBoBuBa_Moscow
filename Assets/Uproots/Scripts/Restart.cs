@@ -11,8 +11,8 @@ public class Restart : MonoBehaviour
 
     public GameObject restart;
 
-    public Player P1;
-    public Player P2;
+    public R_Player P1;
+    public R_Player P2;
 
     public Image check1;
     public Image check2;
@@ -20,22 +20,23 @@ public class Restart : MonoBehaviour
     public Sprite checked1;
     public Sprite checked2;
     public Sprite uncheck;
-    private void Update()
+
+    public void OnRestartPressed()
     {
         if (choose.activeSelf)
         {
             return;
         }
+        restart.SetActive(!restart.activeSelf);
+    }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            restart.SetActive(!restart.activeSelf);
-        }
+    public void OnAttackPressed(int playerIndex)
+    {
         if (!restart.activeSelf)
         {
             return;
         }
-        if (Input.GetKeyDown(P1.controller.attack))
+        if (playerIndex == 0)
         {
             if (check1.sprite == uncheck)
             {
@@ -43,7 +44,7 @@ public class Restart : MonoBehaviour
             }
             else check1.sprite = uncheck;
         }
-        if (Input.GetKeyDown(P2.controller.attack))
+        if (playerIndex == 1)
         {
             if (check2.sprite == uncheck)
             {

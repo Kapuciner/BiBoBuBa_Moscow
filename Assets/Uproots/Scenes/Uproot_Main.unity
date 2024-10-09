@@ -250,6 +250,7 @@ MonoBehaviour:
   SelectedType: {fileID: 0}
   ready: {fileID: 879194145}
   P: {fileID: 266743755}
+  CorrespondingPlayerIndex: 0
 --- !u!1 &10593111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,6 +1312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 144528185}
   - component: {fileID: 144528184}
+  - component: {fileID: 144528186}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -1336,7 +1338,19 @@ MonoBehaviour:
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 144528186}
+        m_TargetAssemblyTypeName: ConnectManager, Assembly-CSharp
+        m_MethodName: OnConnect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_PlayerLeftEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1377,6 +1391,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144528186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144528183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c481910b87ef96459c4853d06e0e58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerInputManager: {fileID: 144528184}
 --- !u!1 &155814613
 GameObject:
   m_ObjectHideFlags: 0
@@ -4883,6 +4910,7 @@ MonoBehaviour:
   SelectedType: {fileID: 0}
   ready: {fileID: 914730535}
   P: {fileID: 327754090}
+  CorrespondingPlayerIndex: 1
 --- !u!1 &610696595 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8306231641171724385, guid: adbb11e1cb6640c4c9bbc845242398e9, type: 3}
@@ -6127,10 +6155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814e08ab68eaa0a438229cbc0ebcfcbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LeftSelection: {fileID: 0}
   P1: {fileID: 884456976}
   P2: {fileID: 166383122}
-  choose1: {fileID: 4701081}
-  choose2: {fileID: 588764308}
   change: {fileID: 8300000, guid: 827d375c2b5e4b24aac7b5b76435ad26, type: 3}
   select: {fileID: 8300000, guid: c77b528b47af82d4d885788bbb6d7ad5, type: 3}
   SoundPlayer: {fileID: 738639854}
@@ -18788,7 +18815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PointsToWin: 100
-  PointsPerSecond: 3
+  PointsPerSecond: 30
   P1: {fileID: 884456976}
   P2: {fileID: 166383122}
   Timer: {fileID: 572567060}

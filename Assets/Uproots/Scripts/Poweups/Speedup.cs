@@ -7,11 +7,11 @@ public class Speedup : Powerup
     public float time;
     public float speedMultiplier;
     
-    public override void OnPicked(Player player)
+    public override void OnPicked(R_Player player)
     {
         GameObject.FindObjectOfType<MonoHandler>().StartCoroutine(SpeedUp(player));
     }
-    private IEnumerator SpeedUp(Player player)
+    private IEnumerator SpeedUp(R_Player player)
     {
         if (GetComponent<SpriteRenderer>() != null)
         {

@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     public void Reload()
     {
         _rb = GetComponent<Rigidbody>();
-        _type = GetComponent<Player>().VegetableType;
+        _type = GetComponent<R_Player>().VegetableType;
         _rb.mass = _type.mass;
         GetAttacks();
         
@@ -94,15 +94,15 @@ public class PlayerController : MonoBehaviour
             case VegetableType.SkillSet.tomato:
                 PlayerAttack = new TomatoMeleeAttack(2f, pushForce * 2, this);
                 PlayerAbility = new Pomidor(12, 10,
-                    10, 10, GetComponent<Player>());
+                    10, 10, GetComponent<R_Player>());
                 break;
             case VegetableType.SkillSet.watermelon:
-                PlayerAttack = new MelonAttack(GetComponent<Player>(), 10);
-                PlayerAbility = new MelonAbility(GetComponent<Player>(), 10f);
+                PlayerAttack = new MelonAttack(GetComponent<R_Player>(), 10);
+                PlayerAbility = new MelonAbility(GetComponent<R_Player>(), 10f);
                 break;
             case VegetableType.SkillSet.garlic:
-                PlayerAttack = new GarlicAttack(GetComponent<Player>());
-                PlayerAbility = new GarlicAbility(GetComponent<Player>());
+                PlayerAttack = new GarlicAttack(GetComponent<R_Player>());
+                PlayerAbility = new GarlicAbility(GetComponent<R_Player>());
                 break;
         }
     }
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
         if (_attackTimer == 0 && CanAttack)
         {
             PlayerAttacks?.Invoke();
-            GetComponent<Player>().SoundPlayer.Play(_type.ShootSound);
+            GetComponent<R_Player>().SoundPlayer.Play(_type.ShootSound);
             PlayerAttack.Execute();
             _attackTimer = _type.attackCooldown;
         }
@@ -174,7 +174,7 @@ public class PlayerController : MonoBehaviour
 
     public int GetDamage()
     {
-        return GetComponent<Player>().damage;
+        return GetComponent<R_Player>().damage;
     }
     private void FixedUpdate()
     {
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
         if (_type.Skills != VegetableType.SkillSet.watermelon)
         {
-            GetComponent<Player>().SoundPlayer.Play(_type.AbilitySound);
+            GetComponent<R_Player>().SoundPlayer.Play(_type.AbilitySound);
         }
         _abilityTimer = _type.abilityCooldown;
     }
@@ -246,6 +246,11 @@ public class PlayerController : MonoBehaviour
         if (_canMove == false)
         {
             direction = Vector3.zero;
+        }
+
+        if (!gameObject.activeSelf)
+        {
+            return;
         }
         StartCoroutine(LerpMove(direction));
         StartCoroutine(SmoothDirection());

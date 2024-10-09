@@ -13,7 +13,7 @@ public class Victory : MonoBehaviour
 
     private float delay = 1f;
     private bool canExit = false;
-    public void FinishGame(Player winner)
+    public void FinishGame(R_Player winner)
     {
         VictoryPanel.SetActive(true);
         Time.timeScale = 1;

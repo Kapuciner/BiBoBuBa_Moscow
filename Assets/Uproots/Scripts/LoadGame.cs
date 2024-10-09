@@ -10,7 +10,7 @@ public class LoadGame : MonoBehaviour
     {
         if (Input.anyKey)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene("Uproot_Main");
         }
     }
 }

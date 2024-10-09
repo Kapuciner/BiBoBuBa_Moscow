@@ -7,7 +7,7 @@ public class Powerup : MonoBehaviour
 {
     public Vector3 offset;
     
-    public virtual void OnPicked(Player player)
+    public virtual void OnPicked(R_Player player)
     {
         
     }
@@ -16,7 +16,7 @@ public class Powerup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
+            R_Player player = other.GetComponent<R_Player>();
             OnPicked(player);
             Destroy(gameObject);
         }
