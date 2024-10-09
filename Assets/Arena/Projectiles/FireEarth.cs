@@ -12,6 +12,7 @@ public class FireEarth : MonoBehaviour
     private bool workedOnce = false;
 
     [SerializeField] private GameObject lavaPlanePrefab;
+    [SerializeField] private GameObject lavaPlanePrefab2;
     [SerializeField] private float expansionRate = 1f;
 
     Vector3 pushDirection;
@@ -37,10 +38,14 @@ public class FireEarth : MonoBehaviour
             timePassed += Time.fixedDeltaTime;
             transform.position += direction * projectileSpeed;
             if (!stopLava)
+            {
                 lavaPlanePrefab.transform.position += direction * projectileSpeed / 2;
-                    
+                lavaPlanePrefab2.transform.position += direction * projectileSpeed / 2;
+
+            }
             float angleY = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
             lavaPlanePrefab.transform.rotation = Quaternion.Euler(0, angleY, 0); 
+            lavaPlanePrefab2.transform.rotation = Quaternion.Euler(0, angleY, 0); 
 
             ExpandLavaDecal();
             yield return new WaitForFixedUpdate();
@@ -71,7 +76,9 @@ public class FireEarth : MonoBehaviour
         if (!stopLava)
         {
             Vector3 newScale = lavaPlanePrefab.transform.localScale + new Vector3(0, 0, expansionRate) * Time.deltaTime;
+            Vector3 newScale2 = lavaPlanePrefab2.transform.localScale + new Vector3(0, 0, expansionRate) * Time.deltaTime;
             lavaPlanePrefab.transform.localScale = newScale;
+            lavaPlanePrefab2.transform.localScale = newScale2;
         }
 
     }

@@ -24,11 +24,13 @@ public class LavaDecal_A : MonoBehaviour
 
         }
 
-        if (other.tag == "Block")
+        if (other.tag == "Block" || other.tag == "Finish")
         {
             if (fe != null)
                 fe.stopLava = true;
         }
+
+
     }
 
 

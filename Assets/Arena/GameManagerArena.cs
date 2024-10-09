@@ -46,10 +46,7 @@ public class GameManagerArena : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKey && gameOver)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+
     }
 
     IEnumerator StartGame()
@@ -94,7 +91,7 @@ public class GameManagerArena : MonoBehaviour
             {
                 if (winCounts[i] >= maxWinNum)
                 {
-                    EndGame(winnerID);
+                    StartCoroutine(EndGame(winnerID));
                 }
             }
 
@@ -108,7 +105,7 @@ public class GameManagerArena : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void EndGame(int winnerID)
+    IEnumerator EndGame(int winnerID)
     {
         gameOver = true;
         endScreen.SetActive(true);
@@ -117,6 +114,17 @@ public class GameManagerArena : MonoBehaviour
         for (int i = 0; i < winCounts.Count; i++)
         {
             winCounts[i] = 0;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        while (true)
+        {
+            if (Input.anyKey && gameOver)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            yield return new WaitForEndOfFrame();
         }
     }
 }

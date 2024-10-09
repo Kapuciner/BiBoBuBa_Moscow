@@ -456,8 +456,9 @@ public class ArenaPlayerManager : MonoBehaviour
     public void Die()
     {
         dead = true;
+        hpTXT.text = $"{currentHP}/20";
         gm.CheckIfRoundEnd(); // did all players die?
-
+;
     }
 
     void ColorBack()

@@ -144,18 +144,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7984021911825745969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81674e571d56ccd46b2bd2ed1abf789e, type: 3}
+  m_Script: {fileID: 11500000, guid: e10ca05996b1b7c42adc9c19ec9f495f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTimeLife: 15
-  startFlashTime: 12
   abilitiesUI:
   - {fileID: 21300000, guid: 8154156c05952bc488db3159aafa5d4d, type: 3}
   - {fileID: -1233237547, guid: a9ed0246c8355a94caba8fec5303c2b4, type: 3}
-  - {fileID: -38159933, guid: 28f887641a283ac4096b5848490d9784, type: 3}
+  - {fileID: -699154120, guid: 28f887641a283ac4096b5848490d9784, type: 3}
   - {fileID: 1634473922, guid: 2881338f40a55aa4c9dd688d4a27d0e1, type: 3}
-  checkDistance: 1.5
-  moveSpeed: 5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 512
+  spawnInterval: 10
