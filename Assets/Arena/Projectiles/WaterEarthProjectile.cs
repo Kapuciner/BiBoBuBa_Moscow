@@ -12,16 +12,24 @@ public class WaterEarthProjectile : MonoBehaviour
     [SerializeField] private float slowReductionTimes = 2;  //если 2, то speed = speed / 2;
     bool workedOnce = false;
 
+    private GameObject playerImmune;
+    private bool immuneTimePassed = false;
+    [SerializeField] float immuneTime = 0;
 
-    public void Activate(Vector3 direction)
+    Vector3 pushDirection;
+    [SerializeField] float pushForce = 2f;
+    public void Activate(Vector3 direction, GameObject playerWhoCast)
     {
         StartCoroutine(WaterHit(direction));
+        playerImmune = playerWhoCast;
     }
 
     IEnumerator WaterHit(Vector3 direction)
     {
         while (timePassed < lifetime)
         {
+            if (timePassed >= immuneTime)
+                immuneTimePassed = true;
             timePassed += Time.fixedDeltaTime;
             transform.position += direction * projectileSpeed;
             yield return new WaitForFixedUpdate();
@@ -33,10 +41,20 @@ public class WaterEarthProjectile : MonoBehaviour
     {
         if (other.tag == "Player" && !workedOnce)
         {
-            workedOnce = true;
-            other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
-            other.GetComponent<ArenaPlayerManager>().Slow(slowTime, slowReductionTimes);
-            Destroy(this.gameObject, 0.05f);
+            if (other.gameObject != playerImmune || immuneTimePassed)
+            {
+                pushDirection = other.transform.position - this.gameObject.transform.position;
+                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
+                workedOnce = true;
+                other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
+                other.GetComponent<ArenaPlayerManager>().Slow(slowTime, slowReductionTimes);
+                Destroy(this.gameObject, 0.05f);
+            }
+        }
+
+        if (other.tag == "Block")
+        {
+            Destroy(this.gameObject);
         }
     }
 }

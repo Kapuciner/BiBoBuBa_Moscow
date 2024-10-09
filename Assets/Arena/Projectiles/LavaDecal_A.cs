@@ -5,6 +5,7 @@ using UnityEngine;
 public class LavaDecal_A : MonoBehaviour
 {
     [SerializeField] private int damagePerCooldown;
+    [SerializeField] private FireEarth fe;
 
     private void OnTriggerStay(Collider other)
     {
@@ -21,6 +22,12 @@ public class LavaDecal_A : MonoBehaviour
                 Debug.Log("lavaDamage");
             }
 
+        }
+
+        if (other.tag == "Block")
+        {
+            if (fe != null)
+                fe.stopLava = true;
         }
     }
 

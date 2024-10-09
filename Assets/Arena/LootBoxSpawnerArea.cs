@@ -55,8 +55,8 @@ public class LootBoxSpawnerArea : MonoBehaviour
         if (other.CompareTag("spawner"))
         {
             secondsLootBoxPosition = new Vector3(-SpawnCheckObject.transform.position.x, SpawnCheckObject.transform.position.y, -SpawnCheckObject.transform.position.z);
-            Instantiate(lootBox, SpawnCheckObject.transform.position, Quaternion.identity);
-            Instantiate(lootBox, secondsLootBoxPosition, Quaternion.identity);
+            Instantiate(lootBox, SpawnCheckObject.transform.position, lootBox.transform.rotation);
+            Instantiate(lootBox, secondsLootBoxPosition, lootBox.transform.rotation);
             goodPlaceToSpawn = true; 
             SpawnCheckObject.transform.position += Vector3.up * 50;
         }

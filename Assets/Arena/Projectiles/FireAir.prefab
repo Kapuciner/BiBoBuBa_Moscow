@@ -93,7 +93,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716907946249918323}
-  m_Material: {fileID: 13400000, guid: 24b5e18ca8171f345878159451c060a1, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -123,3 +123,5 @@ MonoBehaviour:
   lifetime: 4
   damage: 3
   extinguishFire: 0
+  immuneTime: 0.4
+  pushForce: 10
