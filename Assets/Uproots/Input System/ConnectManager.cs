@@ -16,8 +16,17 @@ public class ConnectManager : MonoBehaviour
 
     public void ConnectPlayers()
     {
+        bool keyboardJoined = false;
         foreach (var player in _connectionData.ConnectedPlayersData())
         {
+            if (keyboardJoined)
+            {
+                continue;
+            }
+            if (player.Device is Keyboard)
+            {
+                keyboardJoined = true;
+            }
             _playerInputManager.JoinPlayer(player.playerID, -1, null, player.Device);
         }
     }
