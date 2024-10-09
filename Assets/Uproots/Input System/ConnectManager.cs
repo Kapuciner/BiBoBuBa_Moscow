@@ -8,18 +8,25 @@ using UnityEngine.InputSystem.Users;
 public class ConnectManager : MonoBehaviour
 {
     [SerializeField] private PlayerInputManager _playerInputManager;
-    
+    [SerializeField] private ConnectionData _connectionData;
+    private void Start()
+    {
+        ConnectPlayers();
+    }
 
+    public void ConnectPlayers()
+    {
+        foreach (var player in _connectionData.ConnectedPlayersData())
+        {
+            _playerInputManager.JoinPlayer(player.playerID, -1, null, player.Device);
+        }
+    }
     
     public void OnConnect()
     {
-        
-        
-        
-        if (_playerInputManager.playerCount == _playerInputManager.maxPlayerCount)
-        {
-            _playerInputManager.DisableJoining();
-        }
-
+        //if (_playerInputManager.playerCount == _playerInputManager.maxPlayerCount)
+        //{
+        //    _playerInputManager.DisableJoining();
+        //}
     }
 }
