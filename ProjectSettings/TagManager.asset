@@ -3,21 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Goal
-  - Mage
-  - Zone
-  - Pickup
-  - dashFaliant
-  - hpFaliant
-  - shieldFaliant
-  - attackFaliant
-  - Cloud
-  - faliant
-  - fireball
-  - spawner
-  - Block
-  - Lobby_Dummy
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -25,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - dontShowOnCamera
-  - PostProccessing
   - 
-  - ground
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -54,7 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Priority
-    uniqueID: 2918969279
     locked: 0

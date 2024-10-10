@@ -1,20 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using Microsoft.Unity.VisualStudio.Editor;
 
-public class Timer_D : MonoBehaviour
+public class ActionTimerCircle : MonoBehaviour
 {
     // public float timeRemaining = 300f; 
-    float timeRemaining; 
+    float timeRemaining = 0; 
     public TMP_Text timerText;
-    public GameManager_D gameManager;
+    public UnityEngine.UI.Image circle;
 
     private bool timerIsRunning = false;
 
     void Start()
     {
+
+    }
+
+    public void StartTimer(float newTime, int numberToDisplay) {
+        timerText.text = numberToDisplay.ToString();
         timerIsRunning = true;
+        timeRemaining = newTime;
         UpdateTimerDisplay();
     }
 
@@ -25,6 +33,7 @@ public class Timer_D : MonoBehaviour
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
+                circle.fillAmount = timeRemaining / 1;
                 UpdateTimerDisplay();
             }
             else
@@ -32,15 +41,11 @@ public class Timer_D : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 UpdateTimerDisplay();
-                gameManager.GameOver();
+                transform.gameObject.SetActive(false);
             }
         }
-    }
-
-    public void SetTimer(float newTime) {
-        timeRemaining = newTime;
-        UpdateTimerDisplay();
-    }
+        transform.LookAt(Camera.main.transform.position);
+    } 
 
     public void StopTimer()
     {
@@ -48,9 +53,7 @@ public class Timer_D : MonoBehaviour
     }
     void UpdateTimerDisplay()
     {
-        int minutes = Mathf.FloorToInt(timeRemaining / 60);
-        int seconds = Mathf.FloorToInt(timeRemaining % 60);
-
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        
     }
+
 }
