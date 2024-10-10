@@ -30,7 +30,7 @@ public class TomatoMeleeAttack : Attack
         {
             if (collider.CompareTag("Player") && collider.gameObject != attacker.gameObject)
             {
-                collider.GetComponent<Player>().TakeDamage(attacker.GetDamage());
+                collider.GetComponent<R_Player>().TakeDamage(attacker.GetDamage());
                 collider.GetComponent<PlayerController>().Push(pushForce,
                     GetDirection(attacker.transform.position, collider.transform.position));
                 

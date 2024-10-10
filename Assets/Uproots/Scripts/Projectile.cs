@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 3f;
     private float _time = 0;
 
-    public Player Owner;
+    public R_Player Owner;
     private void Update()
     {
         _time += Time.deltaTime;
@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Launch(Vector3 dir, float _speed, Player owner)
+    public void Launch(Vector3 dir, float _speed, R_Player owner)
     {
         rb.velocity = dir * _speed;
         Owner = owner;
@@ -31,9 +31,9 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<Player>().Equals(Owner) == false)
+        if (other.CompareTag("Player") && other.GetComponent<R_Player>().Equals(Owner) == false)
         {
-            other.GetComponent<Player>().TakeDamage(Owner.controller.GetDamage());
+            other.GetComponent<R_Player>().TakeDamage(Owner.controller.GetDamage());
         }
     }
 }

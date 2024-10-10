@@ -415,7 +415,7 @@ MonoBehaviour:
   icedMass: 0.5
   iceLayers:
     serializedVersion: 2
-    m_Bits: 499
+    m_Bits: 243
   iceMove: 0
   dashKey: 304
   dashSpeed: 7

@@ -6,12 +6,12 @@ public class Syringe : Powerup
 {
     public float power;
     public float time;
-    public override void OnPicked(Player player)
+    public override void OnPicked(R_Player player)
     {
         GameObject.FindObjectOfType<MonoHandler>().StartCoroutine(IncreasePushForce(player));
     }
 
-    private IEnumerator IncreasePushForce(Player player)
+    private IEnumerator IncreasePushForce(R_Player player)
     {
         if (GetComponent<SpriteRenderer>() != null)
         {

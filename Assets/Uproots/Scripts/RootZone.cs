@@ -7,14 +7,14 @@ public class RootZone : MonoBehaviour
 {
     public bool HasRootedPlayer = false;
     public float RootTime = 5;
-    public Player RootedPlayer;
+    public R_Player RootedPlayer;
     
     
-    public Player CurrentPlayer;
+    public R_Player CurrentPlayer;
 
     public Roots Roots;
 
-    public void RootPlayer(Player player)
+    public void RootPlayer(R_Player player)
     {
         HasRootedPlayer = true;
         RootedPlayer = player;
@@ -41,7 +41,7 @@ public class RootZone : MonoBehaviour
         yield return new WaitForSeconds(1f);
   
         Roots.Setup(CurrentPlayer);
-        Player p = CurrentPlayer;
+        R_Player p = CurrentPlayer;
         while (CurrentPlayer != null && CurrentPlayer == p && RootedPlayer == null)
         {
             Roots.MakeStep();

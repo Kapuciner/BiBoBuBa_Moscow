@@ -13,11 +13,11 @@ public class MapEventManager : MonoBehaviour
 
     private bool isEventInProcess = false;
 
-    private List<Player> _players;
+    private List<R_Player> _players;
 
     private void Start()
     {
-        _players = GameObject.FindObjectsOfType<Player>().ToList();
+        _players = GameObject.FindObjectsOfType<R_Player>().ToList();
         chance = baseChance;
     }
 

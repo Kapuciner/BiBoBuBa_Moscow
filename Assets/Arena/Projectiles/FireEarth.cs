@@ -11,12 +11,21 @@ public class FireEarth : MonoBehaviour
     [SerializeField] private int damage = 1;
     private bool workedOnce = false;
 
-    [SerializeField] private GameObject lavaDecalPrefab;
-    [SerializeField] private float expansionRate = 1f; 
+    [SerializeField] private GameObject lavaPlanePrefab;
+    [SerializeField] private GameObject lavaPlanePrefab2;
+    [SerializeField] private float expansionRate = 1f;
 
+    Vector3 pushDirection;
+    [SerializeField] float pushForce = 2f;
 
+    private Material lavaMaterial;
+    private Vector2 initialTiling;
+
+    public bool stopLava = false;
     public void Activate(Vector3 direction)
     {
+        lavaMaterial = lavaPlanePrefab.GetComponent<Renderer>().material;
+
         StartCoroutine(FlyAndBurn(direction));
     }
 
@@ -28,10 +37,15 @@ public class FireEarth : MonoBehaviour
         {
             timePassed += Time.fixedDeltaTime;
             transform.position += direction * projectileSpeed;
-            lavaDecalPrefab.transform.position += direction * projectileSpeed / 2;
-                    
+            if (!stopLava)
+            {
+                lavaPlanePrefab.transform.position += direction * projectileSpeed / 2;
+                lavaPlanePrefab2.transform.position += direction * projectileSpeed / 2;
+
+            }
             float angleY = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            lavaDecalPrefab.transform.rotation = Quaternion.Euler(90, angleY - 90, 0); 
+            lavaPlanePrefab.transform.rotation = Quaternion.Euler(0, angleY, 0); 
+            lavaPlanePrefab2.transform.rotation = Quaternion.Euler(0, angleY, 0); 
 
             ExpandLavaDecal();
             yield return new WaitForFixedUpdate();
@@ -44,40 +58,28 @@ public class FireEarth : MonoBehaviour
     {
         if (other.tag == "Player" && !workedOnce)
         {
+            pushDirection = other.transform.position - this.gameObject.transform.position;
+            other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
             workedOnce = true;
             other.GetComponent<ArenaPlayerManager>().OnFire();
             other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
             Destroy(this.gameObject, 0.05f);
         }
+        if (other.tag == "Block")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void ExpandLavaDecal()
     {
-        DecalProjector decalProjector = lavaDecalPrefab.GetComponent<DecalProjector>();
-
-        if (decalProjector != null)
+        if (!stopLava)
         {
-            float newWidth = decalProjector.size.x + expansionRate * Time.deltaTime;
-            decalProjector.size = new Vector3(newWidth, decalProjector.size.y, newWidth);
-
-            BoxCollider boxCollider = lavaDecalPrefab.GetComponent<BoxCollider>();
-            if (boxCollider != null)
-            {
-                boxCollider.size = new Vector3(newWidth, boxCollider.size.y, 1); 
-                boxCollider.center = new Vector3(0, boxCollider.center.y, 0.5f); 
-            }
-
-            Material decalMaterial = decalProjector.material;
-
-            if (!decalMaterial.name.EndsWith("(Instance)"))
-            {
-                decalMaterial = new Material(decalMaterial);
-                decalProjector.material = decalMaterial;
-            }
-
-            Vector2 currentTiling = decalMaterial.GetVector("_Tiling"); 
-            currentTiling += new Vector2(0.015f, 0);
-            decalMaterial.SetVector("_Tiling", currentTiling); 
+            Vector3 newScale = lavaPlanePrefab.transform.localScale + new Vector3(0, 0, expansionRate) * Time.deltaTime;
+            Vector3 newScale2 = lavaPlanePrefab2.transform.localScale + new Vector3(0, 0, expansionRate) * Time.deltaTime;
+            lavaPlanePrefab.transform.localScale = newScale;
+            lavaPlanePrefab2.transform.localScale = newScale2;
         }
+
     }
 }

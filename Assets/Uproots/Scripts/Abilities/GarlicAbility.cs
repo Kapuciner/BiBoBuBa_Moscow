@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GarlicAbility : Ability
 {
-    private Player _caster;
+    private R_Player _caster;
 
     GameObject effect =
         Resources.Load("GarlicAbilityEffect") as GameObject;
 
-    public GarlicAbility(Player caster)
+    public GarlicAbility(R_Player caster)
     {
         _caster = caster;
     }
@@ -42,9 +42,9 @@ public class GarlicAbility : Ability
                 Collider[] res = Physics.OverlapSphere(point.transform.position, 1f);
                 foreach (var c in res)
                 {
-                    if (c.CompareTag("Player") && c.GetComponent<Player>() != _caster)
+                    if (c.CompareTag("Player") && c.GetComponent<R_Player>() != _caster)
                     {
-                        c.GetComponent<Player>().TakeDamage(_caster.controller.GetDamage());
+                        c.GetComponent<R_Player>().TakeDamage(_caster.controller.GetDamage());
                     }
                 }
             }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GarlicAttack : Attack
 {
-    private Player _attacker;
-    public GarlicAttack(Player attacker)
+    private R_Player _attacker;
+    public GarlicAttack(R_Player attacker)
     {
         _attacker = attacker;
     }
@@ -39,9 +39,9 @@ public class GarlicAttack : Attack
             Collider[] res = Physics.OverlapSphere(pos, 3f);
             foreach (var c in res)
             {
-                if (c.CompareTag("Player") && c.GetComponent<Player>() != _attacker)
+                if (c.CompareTag("Player") && c.GetComponent<R_Player>() != _attacker)
                 {
-                    c.GetComponent<Player>().TakeDamage(_attacker.controller.GetDamage());
+                    c.GetComponent<R_Player>().TakeDamage(_attacker.controller.GetDamage());
                     yield break;
                 }
             }

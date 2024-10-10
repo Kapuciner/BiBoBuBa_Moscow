@@ -15,6 +15,12 @@ public class GameManagerArena : MonoBehaviour
 
     public TMP_Text startTXT;
 
+    [SerializeField] private int maxWinNum = 4;
+    [SerializeField] private GameObject endScreen;
+    [SerializeField] private TMP_Text playerNicknameTXT;
+
+    bool gameOver = false;
+
     private void Awake()
     {
       Physics.defaultMaxDepenetrationVelocity = 20;
@@ -36,6 +42,11 @@ public class GameManagerArena : MonoBehaviour
         {
             scoreCounters[i].text = $"{winCounts[i]}";
         }
+    }
+
+    void Update()
+    {
+
     }
 
     IEnumerator StartGame()
@@ -75,7 +86,45 @@ public class GameManagerArena : MonoBehaviour
         if (players.Length - count == 1)
         {
             winCounts[winnerID]++;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            for (int i = 0; i < winCounts.Count; i++)
+            {
+                if (winCounts[i] >= maxWinNum)
+                {
+                    StartCoroutine(EndGame(winnerID));
+                }
+            }
+
+            if (!gameOver)
+                Invoke("Restart", 0.5f);
+        }
+    }
+
+    void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    IEnumerator EndGame(int winnerID)
+    {
+        gameOver = true;
+        endScreen.SetActive(true);
+        playerNicknameTXT.text = $"{players[winnerID].GetComponent<ArenaPlayerManager>().nickname} WON!";
+
+        for (int i = 0; i < winCounts.Count; i++)
+        {
+            winCounts[i] = 0;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        while (true)
+        {
+            if (Input.anyKey && gameOver)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            yield return new WaitForEndOfFrame();
         }
     }
 }

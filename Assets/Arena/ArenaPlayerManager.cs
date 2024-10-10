@@ -7,6 +7,12 @@ using TMPro;
 public class ArenaPlayerManager : MonoBehaviour
 {
     [SerializeField] private GameManagerArena gm;
+    public string nickname;
+
+    public bool insideTheZone = true;
+    [SerializeField] private float maxZoneDamageCooldown = 2;
+    private float currentZoneDamageCooldown;
+    [SerializeField] private int zoneDamage;
 
     private Vector3 move;
     [SerializeField] private KeyCode up;
@@ -37,6 +43,8 @@ public class ArenaPlayerManager : MonoBehaviour
     public static float hitPower = 15; //чем больше, тем сильнее отталкивает
     public static int hitDamage = 1; 
     private bool canHit;
+    float hitCurrentCooldown = 0;
+    [SerializeField] float hitMaxCooldown = 1;
 
     private bool canDoStuff = true;
     public bool dead = false;
@@ -56,7 +64,6 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private GameObject fireFire;
     [SerializeField] private GameObject waterAir;
     [SerializeField] private GameObject waterEarth;
-    [SerializeField] private GameObject waterWater;
     [SerializeField] private GameObject airEarth;
     [SerializeField] private GameObject airAir;
     [SerializeField] private GameObject earthEarth;
@@ -71,15 +78,22 @@ public class ArenaPlayerManager : MonoBehaviour
     [Header("EffectsCooldowns")]
     [SerializeField] private float waterRayCooldown = 0.25f;
     [SerializeField] private int rayDamage = 1;
+    [SerializeField] private Transform waterAim;
+
 
     public bool steamDamageCooldownUp = true;
     [SerializeField] private float steamDamageCooldown = 0.5f;
     public bool lavaDamageCooldownUp = true;
     [SerializeField] private float lavaDamageCooldown = 0.5f;
     [SerializeField] private float lavaDamage = 0.5f;
+    Vector3 pushDirection;
+    [SerializeField] private float waterPushForce = 5f;
 
+    [SerializeField] float castTime = 0.25f;
+    private Vector3 aimDirection = Vector3.zero;
     void Start()
     {
+        currentZoneDamageCooldown = -1;
         currentHP = maxHP;
         hpBar.maxValue = maxHP;
         hpBar.value = currentHP;
@@ -100,14 +114,22 @@ public class ArenaPlayerManager : MonoBehaviour
             Die();
         }
 
+        if (!insideTheZone && currentZoneDamageCooldown < 0)
+        {
+            currentZoneDamageCooldown = maxZoneDamageCooldown;
+            TakeDamage(zoneDamage);
+        }
         move = Vector3.zero;
-        if (canDoStuff)
-            Handle_Input();
+
+        Handle_Input();
     }
 
     void FixedUpdate()
     {
-        _rb.MovePosition(_rb.position + move * speed * Time.deltaTime);
+        hitCurrentCooldown -= Time.fixedDeltaTime;
+        currentZoneDamageCooldown -= Time.fixedDeltaTime;
+        if (canDoStuff)
+            _rb.MovePosition(_rb.position + move * speed * Time.deltaTime);
     }
 
     void Handle_Input()
@@ -130,13 +152,18 @@ public class ArenaPlayerManager : MonoBehaviour
             move -= new Vector3(1f, 0f, -1f);
             _sr.flipX = true;
         }
-        if (Input.GetKeyDown(Attack) && canHit)
+        if (canDoStuff)
         {
-            whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
-            whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
+            if (Input.GetKeyDown(Attack) && canHit)
+            {
+                whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
+                whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
+                hitCurrentCooldown = hitMaxCooldown;
+
+            }
+            if (Input.GetKeyDown(SkillButton))
+                UseAbility();
         }
-        if (Input.GetKeyDown(SkillButton))
-            UseAbility();
 
         move.Normalize();
         if (move != Vector3.zero)
@@ -177,58 +204,106 @@ public class ArenaPlayerManager : MonoBehaviour
 
     void UseAbility()
     {
-        switch((Skill[0], Skill[1]))
+        aimDirection = previousMove;
+        switch ((Skill[0], Skill[1]))
         {
             case ("", ""):
-                //make sound!~!!!
-                    break;
-            case ("Fire", ""):
-                Instantiate(fire, transform.position + previousMove * 3, fire.transform.rotation).GetComponent<FireProjectile>().Activate(previousMove);
                 break;
+            case ("Fire", ""):
+                StartCasting(() => {
+                    Instantiate(fire, transform.position + aimDirection * 1, fire.transform.rotation)
+                        .GetComponent<FireProjectile>().Activate(aimDirection, this.gameObject);
+                }); break;
             case ("Water", ""):
-                Instantiate(water, transform.position + previousMove * 3, water.transform.rotation).GetComponent<WaterProjectile>().Activate(previousMove);
+                StartCasting(() =>
+                {
+                    Instantiate(water, transform.position + aimDirection * 1, water.transform.rotation)
+                        .GetComponent<WaterProjectile>().Activate(aimDirection, this.gameObject);
+                });
                 break;
             case ("Air", ""):
-                Instantiate(air, transform.position + previousMove * 3, air.transform.rotation).GetComponent<AireProjectile>().Activate(previousMove);
-                break;
+                StartCasting(() =>
+                {
+                    Instantiate(air, transform.position + aimDirection * 1, air.transform.rotation).
+                        GetComponent<AireProjectile>().Activate(aimDirection, this.gameObject);
+                });
+            break;
             case ("Earth", ""):
-                Instantiate(earth, transform.position + previousMove * 3, earth.transform.rotation).GetComponent<EarthProjectiles>().Activate(previousMove);
+                StartCasting(() =>
+                {
+                    Instantiate(earth, transform.position + aimDirection * 1, earth.transform.rotation)
+                        .GetComponent<EarthProjectiles>().Activate(aimDirection, this.gameObject);
+                });
                 break;
             case ("Fire", "Fire"):
-                Instantiate(fireFire, transform.position + previousMove * 5, fireFire.transform.rotation).GetComponent<FireProjectile>().Activate(previousMove);
-                break;
+                StartCasting(() =>
+                {
+                    Instantiate(fireFire, transform.position + aimDirection * 3, fireFire.transform.rotation)
+                        .GetComponent<FireProjectile>().Activate(aimDirection, this.gameObject);
+
+                });
+               break;
             case ("Water", "Water"):
-                StartCoroutine(WaterWater());
+                StartCasting(() =>
+                {
+                    StartCoroutine(WaterWater());
+                });
                 break;
             case ("Air", "Air"):
-                Instantiate(airAir, transform.position + previousMove * 5, airAir.transform.rotation).GetComponent<AireProjectile>().Activate(previousMove);
+                StartCasting(() =>
+                {
+                    Instantiate(airAir, transform.position + aimDirection * 3, airAir.transform.rotation).
+                        GetComponent<AireProjectile>().Activate(aimDirection, this.gameObject);
+                });
                 break;
             case ("Earth", "Earth"):
-                Instantiate(earthEarth, transform.position + previousMove * 5, earthEarth.transform.rotation).GetComponent<EarthProjectiles>().Activate(previousMove);
-                break;
+                StartCasting(() =>
+                {
+                    Instantiate(earthEarth, transform.position + aimDirection * 3, earthEarth.transform.rotation)
+                        .GetComponent<EarthProjectiles>().Activate(aimDirection, this.gameObject);
+                });
+               break;
             case ("Fire", "Water"):
             case ("Water", "Fire"):
-                Instantiate(fireWater, transform.position + previousMove * 6, fireWater.transform.rotation).GetComponent<FireWaterProjectile>().Activate(previousMove);
+                StartCasting(() =>
+                {
+                    Instantiate(fireWater, transform.position + aimDirection * 6, fireWater.transform.rotation)
+                        .GetComponent<FireWaterProjectile>().Activate(aimDirection);
+                });
                 break;
             case ("Fire", "Air"):
             case ("Air", "Fire"):
-                FireAir();
+                StartCasting(() =>
+                {
+                    FireAir();
+                });
                 break;
             case ("Fire", "Earth"):
             case ("Earth", "Fire"):
-                Instantiate(fireEarth, transform.position + previousMove * 3, fireEarth.transform.rotation).GetComponent<FireEarth2>().Activate(previousMove);
-                break;
+                StartCasting(() =>
+                {
+                    Instantiate(fireEarth, transform.position + aimDirection * 4, fireEarth.transform.rotation)
+                        .GetComponent<FireEarth2>().Activate(aimDirection);
+                });
+               break;
             case ("Water", "Air"):
             case ("Air", "Water"):
                 StartCoroutine(WaterAir());
                 break;
             case ("Water", "Earth"):
             case ("Earth", "Water"):
-                Instantiate(waterEarth, transform.position + previousMove * 5, waterEarth.transform.rotation).GetComponent<WaterEarthProjectile>().Activate(previousMove);
+                StartCasting(() =>
+                {
+                    Instantiate(waterEarth, transform.position + aimDirection * 2, waterEarth.transform.rotation).GetComponent<WaterEarthProjectile>()
+                        .Activate(aimDirection, this.gameObject);
+                });
                 break;
             case ("Air", "Earth"):
             case ("Earth", "Air"):
-                StartCoroutine(EarthAir());
+                StartCasting(() =>
+                {
+                    EarthAir();
+                });
                 break;
             default:
                 Debug.Log($"Combination {Skill[0]}, {Skill[1]} does not work?");
@@ -242,67 +317,79 @@ public class ArenaPlayerManager : MonoBehaviour
         skillName[1].text = "Empty";
         Skill[1] = "";
     }
-    
+
+    void StartCasting(System.Action action)
+    {
+        StartCoroutine(WaitBeforeCast(action));
+    }
+
+    IEnumerator WaitBeforeCast(System.Action action)
+    {
+        float timePassed = 0;
+        GetComponent<SpriteRenderer>().color = Color.black;
+        canDoStuff = false;
+        yield return new WaitForSeconds(castTime);
+        action.Invoke();
+        canDoStuff = true;
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
     IEnumerator WaterAir()
     {
+        canDoStuff = false;
         int countTimes = 0;
         while (countTimes < 6)
         {
-            Instantiate(waterAir, transform.position + previousMove * 3, waterAir.transform.rotation).GetComponent<WaterProjectile>().Activate(previousMove);
+            Instantiate(waterAir, transform.position + previousMove * 1, waterAir.transform.rotation)
+                .GetComponent<WaterProjectile>().Activate(previousMove, this.gameObject);
             countTimes++;
-            yield return new WaitForSeconds(0.4f);
-        }
-    }
-
-    IEnumerator EarthAir()
-    {
-        canDoStuff = false;
-        float passedTimeStanned = 0;
-        while (passedTimeStanned < 0.5)
-        {
-            GetComponent<SpriteRenderer>().color = Color.black;
-            passedTimeStanned += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.2f);
         }
         canDoStuff = true;
-        GetComponent<SpriteRenderer>().color = Color.white;
+    }
 
-        Instantiate(airEarth, transform.position + previousMove * 3, transform.rotation).GetComponent<EarthAirProjectile>().Activate(previousMove);
+    void EarthAir()
+    {
+        Instantiate(airEarth, transform.position + aimDirection * 2, transform.rotation)
+            .GetComponent<EarthAirProjectile>().Activate(aimDirection, this.gameObject);
 
-        float coneAngle = 20f;
+        float coneAngle = 40f;
 
         for (int i = -1; i <= 1; i += 2)
         {
             float currentAngle = i * coneAngle / 4;
-            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * previousMove;
-            Vector3 spawnPosition = transform.position + direction * 3.5f;
-            Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>().Activate(direction);
+            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * aimDirection;
+            Vector3 spawnPosition = transform.position + direction * 4f;
+            Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>()
+                .Activate(aimDirection, this.gameObject);
         }
 
-        coneAngle = 20f; 
+        coneAngle = 30f; 
         for (int i = -1; i <= 1; i++) 
         {
             float currentAngle = i * coneAngle / 2; 
-            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * previousMove;
-            Vector3 spawnPosition = transform.position + direction * 4;
-            Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>().Activate(direction);
+            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * aimDirection;
+            Vector3 spawnPosition = transform.position + direction * 6;
+            Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>()
+                .Activate(aimDirection, this.gameObject);
         }
     }
 
     void FireAir()
     {
-        Instantiate(fireAir, transform.position + previousMove * 4, transform.rotation).GetComponent<WaterProjectile>().Activate(previousMove);
+        Instantiate(fireAir, transform.position + aimDirection * 2, transform.rotation)
+            .GetComponent<WaterProjectile>().Activate(aimDirection, this.gameObject);
 
         float coneAngle = 120f;
         for (int i = -1; i <= 1; i += 2) 
         {
             float currentAngle = i * coneAngle / 4; 
 
-            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * previousMove;
+            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * aimDirection;
 
-            Vector3 spawnPosition = transform.position + direction * 4;
+            Vector3 spawnPosition = transform.position + direction * 2;
 
-            Instantiate(fireAir, spawnPosition, transform.rotation).GetComponent<WaterProjectile>().Activate(direction);
+            Instantiate(fireAir, spawnPosition, transform.rotation).GetComponent<WaterProjectile>()
+                .Activate(direction, this.gameObject);
         }
     }
 
@@ -311,12 +398,12 @@ public class ArenaPlayerManager : MonoBehaviour
         _lr.enabled = true;
         RaycastHit hit;
         float passedTimeWater = 0;
-        float timeSinceLastDamage = waterRayCooldown;
+        float timeSinceLastDamage = 0;
         while (passedTimeWater < 4)
         {
-            _lr.SetPosition(0, transform.position + previousMove * 0.5f);
+            _lr.SetPosition(0, waterAim.position + previousMove * 0.5f);
 
-            if (Physics.Raycast(transform.position + previousMove * 2.5f, previousMove * 3, out hit, 12))
+            if (Physics.Raycast(waterAim.position + previousMove * 0.5f, previousMove * 3, out hit, 15))
             {
                 if (hit.collider.tag == "Player")
                 {
@@ -325,17 +412,22 @@ public class ArenaPlayerManager : MonoBehaviour
                     timeSinceLastDamage += Time.fixedDeltaTime;
                     if (timeSinceLastDamage >= waterRayCooldown)
                     {
+                        pushDirection = hit.transform.position - transform.position;
+                        hit.collider.gameObject.GetComponent<Rigidbody>()
+                            .AddForce(pushDirection.normalized * waterPushForce, ForceMode.Impulse);
+
                         playerManager.TakeDamage(rayDamage);
                         timeSinceLastDamage = 0;
                         playerManager.ExtinguishFire();
                     }
                 }
 
-                _lr.SetPosition(1, hit.point);
+                Vector3 extendedPoint = hit.point + (hit.point - transform.position).normalized * 0.5f;
+                _lr.SetPosition(1, extendedPoint);
             }
             else
             {
-                _lr.SetPosition(1, transform.position + previousMove * 12);
+                _lr.SetPosition(1, waterAim.position + previousMove * 15);
             }
 
             passedTimeWater += Time.fixedDeltaTime;
@@ -364,8 +456,9 @@ public class ArenaPlayerManager : MonoBehaviour
     public void Die()
     {
         dead = true;
+        hpTXT.text = $"{currentHP}/20";
         gm.CheckIfRoundEnd(); // did all players die?
-
+;
     }
 
     void ColorBack()
@@ -490,9 +583,16 @@ public class ArenaPlayerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            hitDirection = other.transform.position - this.transform.gameObject.transform.position;
-            whoToHit = other.GetComponent<Rigidbody>();
-            canHit = true;
+            if (hitCurrentCooldown < 0)
+            {
+                hitDirection = other.transform.position - this.transform.gameObject.transform.position;
+                whoToHit = other.GetComponent<Rigidbody>();
+                canHit = true;
+            }
+            else
+            {
+                canHit = false;
+            }
         }
 
     }

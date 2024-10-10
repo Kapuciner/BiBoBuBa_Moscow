@@ -9,16 +9,27 @@ public class EarthAirProjectile : MonoBehaviour
     [SerializeField] private float lifetime;
     [SerializeField] public int damage = 2;
     private bool workedOnce = false;
-    public void Activate(Vector3 direction)
+
+    private GameObject playerImmune;
+    private bool immuneTimePassed = false;
+    [SerializeField] float immuneTime = 0;
+
+    Vector3 pushDirection;
+    [SerializeField] float pushForce = 2f;
+
+
+    public void Activate(Vector3 direction, GameObject playerWhoCast)
     {
         StartCoroutine(Hit(direction));
-
-
+        playerImmune = playerWhoCast;
     }
+
     IEnumerator Hit(Vector3 direction)
     {
         while (timePassed < lifetime)
         {
+            if (timePassed >= immuneTime)
+                immuneTimePassed = true;
             timePassed += Time.fixedDeltaTime;
             transform.position += direction * projectileSpeed;
             yield return new WaitForFixedUpdate();
@@ -30,8 +41,19 @@ public class EarthAirProjectile : MonoBehaviour
     {
         if (other.tag == "Player" && !workedOnce)
         {
-            workedOnce = true;
-            other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
+            if (other.gameObject != playerImmune || immuneTimePassed)
+            {
+                pushDirection = other.transform.position - this.gameObject.transform.position;
+                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
+                workedOnce = true;
+                other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
+                Destroy(this.gameObject, 0.05f);
+            }
+        }
+
+
+        if (other.tag == "Block")
+        {
             Destroy(this.gameObject);
         }
     }

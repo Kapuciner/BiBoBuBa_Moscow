@@ -5,7 +5,7 @@ using UnityEngine;
 public class MelonAbility : Ability
 {
     private LineRenderer lineRenderer;
-    public MelonAbility(Player caster, float speed)
+    public MelonAbility(R_Player caster, float speed)
     {
         _caster = caster;
         _speed = speed;
@@ -20,7 +20,7 @@ public class MelonAbility : Ability
         GameObject.FindObjectOfType<MonoHandler>().StartCoroutine(Delay(0.6f));
     }
     
-    private Player _caster;
+    private R_Player _caster;
     private float _speed;
     IEnumerator Delay(float t)
     {

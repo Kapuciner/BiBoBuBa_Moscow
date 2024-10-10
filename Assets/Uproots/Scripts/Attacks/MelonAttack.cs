@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class MelonAttack : Attack
 {
-    private Player _attacker;
+    private R_Player _attacker;
     private Vector3 _dir;
     private float _speed;
     GameObject projectile =
         Resources.Load("Projectile") as GameObject;
-    public MelonAttack(Player attacker, float speed)
+    public MelonAttack(R_Player attacker, float speed)
     {
         _attacker = attacker;
         

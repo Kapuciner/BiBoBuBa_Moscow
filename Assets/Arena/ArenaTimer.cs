@@ -5,7 +5,7 @@ using TMPro;
 
 public class ArenaTimer : MonoBehaviour
 {
-    public float timeRemaining = 300f;
+    float timePassed = 0;
     public TMP_Text timerText;
 
     private bool timerIsRunning = false;
@@ -21,24 +21,15 @@ public class ArenaTimer : MonoBehaviour
     {
         if (timerIsRunning)
         {
-            if (timeRemaining > 0)
-            {
-                timeRemaining -= Time.deltaTime;
-                UpdateTimerDisplay();
-            }
-            else
-            {
-                timeRemaining = 0;
-                timerIsRunning = false;
-                UpdateTimerDisplay();
-            }
+            timePassed += Time.deltaTime;
+            UpdateTimerDisplay();
         }
     }
 
     void UpdateTimerDisplay()
     {
-        int minutes = Mathf.FloorToInt(timeRemaining / 60);
-        int seconds = Mathf.FloorToInt(timeRemaining % 60);
+        int minutes = Mathf.FloorToInt(timePassed / 60);
+        int seconds = Mathf.FloorToInt(timePassed % 60);
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Water_A : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
