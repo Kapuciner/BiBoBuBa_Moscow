@@ -28,9 +28,9 @@ Material:
     - _WaveSpread: 3.23
     - _floatSpeed: 0.1
     m_Colors:
-    - _bubbleColor: {r: 0, g: 0, b: 0, a: 0}
+    - _bubbleColor: {r: 1, g: 1, b: 1, a: 0}
     - _flowDirection: {r: 0, g: 0, b: 0, a: 0}
-    - _lavaColor: {r: 1, g: 0.22772029, b: 0, a: 0}
+    - _lavaColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2898796338745099229
 MonoBehaviour:

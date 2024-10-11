@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaterProjectile : MonoBehaviour
 {
+    [SerializeField] string name = "water";
     [SerializeField] private float projectileSpeed;
     private float timePassed = 0;
     [SerializeField] private float lifetime;
@@ -42,6 +43,12 @@ public class WaterProjectile : MonoBehaviour
         {
             if (other.gameObject != playerImmune || immuneTimePassed)
             {
+                if (name == "water")
+                    other.GetComponent<ArenaPlayerManager>().PlayOnHit("water");
+                if (name == "waterAir")
+                    other.GetComponent<ArenaPlayerManager>().PlayOnHit("waterAir");
+                if (name == "fireAir")
+                    other.GetComponent<ArenaPlayerManager>().PlayOnHit("fireAir");
                 pushDirection = other.transform.position - this.gameObject.transform.position;
                 other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
                 workedOnce = true;
@@ -49,11 +56,14 @@ public class WaterProjectile : MonoBehaviour
                 if (extinguishFire)
                     other.GetComponent<ArenaPlayerManager>().ExtinguishFire();
                 Destroy(this.gameObject, 0.05f);
+                if (name == "fireAir")
+                    other.GetComponent<ArenaPlayerManager>().OnFire();
             }
         }
 
         if (other.tag == "Block")
         {
+            other.GetComponent<AudioSource>().Play();
             Destroy(this.gameObject);
         }
     }

@@ -21,6 +21,7 @@ public class PickUp_A : MonoBehaviour
         {
             if (other.gameObject.GetComponent<ArenaPlayerManager>().Skill[0] == "" || other.gameObject.GetComponent<ArenaPlayerManager>().Skill[1] == "")
             {
+                this.gameObject.GetComponent<AudioSource>().Play();
                 alreadyPickedUp = true;
                 this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
                 this.gameObject.GetComponent<Collider>().enabled = false;

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine.InputSystem;
 public class ArenaPlayerManager : MonoBehaviour
 {
-    [SerializeField] private GameManagerArena gm;
+    public int playerID;
+    private GameManagerArena gm;
     public string nickname;
 
     public bool insideTheZone = true;
@@ -14,14 +15,6 @@ public class ArenaPlayerManager : MonoBehaviour
     private float currentZoneDamageCooldown;
     [SerializeField] private int zoneDamage;
 
-    private Vector3 move;
-    [SerializeField] private KeyCode up;
-    [SerializeField] private KeyCode down;
-    [SerializeField] private KeyCode left;
-    [SerializeField] private KeyCode right;
-    [SerializeField] private KeyCode Attack;
-    [SerializeField] private KeyCode SkillButton;
-    [SerializeField] private float speed;
     private float initialSpeed;
 
     private Rigidbody _rb;
@@ -29,14 +22,13 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public List<string> Skill = new List<string> { "", "" };
 
-    [SerializeField] private Image[] abilityImage; //первый или второй скилл
     [SerializeField] private Sprite emptyAbilityImage;
-    [SerializeField] private TMP_Text[] skillName;
-
+    public List<Image> abilityImage; //первый или второй скилл
+    public List<TMP_Text> skillName;
+    public Slider hpBar;
+    public TMP_Text hpTXT;
     private float currentHP;
     private float maxHP = 20;
-    [SerializeField] private Slider hpBar;
-    [SerializeField] private TMP_Text hpTXT;
 
     private Rigidbody whoToHit;
     private Vector3 hitDirection;
@@ -51,7 +43,26 @@ public class ArenaPlayerManager : MonoBehaviour
 
     [SerializeField] private int deadHeight;
 
-    [SerializeField] private AudioSource audio;
+    [Header("Sounds")]
+    [SerializeField] private AudioSource audio; //for taking damage
+    [SerializeField] private AudioSource audio2; // for fire
+    [SerializeField] private AudioSource audio3; //for hits
+    [SerializeField] private AudioClip painSound;
+    [SerializeField] private AudioClip extinguishFire;
+    [SerializeField] private AudioClip soundOnFire;
+    [SerializeField] private AudioClip fireHitSound;
+    [SerializeField] private AudioClip bubbleAppearSound;
+    [SerializeField] private AudioClip bubbleHitSound;
+    [SerializeField] private AudioClip earthHitSound;
+    [SerializeField] private AudioClip waterHitSound;
+    [SerializeField] private AudioClip fireAirHitSound;
+    [SerializeField] private AudioClip streamOfWaterSound;
+    [SerializeField] private AudioClip airHitSound;
+    [SerializeField] private AudioClip waterEarthHitSound;
+    [SerializeField] private AudioClip earthAirSound;
+    [SerializeField] private AudioClip earthAirHitSound;
+    [SerializeField] private AudioClip punchSound;
+    [SerializeField] private AudioClip deathPuff;
 
     [Header("Projectiles")]
     [SerializeField] private GameObject fire;
@@ -79,7 +90,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private float waterRayCooldown = 0.25f;
     [SerializeField] private int rayDamage = 1;
     [SerializeField] private Transform waterAim;
-
+    public LayerMask waterIgnoreLayer;
 
     public bool steamDamageCooldownUp = true;
     [SerializeField] private float steamDamageCooldown = 0.5f;
@@ -91,16 +102,33 @@ public class ArenaPlayerManager : MonoBehaviour
 
     [SerializeField] float castTime = 0.25f;
     private Vector3 aimDirection = Vector3.zero;
+
+    //-- взято из LobbyDummy
+    private Vector3 _lastDirection;
+    private Vector3 _lastDirectionSmooth;
+    private bool _canMove = true;
+    private Vector3 _move;
+    private float smoothSpeed = 0.2f;
+    public int PlayerIndex;
+    private bool _notMoving = false;
+    public float SPEED;
+
+    private Vector3 direction;
+
+    private void Awake()
+    {
+        gm = FindObjectOfType<GameManagerArena>();
+        _rb = GetComponent<Rigidbody>();
+        _sr = GetComponent<SpriteRenderer>(); //должно быть в awake, иначе игра ломается 
+    }
     void Start()
     {
+
         currentZoneDamageCooldown = -1;
         currentHP = maxHP;
         hpBar.maxValue = maxHP;
         hpBar.value = currentHP;
-
-        _rb = GetComponent<Rigidbody>();
-        _sr = GetComponent<SpriteRenderer>();
-        initialSpeed = speed;
+        initialSpeed = SPEED;
     }
 
     void Update()
@@ -119,9 +147,11 @@ public class ArenaPlayerManager : MonoBehaviour
             currentZoneDamageCooldown = maxZoneDamageCooldown;
             TakeDamage(zoneDamage);
         }
-        move = Vector3.zero;
 
-        Handle_Input();
+        if (_notMoving)
+        {
+            Move(Vector2.zero);
+        }
     }
 
     void FixedUpdate()
@@ -129,46 +159,129 @@ public class ArenaPlayerManager : MonoBehaviour
         hitCurrentCooldown -= Time.fixedDeltaTime;
         currentZoneDamageCooldown -= Time.fixedDeltaTime;
         if (canDoStuff)
-            _rb.MovePosition(_rb.position + move * speed * Time.deltaTime);
+            _rb.MovePosition(_rb.position + _move * SPEED * Time.deltaTime);
     }
 
-    void Handle_Input()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        if (Input.GetKey(up))
-        {
-            move += new Vector3(1f, 0f, 1f);
-        }
-        if (Input.GetKey(down))
-        {
-            move -= new Vector3(1f, 0f, 1f);
-        }
-        if (Input.GetKey(right))
-        {
-            move += new Vector3(1f, 0f, -1f);
-            _sr.flipX = false;
-        }
-        if (Input.GetKey(left))
-        {
-            move -= new Vector3(1f, 0f, -1f);
-            _sr.flipX = true;
-        }
-        if (canDoStuff)
-        {
-            if (Input.GetKeyDown(Attack) && canHit)
-            {
-                whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
-                whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
-                hitCurrentCooldown = hitMaxCooldown;
+        Vector2 value = Vector2.zero;
+        var _targetPlayer = this;
+        value = context.ReadValue<Vector2>();
 
-            }
-            if (Input.GetKeyDown(SkillButton))
-                UseAbility();
+        if (context.canceled)
+        {
+            _notMoving = true;
+            return;
         }
+        _notMoving = false;
 
-        move.Normalize();
-        if (move != Vector3.zero)
-            previousMove = move.normalized;
+        _targetPlayer.Move(value);
     }
+
+    public void Move(Vector2 dir2D)
+    {
+        Vector3 direction = new Vector3(dir2D.x, 0, dir2D.y);
+
+        if (direction.x < 0)
+        {
+            _sr.flipX = true; // Поворачиваем влево
+        }
+        else if (direction.x > 0)
+        {
+            _sr.flipX = false; // Поворачиваем вправо
+        }
+        direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
+
+        if (direction.magnitude != 0)
+        {
+            previousMove = direction;
+        }
+
+        if (_canMove == false)
+        {
+            direction = Vector3.zero;
+        }
+
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
+        StartCoroutine(LerpMove(direction));
+        StartCoroutine(SmoothDirection());
+    }
+    IEnumerator LerpMove(Vector3 newMove)
+    {
+        float elapsed = 0;
+        Vector3 start = _move;
+        while (elapsed < smoothSpeed)
+        {
+            if (_canMove == false)
+            {
+                _move = Vector3.zero;
+                yield break;
+            }
+            _move = Vector3.Lerp(start, newMove, elapsed / smoothSpeed);
+            elapsed += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+    }
+
+    IEnumerator SmoothDirection()
+    {
+        float elapsed = 0;
+
+        Vector3 start = _lastDirectionSmooth;
+        if (_lastDirectionSmooth.magnitude == 0)
+        {
+            start = Vector3.right;
+        }
+        Vector3 end;
+        if (_move.magnitude == 0)
+        {
+            if (_lastDirection.magnitude == 0)
+            {
+                end = Vector3.right;
+            }
+            else end = _lastDirection;
+        }
+        else end = _move;
+        while (elapsed < smoothSpeed)
+        {
+            _lastDirectionSmooth = Vector3.Lerp(start, end, elapsed / smoothSpeed);
+            elapsed += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void OnCast(InputAction.CallbackContext context)
+    {
+        if (context.started && canDoStuff)
+        {
+            UseAbility();
+        }
+    }
+
+    public void OnHit(InputAction.CallbackContext context)
+    {
+        if (context.started && canDoStuff)
+        {
+            if (hitCurrentCooldown < 0)
+            {
+                audio3.clip = punchSound;
+                audio3.Play();
+                if (canHit)
+                {
+                    audio3.clip = punchSound;
+                    audio3.Play();
+                    whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
+                    whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
+                    hitCurrentCooldown = hitMaxCooldown;
+                }
+            }
+        }
+    }
+
 
     public void GotNewAbility(string name, Sprite abilSprite)
     {
@@ -326,12 +439,10 @@ public class ArenaPlayerManager : MonoBehaviour
     IEnumerator WaitBeforeCast(System.Action action)
     {
         float timePassed = 0;
-        GetComponent<SpriteRenderer>().color = Color.black;
         canDoStuff = false;
         yield return new WaitForSeconds(castTime);
         action.Invoke();
         canDoStuff = true;
-        GetComponent<SpriteRenderer>().color = Color.white;
     }
     IEnumerator WaterAir()
     {
@@ -339,6 +450,8 @@ public class ArenaPlayerManager : MonoBehaviour
         int countTimes = 0;
         while (countTimes < 6)
         {
+            audio3.clip = bubbleAppearSound;
+            audio3.Play();
             Instantiate(waterAir, transform.position + previousMove * 1, waterAir.transform.rotation)
                 .GetComponent<WaterProjectile>().Activate(previousMove, this.gameObject);
             countTimes++;
@@ -349,6 +462,9 @@ public class ArenaPlayerManager : MonoBehaviour
 
     void EarthAir()
     {
+        audio3.clip = earthAirSound;
+        audio3.Play();
+
         Instantiate(airEarth, transform.position + aimDirection * 2, transform.rotation)
             .GetComponent<EarthAirProjectile>().Activate(aimDirection, this.gameObject);
 
@@ -399,11 +515,13 @@ public class ArenaPlayerManager : MonoBehaviour
         RaycastHit hit;
         float passedTimeWater = 0;
         float timeSinceLastDamage = 0;
+        audio3.clip = streamOfWaterSound;
+        audio3.Play();
         while (passedTimeWater < 4)
         {
             _lr.SetPosition(0, waterAim.position + previousMove * 0.5f);
 
-            if (Physics.Raycast(waterAim.position + previousMove * 0.5f, previousMove * 3, out hit, 15))
+            if (Physics.Raycast(waterAim.position + previousMove * 0.5f, previousMove * 3, out hit, 15, ~waterIgnoreLayer))
             {
                 if (hit.collider.tag == "Player")
                 {
@@ -438,27 +556,32 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void TakeDamage(int value)
     {
-        audio.Play();
-        currentHP -= value;
-        if (currentHP <= 0)
+
+        if (currentHP <= 1)
         {
             currentHP = 0;
             Die();
         }
+        else
+        {
+            audio.clip = painSound;
+            audio.Play();
+            currentHP -= value;
+            hpBar.value = currentHP;
+            hpTXT.text = $"{currentHP}/20";
 
-        hpBar.value = currentHP;
-        hpTXT.text = $"{currentHP}/20";
-
-        GetComponent<SpriteRenderer>().color = Color.red;
-        Invoke("ColorBack", 0.2f);
+            GetComponent<SpriteRenderer>().color = Color.red;
+            Invoke("ColorBack", 0.2f);
+        }
     }
 
     public void Die()
     {
+        audio.clip = deathPuff;
+        audio.Play();
         dead = true;
         hpTXT.text = $"{currentHP}/20";
         gm.CheckIfRoundEnd(); // did all players die?
-;
     }
 
     void ColorBack()
@@ -474,6 +597,8 @@ public class ArenaPlayerManager : MonoBehaviour
 
     IEnumerator Burn()
     {
+        audio2.clip = soundOnFire;
+        audio2.Play();
         float passed = 0;
         float burnLasts = 15;
         fireIMG.SetActive(true);
@@ -491,10 +616,13 @@ public class ArenaPlayerManager : MonoBehaviour
     public void ExtinguishFire()
     {
         if (burnCoroutine != null)
+        {
             StopCoroutine(burnCoroutine);
-        burnCoroutine = null;
-        fireIMG.SetActive(false);
-        //!!!!!!!!!!!!!!!! добавить звук тушения (срочно)
+            burnCoroutine = null;
+            fireIMG.SetActive(false);
+            audio2.clip = extinguishFire;
+            audio2.Play();
+        }
     }
 
     public void Stan(float time)
@@ -520,7 +648,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void Slow(int time, float speedReductionTimes)
     {
-        speed = initialSpeed;
+        SPEED = initialSpeed;
         if (slowCoroutine != null)
             StopCoroutine(slowCoroutine);
         slowCoroutine = StartCoroutine(SlowDown(time, speedReductionTimes));
@@ -529,7 +657,7 @@ public class ArenaPlayerManager : MonoBehaviour
     IEnumerator SlowDown(int timeLasts, float speedReductionTimes)
     {
         int passedTimeSlowed = 0;
-        speed /= speedReductionTimes;
+        SPEED /= speedReductionTimes;
 
         while (passedTimeSlowed < timeLasts)
         {
@@ -537,7 +665,7 @@ public class ArenaPlayerManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-        speed *= speedReductionTimes;
+        SPEED *= speedReductionTimes;
         slowCoroutine = null;
     }
 
@@ -602,6 +730,45 @@ public class ArenaPlayerManager : MonoBehaviour
         if (other.tag == "Player")
         {
             canHit = false;
+        }
+    }
+
+    public void PlayOnHit(string WhatHit)
+    {
+        switch (WhatHit)
+        {
+            case "fire":
+                audio3.clip = fireHitSound;
+                audio3.Play();
+                break;
+            case "waterAir":
+                audio3.clip = bubbleHitSound;
+                audio3.Play();
+                break;
+            case "earth":
+                audio3.clip = earthHitSound;
+                audio3.Play();
+                break;
+            case "water":
+                audio3.clip = waterHitSound;
+                audio3.Play();
+                break;
+            case "fireAir":
+                audio3.clip = fireAirHitSound;
+                audio3.Play();
+                break;
+            case "air":
+                audio3.clip = airHitSound;
+                audio3.Play();
+                break;
+            case "waterEarth":
+                audio3.clip = waterEarthHitSound;
+                audio3.Play();
+                break;            
+            case "earthAir":
+                audio3.clip = earthAirHitSound;
+                audio3.Play();
+                break;
         }
     }
 }

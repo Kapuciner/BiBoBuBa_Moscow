@@ -45,6 +45,7 @@ public class FireProjectile : MonoBehaviour
                 other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
                 workedOnce = true;
                 other.GetComponent<ArenaPlayerManager>().OnFire();
+                other.GetComponent<ArenaPlayerManager>().PlayOnHit("fire");
                 other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
                 Destroy(this.gameObject, 0.05f);
             }
@@ -52,6 +53,7 @@ public class FireProjectile : MonoBehaviour
 
         if (other.tag == "Block")
         {
+            other.GetComponent<AudioSource>().Play();
             Destroy(this.gameObject);
         }
     }

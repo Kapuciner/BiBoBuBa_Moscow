@@ -41,13 +41,11 @@ public class FireEarth : MonoBehaviour
             {
                 lavaPlanePrefab.transform.position += direction * projectileSpeed / 2;
                 lavaPlanePrefab2.transform.position += direction * projectileSpeed / 2;
-
+                float angleY = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                lavaPlanePrefab.transform.rotation = Quaternion.Euler(0, angleY, 0);
+                lavaPlanePrefab2.transform.rotation = Quaternion.Euler(0, angleY, 0);
+                ExpandLavaDecal();
             }
-            float angleY = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            lavaPlanePrefab.transform.rotation = Quaternion.Euler(0, angleY, 0); 
-            lavaPlanePrefab2.transform.rotation = Quaternion.Euler(0, angleY, 0); 
-
-            ExpandLavaDecal();
             yield return new WaitForFixedUpdate();
 
         }

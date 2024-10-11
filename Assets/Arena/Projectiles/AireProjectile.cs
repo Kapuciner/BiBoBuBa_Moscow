@@ -41,6 +41,7 @@ public class AireProjectile : MonoBehaviour
         {
             if (other.gameObject != playerImmune || immuneTimePassed)
             {
+                other.GetComponent<ArenaPlayerManager>().PlayOnHit("air");
                 workedOnce = true;
                 direction = other.transform.position - this.gameObject.transform.position;
                 other.GetComponent<Rigidbody>().AddForce(direction.normalized * PushForce, ForceMode.Impulse);
@@ -51,6 +52,7 @@ public class AireProjectile : MonoBehaviour
 
         if (other.tag == "Block")
         {
+            other.GetComponent<AudioSource>().Play();
             Destroy(this.gameObject);
         }
     }

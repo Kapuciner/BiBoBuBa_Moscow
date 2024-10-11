@@ -44,6 +44,7 @@ public class EarthProjectiles : MonoBehaviour
         {
             if (other.gameObject != playerImmune || immuneTimePassed)
             {
+                other.GetComponent<ArenaPlayerManager>().PlayOnHit("earth");
                 workedOnce = true;
                 pushDirection = other.transform.position - this.gameObject.transform.position;
                 other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
@@ -54,6 +55,7 @@ public class EarthProjectiles : MonoBehaviour
         }
         if (other.tag == "Block")
         {
+            other.GetComponent<AudioSource>().Play();
             Destroy(this.gameObject);
         }
     }
