@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class player : MonoBehaviour
 {
     private SpriteRenderer _sr;
-    [SerializeField] private GameManager gm;
+    [SerializeField] public GameManager gm;
 
-    [SerializeField] private GameObject gameOverScreen;
-    [SerializeField] private Animator gameOverTXT;
+    [SerializeField] public GameObject gameOverScreen;
+    [SerializeField] public Animator gameOverTXT;
 
-    [SerializeField] private TMP_Text livesCounter;
+    [SerializeField] public TMP_Text livesCounter;
 
-    [SerializeField] private GameObject[] hearts;
+    [SerializeField] public GameObject[] hearts;
     private float currentHearts;
     [SerializeField] private float maxHearts;
     private int currentLives;
@@ -22,7 +23,7 @@ public class player : MonoBehaviour
 
     [SerializeField] private PlayerAnimation playerAnimation;
 
-    [SerializeField] private Transform start;
+    [SerializeField] public Transform start;
     [SerializeField] private int minHeight; //for falling
 
     public int faliantsCollected = 0;
@@ -39,7 +40,6 @@ public class player : MonoBehaviour
     void Start()
     {
         _sr = GetComponent<SpriteRenderer>();
-                print(_sr);
         currentHearts = maxHearts;
         currentLives = maxLives;
         UpdateHP();
@@ -55,7 +55,6 @@ public class player : MonoBehaviour
     {
         audioSour.clip = damage;
         audioSour.Play();
-        print(_sr);
         if (!shieldOn)
         {
             _sr.color = Color.red;

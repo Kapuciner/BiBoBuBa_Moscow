@@ -14,7 +14,6 @@ public class GameManager_D : MonoBehaviour
 
     [SerializeField] Slider player1Slider;
     [SerializeField] TextMeshProUGUI player1RespawnTimer;
-
     [SerializeField] Slider player2Slider;
     [SerializeField] TextMeshProUGUI player2RespawnTimer;
 

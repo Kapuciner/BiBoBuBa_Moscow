@@ -95,10 +95,11 @@ GameObject:
   - component: {fileID: 2796763660983088939}
   - component: {fileID: 6800040825649978496}
   - component: {fileID: 7583649570752416889}
-  - component: {fileID: 7458254127362325425}
+  - component: {fileID: 8577189686856619041}
   - component: {fileID: 2300939955013377330}
   - component: {fileID: 6028487908457876536}
   - component: {fileID: 1729061221814167813}
+  - component: {fileID: 4391453261787222517}
   m_Layer: 2
   m_Name: Cloud
   m_TagString: Cloud
@@ -137,19 +138,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cloudTarget: {fileID: 0}
   cloudSpeed: 0.2
+  isMouse: 1
   canMove: 1
   pushSound: {fileID: 0}
   lightningPrefab: {fileID: 7190555309735236656, guid: 6efeb736f21c2484a8a520b98363797d, type: 3}
+  lightningSmallPrefab: {fileID: 7190555309735236656, guid: 9b0f371f70ec7e44f9b43c952bbfa0e0, type: 3}
   wallPrefab: {fileID: 5695918875349404654, guid: 5bf5f6fa8202b3e40858239676aef4bb, type: 3}
   icePrefab: {fileID: 2463419939877626867, guid: 5f695ccb567a48c4fa6c3ff1857b9b2d, type: 3}
   iceFieldLifetime: 5
   lightningDelay: 1
   lightningDelta: 5
-  wallAnimTime: 2
+  wallAnimTime: 1.5
   wallLiveTime: 8
-  pushRadius: 8
+  pushRadius: 12
   pushDamage: 2
-  pushForce: 15
+  pushForce: 20
+  heightMask:
+    serializedVersion: 2
+    m_Bits: 51
+  cloudInterface: {fileID: 0}
   gm: {fileID: 0}
 --- !u!212 &7583649570752416889
 SpriteRenderer:
@@ -189,7 +196,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1375998017
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 1620301213, guid: b3d89dcfd65bbac4cb1315b7f76a466e, type: 3}
@@ -203,8 +210,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!135 &7458254127362325425
-SphereCollider:
+--- !u!136 &8577189686856619041
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -218,12 +225,14 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0.00000047683716, y: -0.46, z: -0.0000009536743}
+  serializedVersion: 2
+  m_Radius: 1.8
+  m_Height: 5.4037757
+  m_Direction: 0
+  m_Center: {x: -0.01, y: -0.47, z: 0.87}
 --- !u!95 &2300939955013377330
 Animator:
   serializedVersion: 5
@@ -270,7 +279,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!82 &1729061221814167813
 AudioSource:
@@ -368,6 +377,136 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4391453261787222517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167165154318888149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 7ecd2883254d409448b0c10abf7d5067, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6800040825649978496}
+        m_TargetAssemblyTypeName: CloudScript, Assembly-CSharp
+        m_MethodName: OnMoveInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1a1f4136-78ae-4af3-b96f-e89b63fc0c62
+    m_ActionName: Arena/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6800040825649978496}
+        m_TargetAssemblyTypeName: CloudScript, Assembly-CSharp
+        m_MethodName: OnScrollRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8a66062b-56af-455c-a039-bd35b1828d93
+    m_ActionName: Cloud/ScrollRight[/Mouse/rightButton,/DualShock4GamepadHID/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6800040825649978496}
+        m_TargetAssemblyTypeName: CloudScript, Assembly-CSharp
+        m_MethodName: OnCast
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 305273b9-ae57-487e-a7b2-2141b9da86c2
+    m_ActionName: Cloud/Cast[/Mouse/leftButton,/DualShock4GamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6800040825649978496}
+        m_TargetAssemblyTypeName: CloudScript, Assembly-CSharp
+        m_MethodName: OnScrollLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 24646d50-05be-4e20-a9c1-038e580d1111
+    m_ActionName: Cloud/ScrollLeft[/DualShock4GamepadHID/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 18bb023b-173d-472c-9d5c-6a0fddbf42f8
+    m_ActionName: Mage/Move[/DualShock4GamepadHID/leftStick/up,/DualShock4GamepadHID/leftStick/down,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID/leftStick/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6800040825649978496}
+        m_TargetAssemblyTypeName: CloudScript, Assembly-CSharp
+        m_MethodName: CloudReady
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0e22b7da-968c-46c4-ae15-8245552d6401
+    m_ActionName: Cloud/Ready[/Mouse/leftButton,/DualShock4GamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1306a39b-ad4d-403f-825a-7b07ff02d653
+    m_ActionName: Mage/Dash[/Keyboard/shift,/DualShock4GamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 26dfc2be-8c9c-4b32-a220-977d89977a12
+    m_ActionName: Mage/Fireball[/Keyboard/f,/DualShock4GamepadHID/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 24be32fd-3bcf-4d6a-b413-66374070bc11
+    m_ActionName: Mage/Shield[/DualShock4GamepadHID/buttonSouth,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2e6975e3-74cb-4e7e-ba4b-90e7d7ebc9a0
+    m_ActionName: Mage/Ready[/Keyboard/f,/DualShock4GamepadHID/buttonSouth]
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Mouse
+  m_DefaultActionMap: Cloud
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &4375340365865965850
 GameObject:
   m_ObjectHideFlags: 0

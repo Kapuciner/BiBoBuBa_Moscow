@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float icedMass;
     [SerializeField] LayerMask iceLayers;
     public bool iceMove = false;
+    public bool canMove = false;
 
     [Header("Dash Settings")]
     [SerializeField] private KeyCode dashKey;
@@ -28,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float dashTime; 
     [SerializeField] private int dashCooldown;
     [SerializeField] private ParticleSystem dashParticle;
-    [SerializeField] private GameObject dashImage;
+    [SerializeField] public GameObject dashImage;
 
     [Header("Abilities")]
     public bool gotAbilityDash = false;
@@ -41,16 +43,16 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private KeyCode shieldKey;
     [SerializeField] private GameObject shield;
     [SerializeField] private float shieldDuration;
-    [SerializeField] private TMP_Text dashCooldownTimer;
-    [SerializeField] private TMP_Text attackCooldownTimer;
-    [SerializeField] private TMP_Text shieldCooldownTimer;
+    [SerializeField] public TMP_Text dashCooldownTimer;
+    [SerializeField] public TMP_Text attackCooldownTimer;
+    [SerializeField] public TMP_Text shieldCooldownTimer;
     private bool canAttack = true;
     private bool canDefend = true;
     private bool canDash = true;
     [SerializeField] private int shieldCooldown;
     [SerializeField] private int attackCooldown;
-    [SerializeField] private GameObject shieldImage;
-    [SerializeField] private GameObject attackImage;
+    [SerializeField] public GameObject shieldImage;
+    [SerializeField] public GameObject attackImage;
 
     public AudioClip dashA;
     public AudioClip shieldA;
@@ -102,10 +104,16 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void MoveMage(Vector2 moveVector) {
+        if(canMove){
         move = Vector3.zero;
         move += new Vector3(moveVector.x, 0, moveVector.y);
         move.Normalize();
         move = Quaternion.Euler(0, 45, 0) * move;
+        }
+    }
+
+    public void MageReady(InputAction.CallbackContext context) {
+        if(!playerMage.gm.gameStarted) playerMage.gm.mageReady = !playerMage.gm.mageReady;
     }
 
     public void TryDash() {
@@ -151,10 +159,13 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(CooldownRoutine(shieldCooldown, shieldCooldownTimer, shieldImage, "canDefend"));
         }
     }
+    public void OnMoveInput(InputAction.CallbackContext context) {
+        MoveMage(context.ReadValue<Vector2>());
+    }
     private void HandleInput()
     {
         
-        move = Vector3.zero;
+        /*move = Vector3.zero;
         if (Input.GetKey(up))
         {
             move += new Vector3(1f, 0f, 1f);
@@ -212,7 +223,7 @@ public class PlayerManager : MonoBehaviour
             Invoke("ShieldCooldown", shieldDuration);
             shieldImage.SetActive(false);
             StartCoroutine(CooldownRoutine(shieldCooldown, shieldCooldownTimer, shieldImage, "canDefend"));
-        }
+        }*/
     }
 
     public void SwitchIceMode(bool mode) {

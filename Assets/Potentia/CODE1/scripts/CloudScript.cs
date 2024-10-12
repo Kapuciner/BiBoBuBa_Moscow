@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CloudScript : MonoBehaviour
 {
-    [SerializeField] CloudTargetScript cloudTarget;
+    [SerializeField] public CloudTargetScript cloudTarget;
     [SerializeField] float cloudSpeed;
+    public bool isMouse = true;
     public bool canMove = true;
     bool canCast = true;
     // [SerializeField] lightningScript lightningAbility;
@@ -33,7 +35,11 @@ public class CloudScript : MonoBehaviour
 
     [SerializeField] LayerMask heightMask;
 
-    [SerializeField] GameManager gm;
+    [SerializeField] public CloudInterface cloudInterface;
+
+    [SerializeField] public GameManager gm;
+
+    private Vector3 gamepadLastDir;
     bool again = false;
     // Start is called before the first frame update
     void Start()
@@ -48,11 +54,60 @@ public class CloudScript : MonoBehaviour
     void Update()
     {
             processInput();
+            if(isMouse) ProcessMouseMove();
+            else {
+            
+            cloudTarget.transform.position = new Vector3(
+            transform.position.x + gamepadLastDir.x*15, 
+            cloudTarget.transform.position.y, 
+            transform.position.z + gamepadLastDir.z*15);
+            ProcessGamepadMove();
+            }
+    }
+
+    void ProcessGamepadMove() {
             if (canMove)
             {
                 Vector3 targetDelta = cloudTarget.transform.position - transform.position;
+
+                if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) > 0)
+                {
+                    cloudSprite.flipX = true;
+                }
+                else cloudSprite.flipX = false;
+
+                Vector3 deltaVec = new Vector3(
+                    cloudTarget.transform.position.x - transform.position.x, 
+                    0,
+                    cloudTarget.transform.position.z - transform.position.z);
+                deltaVec.Normalize();
+                RaycastHit rayHitHorizontal;
+                Physics.Raycast(new Ray(transform.position, deltaVec), out rayHitHorizontal, heightMask);
+                Vector3 hitBoxVec = new Vector3(deltaVec.x, -0.4f, deltaVec.z);
+                Debug.DrawRay(transform.position, hitBoxVec * 10, Color.red);
+                RaycastHit rayHitAngle;
+                Physics.Raycast(new Ray(transform.position, hitBoxVec), out rayHitAngle, heightMask);
+                if ((rayHitAngle.distance < 2.5f && rayHitAngle.distance != 0) || 
+                (rayHitHorizontal.distance < 10f && rayHitHorizontal.distance != 0))
+                {
+                    Vector3 horizontalMove = new Vector3(cloudTarget.transform.position.x, 
+                    transform.position.y + 550/(rayHitAngle.distance - 0.6f), 
+                    cloudTarget.transform.position.z);
+                    transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed);
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed);
+                }
+                
+            }
+    }
+    
+    void ProcessMouseMove() {
+        if (canMove)
+            {
+                Vector3 targetDelta = cloudTarget.transform.position - transform.position;
                 if(targetDelta.sqrMagnitude > 1) {
-                    //print(targetDelta.sqrMagnitude);
                     if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) > 0)
                     {
                         cloudSprite.flipX = true;
@@ -64,7 +119,6 @@ public class CloudScript : MonoBehaviour
                         0,
                         cloudTarget.transform.position.z - transform.position.z);
                     deltaVec.Normalize();
-                    // deltaVec = Quaternion.Euler(0, 0, 90) * deltaVec * 10;
                     RaycastHit rayHitHorizontal;
                     Physics.Raycast(new Ray(transform.position, deltaVec), out rayHitHorizontal, heightMask);
                     Vector3 hitBoxVec = new Vector3(deltaVec.x, -0.4f, deltaVec.z);
@@ -78,34 +132,15 @@ public class CloudScript : MonoBehaviour
                         transform.position.y + 550/(rayHitAngle.distance - 0.6f), 
                         cloudTarget.transform.position.z);
                         transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed);
-                        //transform.position = new Vector3(transform.position.x, transform.position.y + (4.4f - rayHit.distance)* 10, transform.position.z);
                     }
                     else
                     {
                         transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed);
                     }
-                    /*float deltaY = cloudTarget.transform.position.y - transform.position.y;
-                    if (deltaY > 2)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y + deltaY / 10, transform.position.z);
-                    }
-                    else if (deltaY < -2)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y + deltaY / 10, transform.position.z);
-                    }*/
                 }
             }
     }
-    /*Physics.Raycast(new Ray(transform.position, Vector3.down), out rayHit, heightMask);
-            if (rayHit.distance < 4.4f && rayHit.distance != 0)
-            {
-                transform.position = new Vector3(transform.position.x, transform.position.y + (4.4f - rayHit.distance)* 10, transform.position.z);
-            }
-            else if (rayHit.distance > 4.6f && rayHit.distance != 0)
-            {
-                transform.position = new Vector3(transform.position.x, transform.position.y - (rayHit.distance - 4.6f), transform.position.z);
-            }*/
-
+   
     void processInput() {
         //Left button Input.GetMouseButton(0)
         //if (canCast && Input.GetKey(KeyCode.Alpha2)) { 
@@ -128,6 +163,33 @@ public class CloudScript : MonoBehaviour
 
     public void gotPickup(int power) {
 
+    }
+
+    public void CloudReady(InputAction.CallbackContext context) {
+        if(!gm.gameStarted) gm.cloudReady = !gm.cloudReady;
+    }
+
+    public void OnMoveInput(InputAction.CallbackContext context) {
+        if (isMouse) cloudTarget.SetDirection(context.ReadValue<Vector2>());
+        else {
+            Vector2 rawGamepadLastDir = context.ReadValue<Vector2>();
+            gamepadLastDir = Quaternion.Euler(0, 45, 0) * new Vector3(rawGamepadLastDir.x, 0, rawGamepadLastDir.y);
+        }
+    }
+
+    public void OnScrollRight(InputAction.CallbackContext context) {
+        if(context.performed)
+        cloudInterface.ScrollRight();
+    }
+
+    public void OnScrollLeft(InputAction.CallbackContext context) {
+        if(context.performed)
+        cloudInterface.ScrollLeft();
+    }
+
+    public void OnCast(InputAction.CallbackContext context) {
+        if(context.performed)
+        cloudInterface.useAbility();
     }
     
     public void Ability1()
@@ -167,9 +229,10 @@ public class CloudScript : MonoBehaviour
         Physics.Raycast(new Ray(transform.position, Vector3.down), out rayHit, heightMask);
         Vector3 toLand;
         if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance, 0);
-        else toLand = new Vector3(0, -1.4f, 0);
+        else toLand = new Vector3(0, -4.4f, 0);
         if (lightningCount == 1) {
             canMove = false;
+            print(toLand);
             Instantiate(lightningPrefab, transform.position + toLand, Quaternion.identity);
             yield return new WaitForSeconds(lightningDelay);
         } else {
@@ -178,7 +241,7 @@ public class CloudScript : MonoBehaviour
                 Vector3 randomDeltaXZ = new Vector3(Random.Range(-lightningDelta, lightningDelta), 0, Random.Range(-lightningDelta, lightningDelta));
                 Physics.Raycast(new Ray(transform.position+randomDeltaXZ, Vector3.down), out rayHit, heightMask);
                 if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance, 0);
-                else toLand = new Vector3(0, -1.4f, 0);
+                else toLand = new Vector3(0, -4.4f, 0);
                 Instantiate(lightningSmallPrefab, transform.position + toLand + randomDeltaXZ, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);  
             }

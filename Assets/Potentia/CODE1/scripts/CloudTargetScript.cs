@@ -29,7 +29,6 @@ public class CloudTargetScript : MonoBehaviour
     }
     void OnTriggerStay(Collider collision)
     {
-        print(collision);
         if (collision.gameObject.CompareTag("Block"))
         {
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
@@ -38,7 +37,7 @@ public class CloudTargetScript : MonoBehaviour
 
     void Update()
     {
-            Vector3 rawMoveDelta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
+            //Vector3 rawMoveDelta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
             Vector3 processedDelta = Quaternion.Euler(0, 45, 0) * rawMoveDelta;
             transform.position = transform.position + processedDelta * mouseSensitivity;
             if (transform.position.x > 60)

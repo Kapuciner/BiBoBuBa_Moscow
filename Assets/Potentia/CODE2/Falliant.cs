@@ -19,8 +19,8 @@ public class Falliant : MonoBehaviour
     [SerializeField] private GameObject showAbilityShield;
     [SerializeField] private GameObject showAbilityHP;
 
-    [SerializeField] private Transform player;
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] public Transform player;
+    [SerializeField] public PlayerManager playerManager;
     [SerializeField] private Transform goal;
     [SerializeField] private float followSpeed;
     public bool taken = false;
@@ -133,7 +133,7 @@ public class Falliant : MonoBehaviour
     {
         while (Vector3.Distance(transform.position, player.position) > 2f && carried == false && returnBack == false)
         {
-            targetFollow = new Vector3(player.position.x, player.position.y + 1, player.position.z); //чтобы фалиант парил
+            targetFollow = new Vector3(player.position.x, player.position.y + 1, player.position.z); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             transform.position = Vector3.Lerp(transform.position, targetFollow, followSpeed * Time.deltaTime);
             yield return null; 
         }

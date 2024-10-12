@@ -32,13 +32,13 @@ public class CloudInterface : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
 
-        if (Input.GetMouseButtonDown(1))
+        /*if (Input.GetMouseButtonDown(1))
         {
             currentAbilityIndex++;
             if (currentAbilityIndex == 5)
                 currentAbilityIndex = 0;
             UpdateInterface();
-        }
+        }*/
 
         //if (scroll > 0f)
         //{
@@ -56,7 +56,19 @@ public class CloudInterface : MonoBehaviour
         //    UpdateInterface();
         //}
     }
+    public void ScrollRight() {
+        currentAbilityIndex++;
+        if (currentAbilityIndex == 5)
+            currentAbilityIndex = 0;
+        UpdateInterface();
+    }
 
+    public void ScrollLeft() {
+        currentAbilityIndex--;
+        if (currentAbilityIndex == -1)
+            currentAbilityIndex = 4;
+        UpdateInterface();
+    }
     public bool TryAddEnergy()
     {
         bool returnVal;
@@ -70,7 +82,7 @@ public class CloudInterface : MonoBehaviour
         
     }
 
-    bool useAbility()
+    public bool useAbility()
     {
         if (currentAbilityIndex == 0 && currentEnergy >= 1)
         {
