@@ -149,10 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilitiesUI:
-  - {fileID: 21300000, guid: 8154156c05952bc488db3159aafa5d4d, type: 3}
-  - {fileID: -1233237547, guid: a9ed0246c8355a94caba8fec5303c2b4, type: 3}
-  - {fileID: -699154120, guid: 28f887641a283ac4096b5848490d9784, type: 3}
-  - {fileID: 1634473922, guid: 2881338f40a55aa4c9dd688d4a27d0e1, type: 3}
+  - {fileID: -798176222, guid: 7c777580d5d61ab4fb2f22e2fa852597, type: 3}
+  - {fileID: -1734850639, guid: 7c777580d5d61ab4fb2f22e2fa852597, type: 3}
+  - {fileID: -712309359, guid: 7c777580d5d61ab4fb2f22e2fa852597, type: 3}
+  - {fileID: -269783226, guid: 7c777580d5d61ab4fb2f22e2fa852597, type: 3}
   spawnInterval: 10
 --- !u!82 &4956391428614084633
 AudioSource:

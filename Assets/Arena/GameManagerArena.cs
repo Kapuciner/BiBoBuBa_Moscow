@@ -33,7 +33,7 @@ public class GameManagerArena : MonoBehaviour
 
 
     [SerializeField] private ConnectionData _connectionData;
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject[] playerPrefab;
 
     [SerializeField] private CameraScaler cameraScaler;
 
@@ -73,9 +73,11 @@ public class GameManagerArena : MonoBehaviour
 
         if (_connectionData.GetPlayerCount() > 0) //пока не проверено, но должно работать между сценами
         {
+            int j = 0;
             foreach (var player in players)
             {
-                GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                j++;
+                GameObject pl = Instantiate(playerPrefab[j], spawnPoints[playersList.Count].transform.position, playerPrefab[j].transform.rotation);
                 pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
                 AddPlayer(pl);
                 var playerInput = pl.GetComponent<PlayerInput>();
@@ -100,7 +102,7 @@ public class GameManagerArena : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                GameObject pl = Instantiate(playerPrefab[i], spawnPoints[playersList.Count].transform.position, playerPrefab[i].transform.rotation);
                 pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
                 AddPlayer(pl);
                 var playerInput = pl.GetComponent<PlayerInput>();
@@ -175,7 +177,7 @@ public class GameManagerArena : MonoBehaviour
             }
 
             if (!gameOver)
-                Invoke("Restart", 0.5f);
+                Invoke("Restart", 1f);
         }
     }
 

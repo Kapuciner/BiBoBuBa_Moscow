@@ -33,7 +33,7 @@ public class ArenaPlayerManager : MonoBehaviour
     private Rigidbody whoToHit;
     private Vector3 hitDirection;
     public static float hitPower = 15; //чем больше, тем сильнее отталкивает
-    public static int hitDamage = 1; 
+    public static int hitDamage = 1;
     private bool canHit;
     float hitCurrentCooldown = 0;
     [SerializeField] float hitMaxCooldown = 1;
@@ -42,6 +42,10 @@ public class ArenaPlayerManager : MonoBehaviour
     public bool dead = false;
 
     [SerializeField] private int deadHeight;
+
+
+    [Header("Animations")]
+    [SerializeField] private Animator _animator;
 
     [Header("Sounds")]
     [SerializeField] private AudioSource audio; //for taking damage
@@ -90,6 +94,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private float waterRayCooldown = 0.25f;
     [SerializeField] private int rayDamage = 1;
     [SerializeField] private Transform waterAim;
+    [SerializeField] private float waterRayDistance;
     public LayerMask waterIgnoreLayer;
 
     public bool steamDamageCooldownUp = true;
@@ -151,6 +156,15 @@ public class ArenaPlayerManager : MonoBehaviour
         if (_notMoving)
         {
             Move(Vector2.zero);
+        }
+
+        if (GetVelocity() == 0 || canDoStuff == false)
+        {
+            _animator.SetFloat("velocity", 0);
+        }
+        else
+        {
+            _animator.SetFloat("velocity", 1);
         }
     }
 
@@ -258,6 +272,7 @@ public class ArenaPlayerManager : MonoBehaviour
     {
         if (context.started && canDoStuff)
         {
+            _animator.SetTrigger("cast");
             UseAbility();
         }
     }
@@ -268,18 +283,24 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             if (hitCurrentCooldown < 0)
             {
+                _animator.SetTrigger("punch");
+                hitCurrentCooldown = hitMaxCooldown;
                 audio3.clip = punchSound;
                 audio3.Play();
                 if (canHit)
                 {
-                    audio3.clip = punchSound;
-                    audio3.Play();
-                    whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
-                    whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
-                    hitCurrentCooldown = hitMaxCooldown;
+                    Invoke("DelayedHit", 0.15f);
                 }
             }
         }
+    }
+
+    void DelayedHit()
+    {
+        audio3.clip = punchSound;
+        audio3.Play();
+        whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
+        whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
     }
 
 
@@ -290,7 +311,8 @@ public class ArenaPlayerManager : MonoBehaviour
             skillNum = 0;
         else if (Skill[1] == "")
             skillNum = 1;
-            switch (name)
+        abilityImage[skillNum].color = new Color(1, 1, 1, 1);
+        switch (name)
         {
             case "Water":
                 abilityImage[skillNum].sprite = abilSprite;
@@ -351,28 +373,25 @@ public class ArenaPlayerManager : MonoBehaviour
             case ("Fire", "Fire"):
                 StartCasting(() =>
                 {
-                    Instantiate(fireFire, transform.position + aimDirection * 3, fireFire.transform.rotation)
+                    Instantiate(fireFire, transform.position + aimDirection * 3 + Vector3.up * 0.5f, fireFire.transform.rotation)
                         .GetComponent<FireProjectile>().Activate(aimDirection, this.gameObject);
 
                 });
                break;
             case ("Water", "Water"):
-                StartCasting(() =>
-                {
-                    StartCoroutine(WaterWater());
-                });
+                StartCoroutine(WaterWater());
                 break;
             case ("Air", "Air"):
                 StartCasting(() =>
                 {
-                    Instantiate(airAir, transform.position + aimDirection * 3, airAir.transform.rotation).
+                    Instantiate(airAir, transform.position + aimDirection * 3 + Vector3.up * 0.5f, airAir.transform.rotation).
                         GetComponent<AireProjectile>().Activate(aimDirection, this.gameObject);
                 });
                 break;
             case ("Earth", "Earth"):
                 StartCasting(() =>
                 {
-                    Instantiate(earthEarth, transform.position + aimDirection * 3, earthEarth.transform.rotation)
+                    Instantiate(earthEarth, transform.position + aimDirection * 3 + Vector3.up * 0.5f, earthEarth.transform.rotation)
                         .GetComponent<EarthProjectiles>().Activate(aimDirection, this.gameObject);
                 });
                break;
@@ -395,7 +414,7 @@ public class ArenaPlayerManager : MonoBehaviour
             case ("Earth", "Fire"):
                 StartCasting(() =>
                 {
-                    Instantiate(fireEarth, transform.position + aimDirection * 4, fireEarth.transform.rotation)
+                    Instantiate(fireEarth, transform.position + aimDirection * 4 + Vector3.up * 0.22f, fireEarth.transform.rotation)
                         .GetComponent<FireEarth2>().Activate(aimDirection);
                 });
                break;
@@ -407,7 +426,7 @@ public class ArenaPlayerManager : MonoBehaviour
             case ("Earth", "Water"):
                 StartCasting(() =>
                 {
-                    Instantiate(waterEarth, transform.position + aimDirection * 2, waterEarth.transform.rotation).GetComponent<WaterEarthProjectile>()
+                    Instantiate(waterEarth, transform.position + aimDirection * 2 + Vector3.up * 0.5f, waterEarth.transform.rotation).GetComponent<WaterEarthProjectile>()
                         .Activate(aimDirection, this.gameObject);
                 });
                 break;
@@ -423,11 +442,11 @@ public class ArenaPlayerManager : MonoBehaviour
                 break;
         }
 
-        abilityImage[0].sprite = emptyAbilityImage;
-        skillName[0].text = "Empty";
+        abilityImage[0].color = new Color(0, 0, 0, 0);
+        skillName[0].text = "";
         Skill[0] = "";
-        abilityImage[1].sprite = emptyAbilityImage;
-        skillName[1].text = "Empty";
+        abilityImage[1].color = new Color(0, 0, 0, 0);
+        skillName[1].text = "";
         Skill[1] = "";
     }
 
@@ -448,8 +467,9 @@ public class ArenaPlayerManager : MonoBehaviour
     {
         canDoStuff = false;
         int countTimes = 0;
-        while (countTimes < 6)
+        while (countTimes < 10)
         {
+            _animator.SetTrigger("cast");
             audio3.clip = bubbleAppearSound;
             audio3.Play();
             Instantiate(waterAir, transform.position + previousMove * 1, waterAir.transform.rotation)
@@ -492,6 +512,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     void FireAir()
     {
+
         Instantiate(fireAir, transform.position + aimDirection * 2, transform.rotation)
             .GetComponent<WaterProjectile>().Activate(aimDirection, this.gameObject);
 
@@ -511,6 +532,8 @@ public class ArenaPlayerManager : MonoBehaviour
 
     IEnumerator WaterWater()
     {
+        canDoStuff = false;
+        _animator.SetFloat("waterWater", 1);
         _lr.enabled = true;
         RaycastHit hit;
         float passedTimeWater = 0;
@@ -521,7 +544,7 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             _lr.SetPosition(0, waterAim.position + previousMove * 0.5f);
 
-            if (Physics.Raycast(waterAim.position + previousMove * 0.5f, previousMove * 3, out hit, 15, ~waterIgnoreLayer))
+            if (Physics.Raycast(waterAim.position + previousMove * 0.5f, previousMove * 3, out hit, waterRayDistance, ~waterIgnoreLayer))
             {
                 if (hit.collider.tag == "Player")
                 {
@@ -545,13 +568,14 @@ public class ArenaPlayerManager : MonoBehaviour
             }
             else
             {
-                _lr.SetPosition(1, waterAim.position + previousMove * 15);
+                _lr.SetPosition(1, waterAim.position + previousMove * waterRayDistance);
             }
-
             passedTimeWater += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+        canDoStuff = true;
         _lr.enabled = false;
+        _animator.SetFloat("waterWater", 0);
     }
 
     public void TakeDamage(int value)
@@ -577,6 +601,9 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void Die()
     {
+        fireIMG.SetActive(false);
+        _rb.constraints = RigidbodyConstraints.FreezeAll;
+        _animator.SetTrigger("Death");
         audio.clip = deathPuff;
         audio.Play();
         dead = true;
@@ -770,5 +797,20 @@ public class ArenaPlayerManager : MonoBehaviour
                 audio3.Play();
                 break;
         }
+    }
+
+    public void SetAnimation(string animation)
+    {
+        _animator.Play(animation);
+    }
+
+    public float GetVelocity()
+    {
+        float vel = (_move * SPEED * Time.deltaTime).magnitude;
+        if (vel <= 0.005f)
+        {
+            vel = 0;
+        }
+        return vel;
     }
 }
