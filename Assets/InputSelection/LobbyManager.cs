@@ -51,7 +51,6 @@ public class LobbyManager : MonoBehaviour
             }
             controller.controlledPlayer = d;
             p.transform.position = _spawnPoints[player.playerID].transform.position;
-            p.transform.rotation = Quaternion.identity;
             
             print("spawned " + player.Device);
         }

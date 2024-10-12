@@ -30,6 +30,7 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private List<TMP_Text> skillName2;
     [SerializeField] private List<Slider> hpBar;
     [SerializeField] private List<TMP_Text> hpTXT;
+    [SerializeField] private List<TMP_Text> readyTXT;
 
 
     [SerializeField] private ConnectionData _connectionData;
@@ -37,6 +38,12 @@ public class GameManagerArena : MonoBehaviour
 
     [SerializeField] private CameraScaler cameraScaler;
 
+    public static int playersReady = 0;
+    [SerializeField] private GameObject canvaREADY;
+    [SerializeField] private GameObject canvaUI;
+    [SerializeField] private Animator animator1;
+    [SerializeField] private Animator animator2;
+    bool firstgame = true;
 
     private void Awake()
     {
@@ -49,7 +56,7 @@ public class GameManagerArena : MonoBehaviour
 
         for (int i = 0; i < playersList.Count; i++)
         {
-            if (i == 0)   //камера пока что таргетит только двоих игроков (only two player target)
+            if (i == 0)   //камера пока что таргетит только двоих игроков 
                 cameraScaler.Player1 = playersList[i];
             else if (i == 1)
                 cameraScaler.Player2 = playersList[i];
@@ -57,15 +64,51 @@ public class GameManagerArena : MonoBehaviour
 
         currentCountdown = maxCountdown;
         Time.timeScale = 0;
-        StartCoroutine(StartGame());
 
+        firstgame = true;
         for (int i = 0; i < 4; i++)
         {
             if (i < scoreCounters.Length)
                 scoreCounters[i].text = $"{winCounts[i]}";
+            if (winCounts[i] > 0)
+                firstgame = false;
+        }
+
+        if (!firstgame)
+        {
+            StartCoroutine(StartGame());
+        }
+        else
+        {
+            playersReady = 0;
+            StartCoroutine(whileNotStarted());
         }
     }
 
+    private void Update()
+    {
+        if (canvaREADY.activeSelf)
+        {
+            animator1.Update(Time.unscaledDeltaTime);
+            animator2.Update(Time.unscaledDeltaTime);
+        }
+    }
+
+    IEnumerator whileNotStarted()
+    {
+        while (true)
+        {
+            if (playersReady == playersList.Count)
+            {
+                StartCoroutine(StartGame());
+                break;
+            }
+            else
+            {
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
     private void SpawnPlayers()
     {
         bool firstKeyboardTaken = false;
@@ -76,8 +119,8 @@ public class GameManagerArena : MonoBehaviour
             int j = 0;
             foreach (var player in players)
             {
-                j++;
                 GameObject pl = Instantiate(playerPrefab[j], spawnPoints[playersList.Count].transform.position, playerPrefab[j].transform.rotation);
+                j++;
                 pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
                 AddPlayer(pl);
                 var playerInput = pl.GetComponent<PlayerInput>();
@@ -130,6 +173,8 @@ public class GameManagerArena : MonoBehaviour
 
     IEnumerator StartGame()
     {
+        canvaREADY.SetActive(false);
+        canvaUI.SetActive(true);
 
         while (currentCountdown > 0)
         {
@@ -188,16 +233,22 @@ public class GameManagerArena : MonoBehaviour
 
     IEnumerator EndGame(int winnerID)
     {
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < scoreCounters.Length)
+                scoreCounters[i].text = $"{winCounts[i]}";
+        }
+
         gameOver = true;
         endScreen.SetActive(true);
-        playerNicknameTXT.text = $"{playersList[winnerID].GetComponent<ArenaPlayerManager>().nickname} WON!";
+        playerNicknameTXT.text = $"{playersList[winnerID].GetComponent<ArenaPlayerManager>().nickname} победил!";
 
         for (int i = 0; i < winCounts.Count; i++)
         {
             winCounts[i] = 0;
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
 
         while (true)
         {
@@ -220,6 +271,7 @@ public class GameManagerArena : MonoBehaviour
         player.GetComponent<ArenaPlayerManager>().skillName.Add(skillName2[playersList.Count - 1]);
         player.GetComponent<ArenaPlayerManager>().hpBar = hpBar[playersList.Count - 1];
         player.GetComponent<ArenaPlayerManager>().hpTXT = hpTXT[playersList.Count - 1];
+        player.GetComponent<ArenaPlayerManager>().readyTXT = readyTXT[playersList.Count - 1];
     }
 
     void ShowUI(int playerID)

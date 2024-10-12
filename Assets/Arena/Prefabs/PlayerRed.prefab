@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
-  nickname: Player1
+  nickname: "\u041A\u0440\u0430\u0441\u043D\u044B\u0439"
   insideTheZone: 1
   maxZoneDamageCooldown: 0.5
   zoneDamage: 1
@@ -148,6 +148,7 @@ MonoBehaviour:
   skillName: []
   hpBar: {fileID: 0}
   hpTXT: {fileID: 0}
+  readyTXT: {fileID: 0}
   hitMaxCooldown: 1
   dead: 0
   deadHeight: -5
@@ -400,6 +401,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7726e160-dbfc-4f70-8a22-835d6219c841
     m_ActionName: Arena/Hit[/Keyboard/space,/Keyboard/rightCtrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1862836743611002296}
+        m_TargetAssemblyTypeName: ArenaPlayerManager, Assembly-CSharp
+        m_MethodName: OnReady
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c526cbab-99ad-4a0e-b922-a7eaf2a47455
+    m_ActionName: Arena/Ready[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard1
   m_DefaultActionMap: Arena

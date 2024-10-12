@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 public class ArenaPlayerManager : MonoBehaviour
 {
+    private bool ready = false;
     public int playerID;
     private GameManagerArena gm;
     public string nickname;
@@ -27,6 +28,9 @@ public class ArenaPlayerManager : MonoBehaviour
     public List<TMP_Text> skillName;
     public Slider hpBar;
     public TMP_Text hpTXT;
+    public TMP_Text readyTXT;
+
+
     private float currentHP;
     private float maxHP = 20;
 
@@ -813,4 +817,29 @@ public class ArenaPlayerManager : MonoBehaviour
         }
         return vel;
     }
+
+    public void OnReady(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+
+            ready = !ready;
+            if (ready)
+            {
+                GameManagerArena.playersReady += 1;
+                readyTXT.text = "Готов";
+                readyTXT.color = Color.green;
+            }
+            else
+            {
+                GameManagerArena.playersReady -= 1;
+                readyTXT.text = "Не готов";
+                readyTXT.color = Color.red;
+            }
+            return;
+        }
+    }
+
+
+
 }
