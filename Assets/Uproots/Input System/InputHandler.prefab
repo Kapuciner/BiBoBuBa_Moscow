@@ -138,6 +138,86 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f8caec62-8a34-4dfa-b348-8eb54517197b
     m_ActionName: Controls/Restart[/XInputControllerWindows/start,/XInputControllerWindows1/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5982957564117527235}
+        m_TargetAssemblyTypeName: R_InputHandler, Assembly-CSharp
+        m_MethodName: OnMove_KB2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6da8eb86-ff70-46ab-b64c-f1d868b3bef0
+    m_ActionName: Controls/Move_KB2[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5982957564117527235}
+        m_TargetAssemblyTypeName: R_InputHandler, Assembly-CSharp
+        m_MethodName: OnAttack_KB2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 67caa815-92b9-408a-bb59-537c182ab374
+    m_ActionName: Controls/Attack_KB2[/Keyboard/rightCtrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5982957564117527235}
+        m_TargetAssemblyTypeName: R_InputHandler, Assembly-CSharp
+        m_MethodName: OnAbility_KB2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c37d6eef-85c7-4216-ab37-2f24fdba3dda
+    m_ActionName: Controls/Ability_KB2[/Keyboard/rightShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5982957564117527235}
+        m_TargetAssemblyTypeName: R_InputHandler, Assembly-CSharp
+        m_MethodName: OnSwipe_KB2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0b9b0494-6648-401b-9c27-ca59ff50720b
+    m_ActionName: Controls/Swipe_KB2[/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5982957564117527235}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 985bcf61-98fb-472e-8a41-a53731375531
+    m_ActionName: Controls/Restart_KB2
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Controls
@@ -155,3 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a263d6b424bee49be6645eb7d264b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controlledPlayer: {fileID: 0}
+  _keyboardPlayer1: {fileID: 0}
+  _keyboardPlayer2: {fileID: 0}
+  IsDoubleKeyboard: 0

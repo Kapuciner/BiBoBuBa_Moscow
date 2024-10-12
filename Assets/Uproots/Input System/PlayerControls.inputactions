@@ -52,12 +52,12 @@
                 },
                 {
                     "name": "Move_KB2",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "6da8eb86-ff70-46ab-b64c-f1d868b3bef0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Attack_KB2",
@@ -79,12 +79,12 @@
                 },
                 {
                     "name": "Swipe_KB2",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "0b9b0494-6648-401b-9c27-ca59ff50720b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Restart_KB2",

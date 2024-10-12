@@ -78,7 +78,11 @@ public class DeviceConnectManager : MonoBehaviour
         var inputs = FindObjectsOfType<PlayerInput>();
         foreach (var input in inputs)
         {
-            input.SwitchCurrentActionMap("Lobby");
+            if (input.isActiveAndEnabled)
+            {
+                input.SwitchCurrentActionMap("Lobby");
+            }
+
         }
         var mngr = GetComponent<PlayerInputManager>();
 
@@ -87,9 +91,31 @@ public class DeviceConnectManager : MonoBehaviour
 
     private void SaveControlData()
     {
-        foreach (var device in _deviceSelections)
+        var inputs = FindObjectsOfType<PlayerInput>();
+        List<PlayerInput> inputs_to_destroy = new List<PlayerInput>();
+        
+        foreach (var input in inputs)
         {
-            _connectionData.SetData(device.GetIndex(), device.Device);
+            bool selected = false;
+            foreach (var device in _deviceSelections)
+            {
+                if (input.devices[0] == device.Device)
+                {
+                    selected = true;
+                    _connectionData.SetData(device.GetIndex(), device.Device);
+                }
+            }
+
+            if (!selected)
+            {
+                inputs_to_destroy.Add(input);
+            }
+            
+        }
+
+        foreach (var dInput in inputs_to_destroy)
+        {
+            Destroy(dInput);
         }
     }
     public void OnGamepadPress(InputDevice device)

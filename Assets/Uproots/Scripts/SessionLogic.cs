@@ -22,6 +22,9 @@ public class SessionLogic : MonoBehaviour
     private bool _gameFinished = false;
     private void Start()
     {
+        P1 = FindObjectOfType<PlayerSpawner>().players[0];
+        P2 = FindObjectOfType<PlayerSpawner>().players[1];
+        
         zone = GameObject.FindObjectOfType<RootZone>();
         P1.PointsBar.SetMaxValue(PointsToWin);
         P2.PointsBar.SetMaxValue(PointsToWin);

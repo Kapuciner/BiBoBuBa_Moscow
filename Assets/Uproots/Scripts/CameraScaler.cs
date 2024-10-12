@@ -26,6 +26,11 @@ public class CameraScaler : MonoBehaviour
         camera = Camera.main;
     }
 
+    public void SetPlayers(R_Player P1, R_Player P2)
+    {
+        Player1 = P1.gameObject;
+        Player2 = P2.gameObject;
+    }
     private void Update()
     {
         if (Player1.activeSelf == false && Player2.activeSelf == false)

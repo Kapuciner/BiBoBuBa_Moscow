@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,6 +42,27 @@ public class R_Player : MonoBehaviour
     private RootZone _zone;
 
     public PlayerController.PlayerAction PlayerDies;
+
+    public Image P1P2;
+    public Sprite P1;
+    public Sprite P2;
+
+    private void Awake()
+    {
+        index = FindObjectsOfType<R_Player>().Length - 1;
+        HealthBar = FindObjectOfType<UI_Manager>().GetHealthBar(index);
+        BuffBar = FindObjectOfType<UI_Manager>().GetBuffBar(index);
+        PointsBar = FindObjectOfType<UI_Manager>().GetPointsBar(index);
+        Portrait = FindObjectOfType<UI_Manager>().GetPortrait(index);
+        RespawnTimer = FindObjectOfType<UI_Manager>().GetRespawnTimer(index);
+        controller.CooldownSlider = FindObjectOfType<UI_Manager>().GetCooldownSlider(index);
+        if (index == 0)
+        {
+            P1P2.sprite = P1;
+        }
+        else P1P2.sprite = P2;
+    }
+
     private void Start()
     {
         GetComponent<SpriteRenderer>().color = Color.clear;
@@ -59,6 +81,9 @@ public class R_Player : MonoBehaviour
         controller.CanAttack = true;
         VegetableType = vegetableType;
         health = vegetableType.health;
+
+
+        
         HealthBar.CreateContainers(health);
         controller.SetSpeedMultiplier(1);
         GetComponent<SpriteRenderer>().color = Color.white;
@@ -223,5 +248,10 @@ public class R_Player : MonoBehaviour
     public int GetIndex()
     {
         return index;
+    }
+
+    public void SetIndex(int id)
+    {
+        index = id;
     }
 }

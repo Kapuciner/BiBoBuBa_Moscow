@@ -41,6 +41,8 @@ public class PlayerAnimator : MonoBehaviour
     }
     private void Awake()
     {
+        _player = GetComponent<R_Player>();
+        
         _controller.PlayerAttacks += () => { StartCoroutine(AttackingRoutine()); };
         _controller.PlayerCasts += () => { StartCoroutine(CastingRoutine()); };
         _player.PlayerDies += () => { StartCoroutine(DeathRoutine());};
