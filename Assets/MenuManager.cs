@@ -5,9 +5,19 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject mainPicture;
+    [SerializeField] private GameObject choseDeviceWindow;
+    [SerializeField] private GameObject deviceConnectManager;
+    static private bool alreadyChosenControl = false;
+    [SerializeField] private ConnectionData _connectionData;
     void Start()
     {
-        
+        //if (_connectionData.GetPlayerCount() > 0)
+        //{
+        //    alreadyChosenControl = true;
+        //    mainPicture.SetActive(false);
+        //    choseDeviceWindow.SetActive(false);
+        //    deviceConnectManager.SetActive(false);
+        //}
     }
 
     // Update is called once per frame
