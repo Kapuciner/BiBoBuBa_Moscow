@@ -12,7 +12,7 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] int maxCountdown = 5;
     private List<GameObject> playersList = new List<GameObject>();
     [SerializeField] private TMP_Text[] scoreCounters;
-    private static List<int> winCounts = new List<int>() { 0, 0, 0, 0 };
+    public static List<int> winCounts = new List<int>() { 0, 0, 0, 0 };
     [SerializeField] private Transform[] spawnPoints;
 
     public TMP_Text startTXT;

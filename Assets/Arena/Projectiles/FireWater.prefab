@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3478295882171543047}
   - component: {fileID: 136138998432550871}
   - component: {fileID: 2098556441367716157}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: FireWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,6 +231,10 @@ PrefabInstance:
     - target: {fileID: 2232202119487027705, guid: 85f16cbc1b0912a40b541d885d82da7d, type: 3}
       propertyPath: m_Name
       value: Steam
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232202119487027705, guid: 85f16cbc1b0912a40b541d885d82da7d, type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4383290030288159189, guid: 85f16cbc1b0912a40b541d885d82da7d, type: 3}
       propertyPath: m_LocalPosition.x

@@ -17,6 +17,7 @@ public class FireEarth : MonoBehaviour
 
     Vector3 pushDirection;
     [SerializeField] float pushForce = 2f;
+    [SerializeField] float stanTime = 1f;
 
     private Material lavaMaterial;
     private Vector2 initialTiling;
@@ -52,7 +53,7 @@ public class FireEarth : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player" && !workedOnce)
         {
@@ -60,12 +61,14 @@ public class FireEarth : MonoBehaviour
             other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
             workedOnce = true;
             other.GetComponent<ArenaPlayerManager>().OnFire();
+            other.GetComponent<ArenaPlayerManager>().Stan(stanTime);
             other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
             Destroy(this.gameObject, 0.05f);
         }
         if (other.tag == "Block")
         {
             Destroy(this.gameObject);
+            other.GetComponent<AudioSource>().Play();
         }
     }
 

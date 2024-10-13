@@ -34,12 +34,14 @@ public class ArenaPlayerManager : MonoBehaviour
     private float currentHP;
     private float maxHP = 20;
 
-    private Rigidbody whoToHit;
-    private Vector3 hitDirection;
+    [SerializeField] private GameObject hitAreaLeft;
+    [SerializeField] private GameObject hitAreaRight;
+    public Rigidbody whoToHit;
+    public Vector3 hitDirection;
     public static float hitPower = 15; //чем больше, тем сильнее отталкивает
     public static int hitDamage = 1;
-    private bool canHit;
-    float hitCurrentCooldown = 0;
+    public bool canHit;
+    public float hitCurrentCooldown = 0;
     [SerializeField] float hitMaxCooldown = 1;
 
     private bool canDoStuff = true;
@@ -124,8 +126,6 @@ public class ArenaPlayerManager : MonoBehaviour
     private bool _notMoving = false;
     public float SPEED;
 
-    private Vector3 direction;
-
     private void Awake()
     {
         gm = FindObjectOfType<GameManagerArena>();
@@ -204,10 +204,14 @@ public class ArenaPlayerManager : MonoBehaviour
 
         if (direction.x < 0)
         {
+            hitAreaLeft.SetActive(true);
+            hitAreaRight.SetActive(false);
             _sr.flipX = true; 
         }
         else if (direction.x > 0)
         {
+            hitAreaLeft.SetActive(false);
+            hitAreaRight.SetActive(true);
             _sr.flipX = false;
         }
         direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
@@ -737,32 +741,6 @@ public class ArenaPlayerManager : MonoBehaviour
         }
 
         lavaDamageCooldownUp = true;
-    }
-
-    private void OnTriggerStay(Collider other) //для удара
-    {
-        if (other.tag == "Player")
-        {
-            if (hitCurrentCooldown < 0)
-            {
-                hitDirection = other.transform.position - this.transform.gameObject.transform.position;
-                whoToHit = other.GetComponent<Rigidbody>();
-                canHit = true;
-            }
-            else
-            {
-                canHit = false;
-            }
-        }
-
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            canHit = false;
-        }
     }
 
     public void PlayOnHit(string WhatHit)

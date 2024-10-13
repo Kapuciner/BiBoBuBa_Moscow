@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour
         //    deviceConnectManager.SetActive(false);
         //}
         Physics.defaultMaxDepenetrationVelocity = 20;
+        GameManagerArena.winCounts = new List<int>() { 0, 0, 0, 0 };
     }
 
     // Update is called once per frame
