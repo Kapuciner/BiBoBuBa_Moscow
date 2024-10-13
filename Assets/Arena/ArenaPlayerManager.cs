@@ -202,11 +202,11 @@ public class ArenaPlayerManager : MonoBehaviour
 
         if (direction.x < 0)
         {
-            _sr.flipX = true; // Поворачиваем влево
+            _sr.flipX = true; 
         }
         else if (direction.x > 0)
         {
-            _sr.flipX = false; // Поворачиваем вправо
+            _sr.flipX = false;
         }
         direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
 

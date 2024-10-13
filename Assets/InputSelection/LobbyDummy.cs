@@ -16,12 +16,35 @@ public class LobbyDummy : MonoBehaviour
     public int PlayerIndex;
 
     public float SPEED;
+
+    [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private float minHeight;
+    [SerializeField] private Transform spawnPoint;
     
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _canMove = true;
+        var players = FindObjectsOfType<LobbyDummy>();
+        _animator.SetInteger("playerID", players.Length - 1);
     }
+
+    private void Update()
+    {
+        if (GetVelocity() == 0)
+        {
+            _animator.SetFloat("speed", 0);
+        }
+        else
+        {
+            _animator.SetFloat("speed", 1);
+        }
+
+        if (this.gameObject.transform.position.y < minHeight)
+            this.gameObject.transform.position = new Vector3(-2.5f, 12f, 0.84f);
+    }
+
     private void FixedUpdate()
     {
         _rb.MovePosition(_rb.position + _move * SPEED);
@@ -29,6 +52,16 @@ public class LobbyDummy : MonoBehaviour
     public void Move(Vector2 dir2D)
     {
         Vector3 direction = new Vector3(dir2D.x, 0, dir2D.y);
+
+        if (direction.x < 0)
+        {
+            _sr.flipX = true;
+        }
+        else if (direction.x > 0)
+        {
+            _sr.flipX = false;
+        }
+
         direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
         if (direction.magnitude != 0)
         {
@@ -91,5 +124,15 @@ public class LobbyDummy : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
-    
+
+    public float GetVelocity()
+    {
+        float vel = (_move * SPEED).magnitude;
+        if (vel <= 0.05f)
+        {
+            vel = 0;
+        }
+        return vel;
+    }
+
 }
