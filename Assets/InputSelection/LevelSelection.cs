@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelSelection : MonoBehaviour
 {
@@ -14,7 +15,11 @@ public class LevelSelection : MonoBehaviour
     private Coroutine _readyRoutine;
 
     private bool _enabled;
-    
+
+    [SerializeField] private TMP_Text playersAmount;
+    [SerializeField] private GameObject playersAmountInfo;
+    [SerializeField] private TMP_Text timeTXT;
+    [SerializeField] private GameObject timeInfo;
     public void Load()
     {
         _connectedPlayersCount = FindObjectOfType<DeviceConnectManager>().GetPlayerCount();
@@ -31,6 +36,7 @@ public class LevelSelection : MonoBehaviour
     
     private void StartReadyCountdown()
     {
+        playersAmountInfo.SetActive(false);
         _readyRoutine = StartCoroutine(ReadyRoutine());
     }
 
@@ -42,8 +48,13 @@ public class LevelSelection : MonoBehaviour
         {
             print(time - elapsed);
             //GameStartingText.text = "All ready, starting in " + (time-elapsed);
+            timeInfo.gameObject.SetActive(true);
+            timeTXT.text = "Ожидание:" + (time-elapsed).ToString("F1");
             if (_playersInZone < _connectedPlayersCount)
             {
+                playersAmountInfo.SetActive(true);
+                playersAmount.text = $"Количество игроков {_playersInZone}/{_connectedPlayersCount}";
+                timeInfo.gameObject.SetActive(false);
                 _readyRoutine = null;
                 //GameStartingText.gameObject.SetActive(false);
                 yield break;
@@ -52,6 +63,7 @@ public class LevelSelection : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         //GameStartingText.gameObject.SetActive(false);
+        timeInfo.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneToLoad);
     }
 
@@ -68,6 +80,21 @@ public class LevelSelection : MonoBehaviour
         if (other.CompareTag("Lobby_Dummy"))
         {
             _playersInZone--;
+            playersAmountInfo.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Lobby_Dummy"))
+        {
+        if (_playersInZone > 0 && _readyRoutine is null)
+            {
+                playersAmountInfo.SetActive(true);
+                playersAmount.text = $"Количество игроков {_playersInZone}/{_connectedPlayersCount}";
+            }
+            else
+                playersAmountInfo.SetActive(false);
         }
     }
 }

@@ -25,6 +25,7 @@ public class LobbyManager : MonoBehaviour
 
     private void SpawnPlayers()
     {
+        int count = 0;
         var players = _connectionData.ConnectedPlayersData();
         foreach (var player in players)
         {
@@ -32,6 +33,9 @@ public class LobbyManager : MonoBehaviour
             var d = p.GetComponent<LobbyDummy>();
             var p_input = PlayerInput.FindFirstPairedToDevice(player.Device);
             Players.Add(d);
+            d.PlayerIndex = count;
+            count++;
+
             var controller = p_input.gameObject.GetComponent<Connector>();
 
             if (player.Device is Keyboard)

@@ -45,13 +45,9 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private Animator animator2;
     bool firstgame = true;
 
-    private void Awake()
-    {
-      Physics.defaultMaxDepenetrationVelocity = 20;
-    }
-
     private void Start()
     {
+        Physics.defaultMaxDepenetrationVelocity = 20;
         SpawnPlayers();
 
         for (int i = 0; i < playersList.Count; i++)
@@ -137,6 +133,7 @@ public class GameManagerArena : MonoBehaviour
                 else
                 {
                     playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+                    print("shouldWork");
                 }
 
             }

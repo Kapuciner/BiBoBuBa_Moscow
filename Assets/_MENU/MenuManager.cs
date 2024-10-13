@@ -18,6 +18,7 @@ public class MenuManager : MonoBehaviour
         //    choseDeviceWindow.SetActive(false);
         //    deviceConnectManager.SetActive(false);
         //}
+        Physics.defaultMaxDepenetrationVelocity = 20;
     }
 
     // Update is called once per frame

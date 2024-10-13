@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyDummy : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class LobbyDummy : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private float minHeight;
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Sprite[] sprites;
+    [SerializeField] private Image spritePlace;
     
     private void Awake()
     {
@@ -32,6 +35,8 @@ public class LobbyDummy : MonoBehaviour
 
     private void Update()
     {
+        spritePlace.sprite = sprites[PlayerIndex];
+
         if (GetVelocity() == 0)
         {
             _animator.SetFloat("speed", 0);

@@ -358,6 +358,10 @@ MonoBehaviour:
   _animator: {fileID: 8978337895098026299}
   minHeight: -10
   spawnPoint: {fileID: 0}
+  sprites:
+  - {fileID: 263683134, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
+  - {fileID: 647669886, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
+  spritePlace: {fileID: 4652771070952581104}
 --- !u!114 &9093080962561645894
 MonoBehaviour:
   m_ObjectHideFlags: 0

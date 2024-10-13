@@ -55,6 +55,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private AudioSource audio; //for taking damage
     [SerializeField] private AudioSource audio2; // for fire
     [SerializeField] private AudioSource audio3; //for hits
+    [SerializeField] private AudioSource audio4; //for other
     [SerializeField] private AudioClip painSound;
     [SerializeField] private AudioClip extinguishFire;
     [SerializeField] private AudioClip soundOnFire;
@@ -71,6 +72,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private AudioClip earthAirHitSound;
     [SerializeField] private AudioClip punchSound;
     [SerializeField] private AudioClip deathPuff;
+    [SerializeField] private AudioClip failCast;
 
     [Header("Projectiles")]
     [SerializeField] private GameObject fire;
@@ -301,8 +303,6 @@ public class ArenaPlayerManager : MonoBehaviour
 
     void DelayedHit()
     {
-        audio3.clip = punchSound;
-        audio3.Play();
         whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
         whoToHit.gameObject.GetComponent<ArenaPlayerManager>().TakeDamage(hitDamage);
     }
@@ -347,30 +347,32 @@ public class ArenaPlayerManager : MonoBehaviour
         switch ((Skill[0], Skill[1]))
         {
             case ("", ""):
+                audio4.clip = failCast;
+                audio4.Play();
                 break;
             case ("Fire", ""):
                 StartCasting(() => {
-                    Instantiate(fire, transform.position + aimDirection * 1, fire.transform.rotation)
+                    Instantiate(fire, transform.position + aimDirection * 2, fire.transform.rotation)
                         .GetComponent<FireProjectile>().Activate(aimDirection, this.gameObject);
                 }); break;
             case ("Water", ""):
                 StartCasting(() =>
                 {
-                    Instantiate(water, transform.position + aimDirection * 1, water.transform.rotation)
+                    Instantiate(water, transform.position + aimDirection * 2, water.transform.rotation)
                         .GetComponent<WaterProjectile>().Activate(aimDirection, this.gameObject);
                 });
                 break;
             case ("Air", ""):
                 StartCasting(() =>
                 {
-                    Instantiate(air, transform.position + aimDirection * 1, air.transform.rotation).
+                    Instantiate(air, transform.position + aimDirection * 2, air.transform.rotation).
                         GetComponent<AireProjectile>().Activate(aimDirection, this.gameObject);
                 });
             break;
             case ("Earth", ""):
                 StartCasting(() =>
                 {
-                    Instantiate(earth, transform.position + aimDirection * 1, earth.transform.rotation)
+                    Instantiate(earth, transform.position + aimDirection * 2, earth.transform.rotation)
                         .GetComponent<EarthProjectiles>().Activate(aimDirection, this.gameObject);
                 });
                 break;
@@ -403,7 +405,7 @@ public class ArenaPlayerManager : MonoBehaviour
             case ("Water", "Fire"):
                 StartCasting(() =>
                 {
-                    Instantiate(fireWater, transform.position + aimDirection * 6, fireWater.transform.rotation)
+                    Instantiate(fireWater, transform.position + aimDirection * 8, fireWater.transform.rotation)
                         .GetComponent<FireWaterProjectile>().Activate(aimDirection);
                 });
                 break;
@@ -418,7 +420,7 @@ public class ArenaPlayerManager : MonoBehaviour
             case ("Earth", "Fire"):
                 StartCasting(() =>
                 {
-                    Instantiate(fireEarth, transform.position + aimDirection * 4 + Vector3.up * 0.22f, fireEarth.transform.rotation)
+                    Instantiate(fireEarth, transform.position + aimDirection * 6 + Vector3.up * 0.22f, fireEarth.transform.rotation)
                         .GetComponent<FireEarth2>().Activate(aimDirection);
                 });
                break;
@@ -461,7 +463,6 @@ public class ArenaPlayerManager : MonoBehaviour
 
     IEnumerator WaitBeforeCast(System.Action action)
     {
-        float timePassed = 0;
         canDoStuff = false;
         yield return new WaitForSeconds(castTime);
         action.Invoke();
@@ -489,7 +490,7 @@ public class ArenaPlayerManager : MonoBehaviour
         audio3.clip = earthAirSound;
         audio3.Play();
 
-        Instantiate(airEarth, transform.position + aimDirection * 2, transform.rotation)
+        Instantiate(airEarth, transform.position + aimDirection * 3, transform.rotation)
             .GetComponent<EarthAirProjectile>().Activate(aimDirection, this.gameObject);
 
         float coneAngle = 40f;
@@ -498,7 +499,7 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             float currentAngle = i * coneAngle / 4;
             Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * aimDirection;
-            Vector3 spawnPosition = transform.position + direction * 4f;
+            Vector3 spawnPosition = transform.position + direction * 5f;
             Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>()
                 .Activate(aimDirection, this.gameObject);
         }
@@ -508,7 +509,7 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             float currentAngle = i * coneAngle / 2; 
             Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * aimDirection;
-            Vector3 spawnPosition = transform.position + direction * 6;
+            Vector3 spawnPosition = transform.position + direction * 7;
             Instantiate(airEarth, spawnPosition, transform.rotation).GetComponent<EarthAirProjectile>()
                 .Activate(aimDirection, this.gameObject);
         }
@@ -517,7 +518,7 @@ public class ArenaPlayerManager : MonoBehaviour
     void FireAir()
     {
 
-        Instantiate(fireAir, transform.position + aimDirection * 2, transform.rotation)
+        Instantiate(fireAir, transform.position + aimDirection * 3, transform.rotation)
             .GetComponent<WaterProjectile>().Activate(aimDirection, this.gameObject);
 
         float coneAngle = 120f;
