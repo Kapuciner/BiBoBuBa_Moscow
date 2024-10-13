@@ -39,7 +39,7 @@ public class Victory : MonoBehaviour
         if (canExit && Input.anyKey && VictoryPanel.activeSelf)
         {
             Time.timeScale = 1;
-            SceneManager.LoadScene("InputSelection");
+            SceneManager.LoadScene("Menu");
         }
     }
 

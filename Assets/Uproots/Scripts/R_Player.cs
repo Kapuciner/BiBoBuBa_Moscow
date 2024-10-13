@@ -129,6 +129,8 @@ public class R_Player : MonoBehaviour
             
             PlayerDies?.Invoke();
         }
+
+
     }
 
     public PlayerController GetController()

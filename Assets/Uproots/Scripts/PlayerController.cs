@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
     public Attack PlayerAttack;
     public Ability PlayerAbility;
+
+    private SpriteRenderer _spriteRenderer;
     
     
     public PlayerAction PlayerAttacks;
@@ -46,8 +48,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
 
-        
-        
+
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _move = Vector3.zero;
 
         Reload();
@@ -147,6 +149,14 @@ public class PlayerController : MonoBehaviour
             }
         }
         CooldownSlider.SetValue(_type.abilityCooldown - _abilityTimer);
+        
+        Vector3 lastDirectionRotated = Quaternion.AngleAxis(-45,
+            new Vector3(0, 1, 0)) * _lastDirection;
+        if (lastDirectionRotated.x < 0)
+        {
+            _spriteRenderer.flipX = true;
+        }
+        else _spriteRenderer.flipX = false;
     }
 
     public void SetCanMove(bool value)
@@ -237,6 +247,9 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector2 dir2D)
     {
         Vector3 direction = new Vector3(dir2D.x, 0, dir2D.y);
+
+
+        
         direction = Quaternion.AngleAxis(45, new Vector3(0, 1, 0)) * direction;
         if (direction.magnitude != 0)
         {

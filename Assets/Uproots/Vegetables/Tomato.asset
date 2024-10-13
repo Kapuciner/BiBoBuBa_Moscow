@@ -16,8 +16,8 @@ MonoBehaviour:
   ShootSound: {fileID: 8300000, guid: eeb5a8788ff181a42b852f1b360149f9, type: 3}
   AbilitySound: {fileID: 8300000, guid: afe8b92cdfbd6bf4fb6d0e744570ed6f, type: 3}
   Skills: 0
-  Portrait: {fileID: -1835235541, guid: 401eca8bc55905d41b6e8c7569a7c0d7, type: 3}
-  Sprite: {fileID: 1076181946, guid: 224373e891eb2da4aa34611baaad32fd, type: 3}
+  Portrait: {fileID: 173330503, guid: fed1d21a92dc20348b3f7a4a29e7c28c, type: 3}
+  Sprite: {fileID: -1206070068, guid: 61b20d0b44f3ae14391b80e92e57c5b0, type: 3}
   mass: 7
   speed: 0.1
   health: 4
