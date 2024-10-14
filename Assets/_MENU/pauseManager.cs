@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+//sorry for lower-case :/
 public class pauseManager : MonoBehaviour
 {
     private static pauseManager pauseCanvaInstance;
@@ -12,6 +13,7 @@ public class pauseManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject mainWindow;
     [SerializeField] private GameObject settingsWindow;
+    [SerializeField] private VolumeSettings _volumeSettings;
     [SerializeField] private Button primaryButton;
     [SerializeField] private Button primaryButtonSettings;
     bool inPause = false;
@@ -29,6 +31,7 @@ public class pauseManager : MonoBehaviour
     }
     private void Start()
     {
+        _volumeSettings.SetCurrentVolumes();
         print("works");
         pauseMenu.SetActive(false);
         inPause = false;
@@ -90,5 +93,10 @@ public class pauseManager : MonoBehaviour
     public void inPauseReverse()
     {
         inPause = !inPause;
+    }
+
+    public void ExitTheGame()
+    {
+        Application.Quit();
     }
 }
