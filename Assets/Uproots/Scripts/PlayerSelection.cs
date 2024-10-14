@@ -140,5 +140,8 @@ public class PlayerSelection : MonoBehaviour
         FindObjectOfType<SessionLogic>().StartGame(_selectionLeft.selectionInterface.SelectedType,
             _selectionRight.selectionInterface.SelectedType);
         gameObject.SetActive(false);
+        if (FindObjectOfType<pauseManager>() != null)
+            FindObjectOfType<pauseManager>().canPause = true;
+        
     }
 }
