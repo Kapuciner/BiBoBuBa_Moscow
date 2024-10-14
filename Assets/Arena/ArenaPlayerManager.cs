@@ -347,7 +347,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     void UseAbility()
     {
-        aimDirection = previousMove;
+        aimDirection = previousMove.normalized;
         switch ((Skill[0], Skill[1]))
         {
             case ("", ""):
