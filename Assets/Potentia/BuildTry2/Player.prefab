@@ -549,6 +549,7 @@ MonoBehaviour:
   player_die: player_die
   _playerManager: {fileID: 4929125502801509831}
   _animator: {fileID: 1438535722255611123}
+  blockAnimation: 0
 --- !u!114 &1372133927672985706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,6 +583,7 @@ MonoBehaviour:
   shieldOn: 0
   audioSour: {fileID: 4826035295486543596}
   damage: {fileID: 8300000, guid: e490404c04744fb4fa7db52654842cb6, type: 3}
+  death: {fileID: 8300000, guid: e490404c04744fb4fa7db52654842cb6, type: 3}
 --- !u!95 &1438535722255611123
 Animator:
   serializedVersion: 5

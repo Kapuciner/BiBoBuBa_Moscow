@@ -35,6 +35,7 @@ public class player : MonoBehaviour
 
     public AudioSource audioSour;
     public AudioClip damage;
+    public AudioClip death;
 
 
     void Start()
@@ -117,6 +118,8 @@ public class player : MonoBehaviour
 
     IEnumerator Respawn()
     {
+        audioSour.clip = death;
+        audioSour.Play();
         playerAnimation.blockAnimation = true;
         playerAnimation.SetAnimation("magDeath");
         yield return new WaitForSeconds(1);
