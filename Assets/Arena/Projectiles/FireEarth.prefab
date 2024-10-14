@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5922903794512682695}
   - component: {fileID: 8172709246420854172}
   - component: {fileID: 8973577554240421773}
+  - component: {fileID: 1044592156588893436}
   m_Layer: 0
   m_Name: FireEarth
   m_TagString: Untagged
@@ -125,9 +126,24 @@ MonoBehaviour:
   lavaPlanePrefab: {fileID: 1856781239568396782}
   lavaPlanePrefab2: {fileID: 7662300234230805896}
   expansionRate: 0.4
-  pushForce: 8
+  pushForce: 6
   stanTime: 1
   stopLava: 0
+--- !u!114 &1044592156588893436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208070271511963313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcfbe6b3ccbaa56488b62adcb1d00b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeedX: 0
+  rotationSpeedY: 0
+  rotationSpeedZ: 2
 --- !u!1 &7295853059844575595
 GameObject:
   m_ObjectHideFlags: 0

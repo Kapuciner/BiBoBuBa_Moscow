@@ -97,6 +97,8 @@ public class GameManagerArena : MonoBehaviour
             if (playersReady == playersList.Count)
             {
                 StartCoroutine(StartGame());
+                if (FindObjectOfType<pauseManager>() != null)
+                    FindObjectOfType<pauseManager>().canPause = true;
                 break;
             }
             else
@@ -123,16 +125,16 @@ public class GameManagerArena : MonoBehaviour
 
                 if (player.Device is Keyboard && firstKeyboardTaken == false)
                 {
-                    playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
+                    playerInput.SwitchCurrentControlScheme("Keyboard1", player.Device);
                     firstKeyboardTaken = true;
                 }
                 else if (player.Device is Keyboard && firstKeyboardTaken == true)
                 {
-                    playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
+                    playerInput.SwitchCurrentControlScheme("Keyboard2", player.Device);
                 }
                 else
                 {
-                    playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+                    playerInput.SwitchCurrentControlScheme("GamePad", player.Device);
                     print("shouldWork");
                 }
 

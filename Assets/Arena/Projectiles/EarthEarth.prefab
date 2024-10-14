@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3606034573143188758}
   - component: {fileID: 8192575573922872543}
   - component: {fileID: 8575150258785705038}
-  - component: {fileID: 3435490373486587529}
+  - component: {fileID: 8950930432233093348}
   m_Layer: 0
   m_Name: EarthEarth
   m_TagString: Untagged
@@ -124,7 +124,7 @@ MonoBehaviour:
   projectileSpeed: 0.25
   lifetime: 2
   damage: 5
-  stanTime: 3
+  stanTime: 2
   immuneTime: 0.4
   pushForce: 10
 --- !u!82 &8575150258785705038
@@ -223,24 +223,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &3435490373486587529
-Animator:
-  serializedVersion: 5
+--- !u!114 &8950930432233093348
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716907946249918323}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d7836b682febe514ea4e6b478e0a623d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcfbe6b3ccbaa56488b62adcb1d00b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeedX: 0
+  rotationSpeedY: 0
+  rotationSpeedZ: 2

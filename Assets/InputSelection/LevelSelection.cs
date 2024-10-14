@@ -46,10 +46,9 @@ public class LevelSelection : MonoBehaviour
         float time = 3;
         while (elapsed < time)
         {
-            print(time - elapsed);
             //GameStartingText.text = "All ready, starting in " + (time-elapsed);
             timeInfo.gameObject.SetActive(true);
-            timeTXT.text = "Ожидание:" + (time-elapsed).ToString("F1");
+            timeTXT.text = "Начало через " + (time-elapsed).ToString("F1") + "с";
             if (_playersInZone < _connectedPlayersCount)
             {
                 playersAmountInfo.SetActive(true);

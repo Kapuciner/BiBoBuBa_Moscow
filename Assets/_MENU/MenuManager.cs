@@ -11,13 +11,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private ConnectionData _connectionData;
     void Start()
     {
-        //if (_connectionData.GetPlayerCount() > 0)
-        //{
-        //    alreadyChosenControl = true;
-        //    mainPicture.SetActive(false);
-        //    choseDeviceWindow.SetActive(false);
-        //    deviceConnectManager.SetActive(false);
-        //}
         Physics.defaultMaxDepenetrationVelocity = 20;
         GameManagerArena.winCounts = new List<int>() { 0, 0, 0, 0 };
     }

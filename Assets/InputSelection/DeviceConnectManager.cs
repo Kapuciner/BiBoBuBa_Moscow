@@ -28,6 +28,7 @@ public class DeviceConnectManager : MonoBehaviour
     
     private void Awake()
     {
+        Time.timeScale = 1;
         //_deviceSelections = FindObjectsOfType<DeviceSelection>().ToList();
         ConnectedCount = 0;
         GameStartingText.gameObject.SetActive(false);
@@ -51,10 +52,10 @@ public class DeviceConnectManager : MonoBehaviour
         GetComponent<PlayerInputManager>().DisableJoining();
         GameStartingText.gameObject.SetActive(true);
         float elapsed = 0;
-        float time = 3;
+        float time = 1.1f;
         while (elapsed < time)
         {
-            GameStartingText.text = "All ready, starting in " + (time-elapsed);
+            GameStartingText.text = "Начало через " + (time-elapsed).ToString("F1") + "с";
             if (ConnectedCount < 2)
             {
                 _readyRoutine = null;

@@ -481,7 +481,7 @@ public class ArenaPlayerManager : MonoBehaviour
             _animator.SetTrigger("cast");
             audio3.clip = bubbleAppearSound;
             audio3.Play();
-            Instantiate(waterAir, transform.position + previousMove * 1, waterAir.transform.rotation)
+            Instantiate(waterAir, transform.position + previousMove * 1 + Vector3.up * Random.Range(-0.5f, 1f) + Vector3.left * Random.Range(-1f, 1f) , waterAir.transform.rotation)
                 .GetComponent<WaterProjectile>().Activate(previousMove, this.gameObject);
             countTimes++;
             yield return new WaitForSeconds(0.2f);

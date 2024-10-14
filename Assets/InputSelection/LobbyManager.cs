@@ -57,6 +57,9 @@ public class LobbyManager : MonoBehaviour
             p.transform.position = _spawnPoints[player.playerID].transform.position;
             
             print("spawned " + player.Device);
+
+            if (FindObjectOfType<pauseManager>() != null)
+                FindObjectOfType<pauseManager>().canPause = true;
         }
     }
 
