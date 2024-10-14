@@ -9,7 +9,7 @@ public class CloudScript : MonoBehaviour
     [SerializeField] float cloudSpeed;
     public bool isMouse = true;
     public bool canMove = true;
-    bool canCast = true;
+    public bool canCast = false;
     // [SerializeField] lightningScript lightningAbility;
     [SerializeField] AudioSource pushSound;
     [SerializeField] GameObject lightningPrefab;
@@ -188,7 +188,7 @@ public class CloudScript : MonoBehaviour
     }
 
     public void OnCast(InputAction.CallbackContext context) {
-        if(context.performed)
+        if(context.performed && canCast)
         cloudInterface.useAbility();
     }
     
@@ -228,8 +228,8 @@ public class CloudScript : MonoBehaviour
         RaycastHit rayHit;
         Physics.Raycast(new Ray(transform.position, Vector3.down), out rayHit, heightMask);
         Vector3 toLand;
-        if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance, 0);
-        else toLand = new Vector3(0, -4.4f, 0);
+        if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance+0.5f, 0);
+        else toLand = new Vector3(0, -4f, 0);
         if (lightningCount == 1) {
             canMove = false;
             print(toLand);
@@ -240,8 +240,8 @@ public class CloudScript : MonoBehaviour
                 
                 Vector3 randomDeltaXZ = new Vector3(Random.Range(-lightningDelta, lightningDelta), 0, Random.Range(-lightningDelta, lightningDelta));
                 Physics.Raycast(new Ray(transform.position+randomDeltaXZ, Vector3.down), out rayHit, heightMask);
-                if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance, 0);
-                else toLand = new Vector3(0, -4.4f, 0);
+                if(rayHit.distance != 0) toLand = new Vector3(0, -rayHit.distance+0.5f, 0);
+                else toLand = new Vector3(0, -4f, 0);
                 Instantiate(lightningSmallPrefab, transform.position + toLand + randomDeltaXZ, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);  
             }
@@ -309,6 +309,7 @@ public class CloudScript : MonoBehaviour
 
     IEnumerator FireBallCoroutine()
     {
+        _animator.Play("cloud_stun");
         SpriteRenderer _sr = GetComponent<SpriteRenderer>();
         for (int i = 0; i < 6; i++)
         {
@@ -362,9 +363,6 @@ public class CloudScript : MonoBehaviour
         Instantiate(icePrefab, transform.position + Vector3.down * 2, Quaternion.Euler(90, 0, 0));;
         canMove = true;
         canCast = true;
-
-
-
     }
     
 

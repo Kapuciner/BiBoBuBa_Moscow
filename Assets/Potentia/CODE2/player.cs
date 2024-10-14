@@ -95,7 +95,7 @@ public class player : MonoBehaviour
         if (currentLives > 1)
         {
             //playerAnimation.SetAnimation("player_die");
-            Respawn();
+            StartCoroutine(Respawn());
         }
         else
         {
@@ -115,8 +115,12 @@ public class player : MonoBehaviour
         gameOverTXT.Play("TxTappear");
     }
 
-    public void Respawn()
+    IEnumerator Respawn()
     {
+        playerAnimation.blockAnimation = true;
+        playerAnimation.SetAnimation("magDeath");
+        yield return new WaitForSeconds(1);
+        playerAnimation.blockAnimation = false;
         currentHearts = maxHearts+1;
         UpdateHP();
         this.transform.position = start.transform.position;
@@ -146,6 +150,6 @@ public class player : MonoBehaviour
     {
         currentLives++;
         livesCounter.text = $"x{currentLives}";
-        this.gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        this.gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 1.2f);
     }
 }

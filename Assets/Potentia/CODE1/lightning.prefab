@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8071005974068512103}
   - component: {fileID: 1164455934464021633}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: circle_contour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1581527362079118068}
   - component: {fileID: 3515180916460825129}
   - component: {fileID: 2286659833078118595}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3795134245340523189}
   - component: {fileID: 8083605469797447054}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: circle_filled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 4988462979144962011}
   - component: {fileID: 7720588780379431703}
   - component: {fileID: 1055259864626911387}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: lightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -17,7 +17,7 @@ public class CloudTargetScript : MonoBehaviour
     }
 
     public void SetDirection(Vector2 moveVector) {
-        rawMoveDelta = new Vector3(moveVector.x, 0, moveVector.y);
+        rawMoveDelta = new Vector3(moveVector.x, 0, moveVector.y) / 20;
     }
 
     void OnTriggerEnter(Collider collision)
@@ -65,6 +65,11 @@ public class CloudTargetScript : MonoBehaviour
             else if (rayHit.distance > 4.6f && rayHit.distance != 0)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y - (rayHit.distance - 4.6f), transform.position.z);
+            }
+            Physics.Raycast(new Ray(transform.position, Vector3.up), out rayHit, heightMask);;
+            if (rayHit.distance != 0)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
             }
     }
 }

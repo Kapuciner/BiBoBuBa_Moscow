@@ -140,6 +140,7 @@ MonoBehaviour:
   cloudSpeed: 0.2
   isMouse: 1
   canMove: 1
+  canCast: 0
   pushSound: {fileID: 0}
   lightningPrefab: {fileID: 7190555309735236656, guid: 6efeb736f21c2484a8a520b98363797d, type: 3}
   lightningSmallPrefab: {fileID: 7190555309735236656, guid: 9b0f371f70ec7e44f9b43c952bbfa0e0, type: 3}
@@ -199,7 +200,7 @@ SpriteRenderer:
   m_SortingLayerID: -1375998017
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1620301213, guid: b3d89dcfd65bbac4cb1315b7f76a466e, type: 3}
+  m_Sprite: {fileID: 208938145, guid: 0b22dcd4c09cd5e4f8c0e5dae90344b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -243,7 +244,7 @@ Animator:
   m_GameObject: {fileID: 3167165154318888149}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8ced2b78a6b6d4f4c8fca3e0991f3cbd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6092e9b9fcb60f8449dade636b0de651, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

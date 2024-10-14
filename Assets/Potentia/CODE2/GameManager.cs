@@ -46,16 +46,20 @@ public class GameManager : MonoBehaviour
     public bool cloudReady = false;
     public bool gameOver = false;
     public bool gameStarted = false;
+    public bool gameCanStart = false;
+
+    public ReadyTimer readyTimer;
     public bool mageWon = false;
     public CloudScript cs;
     public TMP_Text startTXT;
     private void Awake()
     {
         SpawnPlayers();
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         cs.canMove = false;
         
         StartCoroutine(StartGame());
+        StartCoroutine(StartGameAdditionalTimer());
     }
 
     private void SpawnPlayers()
@@ -149,7 +153,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        while(!(mageReady && cloudReady)) {
+        while(!gameCanStart) {
             if(mageReady) mageReadyText.text = "Готов";
             else mageReadyText.text = "Не готов";
 
@@ -157,7 +161,9 @@ public class GameManager : MonoBehaviour
             else cloudReadyText.text = "Не готов";
             yield return new WaitForEndOfFrame();
         }
+        Time.timeScale = 0;
         mageManagerScript.canMove = true;
+        cs.canCast = true;
         readyCanvas.SetActive(false);
         mainCanvas.SetActive(true);
         int countdown = 5; // ������ �� 3 �������
@@ -176,6 +182,23 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1; // ������� ���� � �����
         cs.canMove = true; // ��������� ��������
         startTXT.text = ""; // ������� ����� �������
+    }
+
+    IEnumerator StartGameAdditionalTimer()
+    {
+        
+        while(!gameCanStart) {
+            if (mageReady && cloudReady && readyTimer.gameObject.activeSelf == false) {
+                readyTimer.gameObject.SetActive(true);
+                yield return new WaitForEndOfFrame();
+            } else if (!(mageReady && cloudReady)) {
+                readyTimer.gameObject.SetActive(false);
+                yield return new WaitForEndOfFrame();
+            } else {
+                yield return new WaitForEndOfFrame();
+            }
+        }  
+        
     }
 
     public void MageWon()

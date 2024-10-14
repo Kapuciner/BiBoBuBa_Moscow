@@ -104,6 +104,11 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void MoveMage(Vector2 moveVector) {
+        if (moveVector.x >= 0)
+        {
+        _sr.flipX = false;
+        }
+        else _sr.flipX = true;
         if(canMove){
         move = Vector3.zero;
         move += new Vector3(moveVector.x, 0, moveVector.y);

@@ -9,6 +9,8 @@ public class PlayerAnimation : MonoBehaviour
     public string player_die = "player_die";
     [SerializeField] private PlayerManager _playerManager;
     [SerializeField] private Animator _animator;
+
+    public bool blockAnimation = false;
     void Start()
     {
         
@@ -16,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
+        if(!blockAnimation){
         if (_playerManager.GetVelocity() == 0)
         {
             SetAnimation(player_idle);
@@ -23,6 +26,7 @@ public class PlayerAnimation : MonoBehaviour
         else
         {
             SetAnimation(player_walk);
+        }
         }
     }
 
