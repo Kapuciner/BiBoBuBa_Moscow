@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+            playerInput.SwitchCurrentControlScheme("GamePad", players[0].Device);
         }
 
         GameObject tempCs = Instantiate(cloudPrefab, spawnPoints[1].transform.position, cloudPrefab.transform.rotation);
@@ -103,7 +103,8 @@ public class GameManager : MonoBehaviour
         else
         {
             print("CLOUD GAMEPAD");
-            playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+            playerInput.SwitchCurrentControlScheme("GamePad", players[1].Device);
+            //playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
         }
 
         if (_connectionData.GetPlayerCount() < 2)
@@ -172,7 +173,7 @@ public class GameManager : MonoBehaviour
         cs.canCast = true;
         readyCanvas.SetActive(false);
         mainCanvas.SetActive(true);
-        int countdown = 5; // ������ �� 3 �������
+        int countdown = 3; // ������ �� 3 �������
 
         while (countdown > 0)
         {
@@ -196,6 +197,7 @@ public class GameManager : MonoBehaviour
         while(!gameCanStart) {
             if (mageReady && cloudReady && readyTimer.gameObject.activeSelf == false) {
                 readyTimer.gameObject.SetActive(true);
+                readyTimer.timeRemaining = 3f;
                 yield return new WaitForEndOfFrame();
             } else if (!(mageReady && cloudReady)) {
                 readyTimer.gameObject.SetActive(false);
@@ -214,16 +216,28 @@ public class GameManager : MonoBehaviour
         mageWon = true;
         cs.canMove = false;
         timer.StopTimer();
+        RestartCoroutine();
     }
 
     private void Update()
     {
         if (gameOver || mageWon)
         {
-            if (Input.GetKeyDown(KeyCode.R))
-                RestartGame();
+            //if (Input.GetKeyDown(KeyCode.R))
+           //     RestartGame();
         }
     }
+
+    public void RestartCoroutine()
+    {
+        StartCoroutine(RestartCoroutine_P());
+    }
+    private IEnumerator RestartCoroutine_P()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(0);
+    }
+
 
     void RestartGame()
     {

@@ -98,7 +98,7 @@ public class player : MonoBehaviour
             faliants[i].GetComponent<Falliant>().ReturnToTheStart();
         }
 
-        if (currentLives > 1)
+        if (currentLives >= 1)
         {
             //playerAnimation.SetAnimation("player_die");
             StartCoroutine(Respawn());
@@ -116,6 +116,7 @@ public class player : MonoBehaviour
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
+        gm.RestartCoroutine();
         this.gameObject.SetActive(false);
         gm.gameOver = true;
         gameOverTXT.Play("TxTappear");
