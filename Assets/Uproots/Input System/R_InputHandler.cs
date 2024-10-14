@@ -108,6 +108,10 @@ public class R_InputHandler : MonoBehaviour
     
     public void OnAttack_KB2(InputAction.CallbackContext context)
     {
+        if (_keyboardPlayer2 == null)
+        {
+            return;
+        }
         var _targetPlayer = TargetPlayer(context, true);
         
         FindObjectOfType<PlayerSelection>()?.SelectPlayer(_targetPlayer.GetIndex());
@@ -187,6 +191,10 @@ public class R_InputHandler : MonoBehaviour
     }
     public void OnSwipe_KB2(InputAction.CallbackContext context)
     {
+        if (_keyboardPlayer2 == null)
+        {
+            return;
+        }
         var _targetPlayer = TargetPlayer(context, true);
         if (context.control.device is Gamepad)
         {

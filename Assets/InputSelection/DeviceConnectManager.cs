@@ -76,7 +76,7 @@ public class DeviceConnectManager : MonoBehaviour
         float time = 1.1f;
         while (elapsed < time)
         {
-            GameStartingText.text = "Начало через " + (time-elapsed).ToString("F1") + "с";
+            GameStartingText.text = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ " + (time-elapsed).ToString("F1") + "пїЅ";
             if (ConnectedCount < 2)
             {
                 _readyRoutine = null;
@@ -185,7 +185,7 @@ public class DeviceConnectManager : MonoBehaviour
             _kbSelection2 = selection;
             return;
         }
-        _kbSelection2.Disconnect(device);
+        _kbSelection2?.Disconnect(device);
         _kbConnected2 = false;
     }
 

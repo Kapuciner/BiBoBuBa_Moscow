@@ -57,7 +57,7 @@ public class pauseManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("option") || Input.GetButtonDown("option"))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("option") || Input.GetButtonDown("start"))
         {
 
             if (canPause)
