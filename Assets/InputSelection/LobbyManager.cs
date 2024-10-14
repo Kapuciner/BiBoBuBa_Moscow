@@ -59,7 +59,10 @@ public class LobbyManager : MonoBehaviour
             print("spawned " + player.Device);
 
             if (FindObjectOfType<pauseManager>() != null)
+            {
                 FindObjectOfType<pauseManager>().canPause = true;
+            }
+
         }
     }
 
