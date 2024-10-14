@@ -31,7 +31,7 @@ public class ArenaTimer : MonoBehaviour
         int minutes = Mathf.FloorToInt(timePassed / 60);
         int seconds = Mathf.FloorToInt(timePassed % 60);
 
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerText.text = string.Format("{0:00} {1:00}", minutes, seconds);
     }
 }
 

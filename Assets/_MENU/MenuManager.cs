@@ -9,9 +9,13 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject deviceConnectManager;
     static public bool alreadyChosenControl = false;
     [SerializeField] private ConnectionData _connectionData;
-    void Start()
+
+    private void Awake()
     {
         Physics.defaultMaxDepenetrationVelocity = 20;
+    }
+    void Start()
+    {
         GameManagerArena.winCounts = new List<int>() { 0, 0, 0, 0 };
 
         if (alreadyChosenControl == false)
