@@ -217,11 +217,6 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
                 RestartGame();
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(0);
-        }
     }
 
     void RestartGame()

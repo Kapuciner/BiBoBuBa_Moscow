@@ -771,7 +771,7 @@ GameObject:
   - component: {fileID: 158632878}
   - component: {fileID: 158632877}
   m_Layer: 5
-  m_Name: menuBTTN (1)
+  m_Name: exitBTTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -843,7 +843,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1118640838}
         m_TargetAssemblyTypeName: pauseManager, Assembly-CSharp
-        m_MethodName: BackToMenu
+        m_MethodName: ExitTheGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

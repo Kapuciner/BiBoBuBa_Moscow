@@ -415,8 +415,9 @@ MonoBehaviour:
   icedMass: 0.5
   iceLayers:
     serializedVersion: 2
-    m_Bits: 243
+    m_Bits: 51
   iceMove: 0
+  canMove: 0
   dashKey: 304
   dashSpeed: 7
   dashTime: 0.15
@@ -461,6 +462,7 @@ MonoBehaviour:
   player_die: player_die
   _playerManager: {fileID: 1507824397556252581}
   _animator: {fileID: 4823843946513877659}
+  blockAnimation: 0
 --- !u!114 &7167685791845161821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +496,7 @@ MonoBehaviour:
   shieldOn: 0
   audioSour: {fileID: 0}
   damage: {fileID: 8300000, guid: e490404c04744fb4fa7db52654842cb6, type: 3}
+  death: {fileID: 0}
 --- !u!95 &4823843946513877659
 Animator:
   serializedVersion: 5

@@ -48,7 +48,35 @@ MonoBehaviour:
   winPanel: {fileID: 0}
   timer: {fileID: 0}
   txt: {fileID: 0}
+  _connectionData: {fileID: 0}
+  spawnPoints: []
+  magePrefab: {fileID: 0}
+  mageManagerScript: {fileID: 0}
+  dashImage: {fileID: 0}
+  dashCooldownTimer: {fileID: 0}
+  attackCooldownTimer: {fileID: 0}
+  shieldCooldownTimer: {fileID: 0}
+  shieldImage: {fileID: 0}
+  attackImage: {fileID: 0}
+  gameOverScreen: {fileID: 0}
+  gameOverTXT: {fileID: 0}
+  livesCounter: {fileID: 0}
+  readyCanvas: {fileID: 0}
+  mainCanvas: {fileID: 0}
+  mageReadyText: {fileID: 0}
+  cloudReadyText: {fileID: 0}
+  hearts: []
+  faliants: []
+  cloudPrefab: {fileID: 0}
+  cloudTarget: {fileID: 0}
+  cloudInterface: {fileID: 0}
+  cameraScaler: {fileID: 0}
+  mageReady: 0
+  cloudReady: 0
   gameOver: 0
+  gameStarted: 0
+  gameCanStart: 0
+  readyTimer: {fileID: 0}
   mageWon: 0
   cs: {fileID: 0}
   startTXT: {fileID: 0}
@@ -61,7 +89,7 @@ AudioSource:
   m_GameObject: {fileID: 8064850982384195970}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1671332963321257605, guid: 90bf3aaee96ab474885aec59612c5b82, type: 2}
   m_audioClip: {fileID: 8300000, guid: 09b5e52f93cb90249a951930f6544ae1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

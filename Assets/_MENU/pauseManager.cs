@@ -40,7 +40,8 @@ public class pauseManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        pauseMenu.SetActive(false);
+        if (pauseMenu != null)
+            pauseMenu.SetActive(false);
         if (MenuManager.alreadyChosenControl)
         {
             canPause = true;
