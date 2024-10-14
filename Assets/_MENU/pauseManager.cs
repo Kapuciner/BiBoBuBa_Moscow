@@ -69,6 +69,11 @@ public class pauseManager : MonoBehaviour
                 
                 mainWindow.SetActive(true);
                 settingsWindow.SetActive(false);
+
+                if (inPause)
+                    Cursor.visible = true;
+                else
+                    Cursor.visible = false;
             }
         }
     }

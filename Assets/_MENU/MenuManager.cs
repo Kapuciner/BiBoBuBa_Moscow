@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     }
     void Start()
     {
+        Cursor.visible = false;
         GameManagerArena.winCounts = new List<int>() { 0, 0, 0, 0 };
 
         if (alreadyChosenControl == false)

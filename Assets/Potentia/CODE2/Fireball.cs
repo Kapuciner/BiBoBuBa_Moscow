@@ -9,6 +9,11 @@ public class Fireball : MonoBehaviour
     [SerializeField] PlayerManager centerBody;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Transform targetCamera;
+
+    private void Start()
+    {
+        targetCamera = FindObjectOfType<Camera>().transform;
+    }
     void Update()
     {
         currentAngle += rotationSpeed * Time.deltaTime;
