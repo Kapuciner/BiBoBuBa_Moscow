@@ -9568,7 +9568,12 @@ PrefabInstance:
     - target: {fileID: 882129737928793925, guid: 243e73e03db22164092376217cc52d23, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 882129737928793925, guid: 243e73e03db22164092376217cc52d23, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: -8705533452240791338, guid: 243e73e03db22164092376217cc52d23, type: 3}
     - target: {fileID: 918409824207420171, guid: 243e73e03db22164092376217cc52d23, type: 3}
       propertyPath: m_Layer
       value: 2
@@ -9840,6 +9845,7 @@ PrefabInstance:
     - target: {fileID: 2508812124418183303, guid: 243e73e03db22164092376217cc52d23, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2525329064780095389, guid: 243e73e03db22164092376217cc52d23, type: 3}
       propertyPath: m_Materials.Array.size
@@ -13814,6 +13820,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1759958641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1759958642}
+  m_Layer: 0
+  m_Name: abc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1759958642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759958641}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1769798925
 GameObject:
   m_ObjectHideFlags: 0
@@ -20264,7 +20301,20 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+<<<<<<< Updated upstream
   - {fileID: 1880734423}
+=======
+  - {fileID: 1759958642}
+  - {fileID: 332649582}
+  - {fileID: 798079220}
+  - {fileID: 2046918984}
+  - {fileID: 1905409812}
+  - {fileID: 470946436}
+  - {fileID: 1834737852}
+  - {fileID: 1903636978}
+  - {fileID: 1791990591}
+  - {fileID: 855769074}
+>>>>>>> Stashed changes
   - {fileID: 2032525803232580499}
   - {fileID: 792168465965545046}
   - {fileID: 4264041005786026060}

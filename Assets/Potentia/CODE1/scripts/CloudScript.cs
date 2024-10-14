@@ -360,7 +360,9 @@ public class CloudScript : MonoBehaviour
         canMove = false;
         canCast = false;
         yield return new WaitForSeconds(1);
-        Instantiate(icePrefab, transform.position + Vector3.down * 2, Quaternion.Euler(90, 0, 0));;
+        GameObject ice = Instantiate(icePrefab, transform.position + Vector3.down * 2, Quaternion.Euler(90, 0, 0));;
+        ice.transform.SetParent(GameObject.Find("abc").transform);
+        
         canMove = true;
         canCast = true;
     }
