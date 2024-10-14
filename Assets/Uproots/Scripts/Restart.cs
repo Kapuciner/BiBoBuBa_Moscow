@@ -61,6 +61,6 @@ public class Restart : MonoBehaviour
 
     private void RestartGame()
     {
-        SceneManager.LoadScene("Uproot_Main");
+        SceneManager.LoadScene("Menu");
     }
 }

@@ -88,8 +88,20 @@ public class R_Player : MonoBehaviour
         controller.SetSpeedMultiplier(1);
         GetComponent<SpriteRenderer>().color = Color.white;
 
-        Portrait.sprite = vegetableType.Portrait;
-        GetComponent<PlayerAnimator>().SetAnimator(vegetableType.Animator);
+
+
+        var _animator = GetComponent<PlayerAnimator>();
+        if (GetIndex() == 0)
+        {
+            _animator.SetAnimator(vegetableType.Animator);
+            Portrait.sprite = vegetableType.Portrait;
+        }
+        if (GetIndex() == 1)
+        {
+            _animator.SetAnimator(vegetableType.Red_Animator);
+            Portrait.sprite = vegetableType.Red_Portrait;
+        }
+        
         GetComponent<PlayerAnimator>().SetAnimation(PlayerAnimator.PLAYER_IDLE);
         transform.position = SpawnPoint.transform.position;
         controller.SetCanMove(true);

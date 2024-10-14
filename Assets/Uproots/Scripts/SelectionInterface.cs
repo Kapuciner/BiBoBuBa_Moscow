@@ -14,11 +14,19 @@ public class SelectionInterface : MonoBehaviour
     public Image P;
 
     public int CorrespondingPlayerIndex;
+
+    public AspectRatioFitter AspectRatioFitter;
+    
     
     public void SetVegetable(VegetableType vegetableType)
     {
         VegetableType = vegetableType;
-        image.sprite = vegetableType.Sprite;
+        AspectRatioFitter.aspectRatio = vegetableType.spriteAspectRatio;
+        if (CorrespondingPlayerIndex == 0)
+        {
+            image.sprite = vegetableType.Sprite; 
+        }
+        else image.sprite = vegetableType.Red_Sprite;
     }
 
     public void Select(VegetableType vegetableType)

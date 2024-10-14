@@ -46,8 +46,17 @@ public class PlayerAnimator : MonoBehaviour
         _controller.PlayerAttacks += () => { StartCoroutine(AttackingRoutine()); };
         _controller.PlayerCasts += () => { StartCoroutine(CastingRoutine()); };
         _player.PlayerDies += () => { StartCoroutine(DeathRoutine());};
-
+        
         _animator.runtimeAnimatorController = _player.VegetableType.Animator;
+        // if (_player.GetIndex() == 0)
+        // {
+        //     _animator.runtimeAnimatorController = _player.VegetableType.Animator;
+        // }
+        // if (_player.GetIndex() == 1)
+        // {
+        //     _animator.runtimeAnimatorController = _player.VegetableType.Red_Animator;
+        // }
+        
     }
 
     IEnumerator AttackingRoutine()

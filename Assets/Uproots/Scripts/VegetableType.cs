@@ -19,6 +19,9 @@ public class VegetableType : ScriptableObject
     public Sprite Portrait;
     public Sprite Sprite;
     
+    public Sprite Red_Portrait;
+    public Sprite Red_Sprite;
+    
     public float mass;
     public float speed;
     public int health;
@@ -27,4 +30,7 @@ public class VegetableType : ScriptableObject
     public float attackCooldown;
 
     public RuntimeAnimatorController Animator;
+    public RuntimeAnimatorController Red_Animator;
+
+    public float spriteAspectRatio;
 }

@@ -80,4 +80,19 @@ public class ConnectionData : ScriptableObject
     {
         return ConnectedPlayersData().Count;
     }
+
+    public void Clear()
+    {
+        ClearPlayerData(p1_controlData);
+        ClearPlayerData(p2_controlData);
+        ClearPlayerData(p3_controlData);
+        ClearPlayerData(p4_controlData);
+    }
+
+    private void ClearPlayerData(PlayerControlData playerControlData)
+    {
+        playerControlData.Device = null;
+        playerControlData.playerID = 0;
+        playerControlData._isConnected = false;
+    }
 }

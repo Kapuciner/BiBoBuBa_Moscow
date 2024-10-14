@@ -17,10 +17,14 @@ MonoBehaviour:
   AbilitySound: {fileID: 8300000, guid: ec68aa2cf99ed8e478a6e3ccb0090c14, type: 3}
   Skills: 2
   Portrait: {fileID: -949741949, guid: fed1d21a92dc20348b3f7a4a29e7c28c, type: 3}
-  Sprite: {fileID: 637021044, guid: bf937e4696962f54c8acb452ecc7a97e, type: 3}
+  Sprite: {fileID: -618203636, guid: bf937e4696962f54c8acb452ecc7a97e, type: 3}
+  Red_Portrait: {fileID: -1456885059, guid: fed1d21a92dc20348b3f7a4a29e7c28c, type: 3}
+  Red_Sprite: {fileID: 1319526184, guid: 9a8ddb1d8c11f6e4f8a2851a55c62573, type: 3}
   mass: 2
   speed: 0.15
   health: 2
   abilityCooldown: 10
   attackCooldown: 2
   Animator: {fileID: 9100000, guid: a2d38aa6d81e038489ba31c14557f83d, type: 2}
+  Red_Animator: {fileID: 9100000, guid: b401e93e15b725c4e8202beb0f6d95dc, type: 2}
+  spriteAspectRatio: 1

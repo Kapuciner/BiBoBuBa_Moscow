@@ -33,9 +33,30 @@ public class DeviceConnectManager : MonoBehaviour
         ConnectedCount = 0;
         GameStartingText.gameObject.SetActive(false);
         DeviceSelectionUI.SetActive(true);
+        if (MenuManager.alreadyChosenControl)
+        {
+            GetComponent<PlayerInputManager>().DisableJoining();
+
+            ConnectPlayers();
+            DeviceSelectionUI.SetActive(false);
+            var inputs = FindObjectsOfType<PlayerInput>();
+            foreach (var input in inputs)
+            {
+                if (input.isActiveAndEnabled)
+                {
+                    input.SwitchCurrentActionMap("Lobby");
+                }
+            }
+            var mngr = GetComponent<PlayerInputManager>();
+        
+            FindObjectOfType<LobbyManager>().OnStarted();
+            
+        }
     }
     private void Update()
     {
+        
+        
         if (ConnectedCount >= 2 && _readyRoutine == null)
         {
             StartReadyCountdown();
@@ -83,13 +104,30 @@ public class DeviceConnectManager : MonoBehaviour
             {
                 input.SwitchCurrentActionMap("Lobby");
             }
-
         }
         var mngr = GetComponent<PlayerInputManager>();
-
+        
         FindObjectOfType<LobbyManager>().OnStarted();
+        MenuManager.alreadyChosenControl = true;
     }
-
+    public void ConnectPlayers()
+    {
+        bool keyboardJoined = false;
+        foreach (var player in _connectionData.ConnectedPlayersData())
+        {
+            if (player.Device is Keyboard)
+            {
+                if (keyboardJoined)
+                {
+                    continue;
+                }
+                keyboardJoined = true;
+            }
+            GetComponent<PlayerInputManager>().
+                JoinPlayer(player.playerID, -1,
+                    null, player.Device);
+        }
+    }
     private void SaveControlData()
     {
         var inputs = FindObjectsOfType<PlayerInput>();
