@@ -73,6 +73,8 @@ public class GameManagerArena : MonoBehaviour
         if (!firstgame)
         {
             StartCoroutine(StartGame());
+            if (FindObjectOfType<pauseManager>() != null)
+                FindObjectOfType<pauseManager>().canPause = true;
         }
         else
         {
