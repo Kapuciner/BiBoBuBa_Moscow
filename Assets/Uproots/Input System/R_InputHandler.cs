@@ -233,6 +233,7 @@ public class R_InputHandler : MonoBehaviour
     }
     public void OnRestart(InputAction.CallbackContext context)
     {
+        return;
         FindObjectOfType<Restart>()?.OnRestartPressed();
     }
 }

@@ -1116,8 +1116,8 @@ MonoBehaviour:
     \u041F\u0415\u0420\u0421\u041E\u041D\u0410\u0416\u0410\n<color=#FF00EA><b>RIGHT
     SHIFT</b></color> - \u0418\u0421\u041F\u041E\u041B\u042C\u0417\u041E\u0412\u0410\u041D\u0418\u0415
     \u0421\u041F\u041E\u0421\u041E\u0411\u041D\u041E\u0421\u0422\u0418\n<color=#FF00EA><b>RIGHT
-    CTRL</b></color> - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>R</b></color>
-    - \u0412\u041E\u0417\u0412\u0420\u0410\u0422 \u0412 \u041B\u041E\u0411\u0411\u0418"
+    CTRL</b></color> - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>ESCAPE</b></color>
+    - \u041C\u0415\u041D\u042E \u041F\u0410\u0423\u0417\u042B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
   m_sharedMaterial: {fileID: 6740185780606990037, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
@@ -14869,8 +14869,8 @@ MonoBehaviour:
     \u041F\u0415\u0420\u0421\u041E\u041D\u0410\u0416\u0410\n<color=#FF00EA><b>BUTTON
     EAST</b></color> - \u0418\u0421\u041F\u041E\u041B\u042C\u0417\u041E\u0412\u0410\u041D\u0418\u0415
     \u0421\u041F\u041E\u0421\u041E\u0411\u041D\u041E\u0421\u0422\u0418\n<color=#FF00EA><b>BUTTON
-    SOUTH</b></color> - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>START</b></color>
-    - \u0412\u041E\u0417\u0412\u0420\u0410\u0422 \u0412 \u041B\u041E\u0411\u0411\u0418"
+    SOUTH</b></color> - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>LB</b></color>
+    - \u041C\u0415\u041D\u042E \u041F\u0410\u0423\u0417\u042B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
   m_sharedMaterial: {fileID: 6740185780606990037, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
@@ -21096,8 +21096,8 @@ MonoBehaviour:
     \u041F\u0415\u0420\u0421\u041E\u041D\u0410\u0416\u0410\n<color=#FF00EA><b>LEFT
     ALT</b></color> - \u0418\u0421\u041F\u041E\u041B\u042C\u0417\u041E\u0412\u0410\u041D\u0418\u0415
     \u0421\u041F\u041E\u0421\u041E\u0411\u041D\u041E\u0421\u0422\u0418\n<color=#FF00EA><b>SPACE</b></color>
-    - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>R</b></color>
-    - \u0412\u041E\u0417\u0412\u0420\u0410\u0422 \u0412 \u041B\u041E\u0411\u0411\u0418"
+    - \u0423\u0414\u0410\u0420 \u0420\u0423\u041A\u041E\u0419\n<color=#FF00EA><b>ESCAPE</b></color>
+    - \u041C\u0415\u041D\u042E \u041F\u0410\u0423\u0417\u042B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
   m_sharedMaterial: {fileID: 6740185780606990037, guid: 2ad0ceb9efcea734ca2da6b935ba69da, type: 2}
