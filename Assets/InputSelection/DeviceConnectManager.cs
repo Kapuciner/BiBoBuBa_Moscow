@@ -76,7 +76,7 @@ public class DeviceConnectManager : MonoBehaviour
         float time = 1.1f;
         while (elapsed < time)
         {
-            GameStartingText.text = "������ ����� " + (time-elapsed).ToString("F1") + "�";
+            GameStartingText.text = "Начало через " + (time-elapsed).ToString("F1") + "с";
             if (ConnectedCount < 2)
             {
                 _readyRoutine = null;
