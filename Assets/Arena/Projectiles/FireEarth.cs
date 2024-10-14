@@ -60,7 +60,6 @@ public class FireEarth : MonoBehaviour
             pushDirection = other.transform.position - this.gameObject.transform.position;
             other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * pushForce, ForceMode.Impulse);
             workedOnce = true;
-            other.GetComponent<ArenaPlayerManager>().OnFire();
             other.GetComponent<ArenaPlayerManager>().Stan(stanTime);
             other.GetComponent<ArenaPlayerManager>().TakeDamage(damage);
             Destroy(this.gameObject, 0.05f);

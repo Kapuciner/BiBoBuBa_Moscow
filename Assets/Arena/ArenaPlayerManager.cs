@@ -593,6 +593,8 @@ public class ArenaPlayerManager : MonoBehaviour
         if (currentHP <= 1)
         {
             currentHP = 0;
+            hpBar.value = currentHP;
+            hpTXT.text = $"{currentHP}/20";
             if (!dead)
                 Die();
         }

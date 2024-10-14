@@ -105,6 +105,12 @@ public class GameManager : MonoBehaviour
             print("CLOUD GAMEPAD");
             playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
         }
+
+        if (_connectionData.GetPlayerCount() < 2)
+        {
+            playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
+            playerInput.SwitchCurrentControlScheme("Mouse", Mouse.current);
+        }
     }
 
     public void AddMage(GameObject mage)

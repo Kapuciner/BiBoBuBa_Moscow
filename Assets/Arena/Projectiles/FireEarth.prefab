@@ -126,7 +126,7 @@ MonoBehaviour:
   lavaPlanePrefab: {fileID: 1856781239568396782}
   lavaPlanePrefab2: {fileID: 7662300234230805896}
   expansionRate: 0.4
-  pushForce: 6
+  pushForce: 3
   stanTime: 1
   stopLava: 0
 --- !u!114 &1044592156588893436

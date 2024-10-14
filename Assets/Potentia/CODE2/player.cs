@@ -37,6 +37,8 @@ public class player : MonoBehaviour
     public AudioClip damage;
     public AudioClip death;
 
+    private bool finishedDying = true;
+
 
     void Start()
     {
@@ -48,8 +50,11 @@ public class player : MonoBehaviour
 
     private void Update()
     {
-        if (this.transform.position.y < minHeight)
+        if (this.transform.position.y < minHeight && finishedDying)
+        {
+            finishedDying = false;
             Die();
+        }
     }
 
     public void TakeDamage(float amount)
@@ -127,6 +132,7 @@ public class player : MonoBehaviour
         currentHearts = maxHearts+1;
         UpdateHP();
         this.transform.position = start.transform.position;
+        finishedDying = true;
     }
 
     void ColorBack()
