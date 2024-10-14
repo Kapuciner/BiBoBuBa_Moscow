@@ -593,7 +593,8 @@ public class ArenaPlayerManager : MonoBehaviour
         if (currentHP <= 1)
         {
             currentHP = 0;
-            Die();
+            if (!dead)
+                Die();
         }
         else
         {
