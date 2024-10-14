@@ -48,7 +48,7 @@ Material:
     m_Colors:
     - _bubbleColor: {r: 0, g: 0, b: 0, a: 0}
     - _flowDirection: {r: 0, g: 0, b: 0, a: 0}
-    - _lavaColor: {r: 0.011480957, g: 0.012760518, b: 0.05660379, a: 0}
+    - _lavaColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2898796338745099229
 MonoBehaviour:
