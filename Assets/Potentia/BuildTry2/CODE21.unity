@@ -20299,9 +20299,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-<<<<<<< Updated upstream
   - {fileID: 1880734423}
-=======
   - {fileID: 1759958642}
   - {fileID: 332649582}
   - {fileID: 798079220}
