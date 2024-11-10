@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Arena/Arena.unity
     guid: ec5059f8b912ebd48a939c9d6a487a7a
   - enabled: 1
-    path: Assets/Potentia/BuildTry2/CODE21.unity
-    guid: bd718a28cd0e8a0429cdbb9142f7184c
-  - enabled: 1
     path: Assets/Uproots/Scenes/Uproot_Main.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:

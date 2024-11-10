@@ -6,34 +6,38 @@ using TMPro;
 using UnityEngine.InputSystem;
 public class ArenaPlayerManager : MonoBehaviour
 {
-    private bool ready = false;
+    [Header("Basic stuff")]
     public int playerID;
     private GameManagerArena gm;
     public string nickname;
+    private Rigidbody _rb;
+    private SpriteRenderer _sr;
+    [SerializeField] private Animator _animator;
+    private bool ready = false;
 
+    [Header("Zone")]
     public bool insideTheZone = true;
     [SerializeField] private float maxZoneDamageCooldown = 2;
     private float currentZoneDamageCooldown;
     [SerializeField] private int zoneDamage;
 
-    private float initialSpeed;
-
-    private Rigidbody _rb;
-    private SpriteRenderer _sr;
-
-    public List<string> Skill = new List<string> { "", "" };
-
+    [Header("UI (leave empty, access through gm)")]
     [SerializeField] private Sprite emptyAbilityImage;
     public List<Image> abilityImage; //первый или второй скилл
     public List<TMP_Text> skillName;
     public Slider hpBar;
     public TMP_Text hpTXT;
     public TMP_Text readyTXT;
+    public List<string> Skill = new List<string> { "", "" };
 
-
+    [Header("HP and stuff")]
+    public bool dead = false;
+    [SerializeField] private int deadHeight;
+    [SerializeField] private float maxHP = 20;
+    private bool canDoStuff = true;
     private float currentHP;
-    private float maxHP = 20;
 
+    [Header("HitAbility")]
     [SerializeField] private GameObject hitAreaLeft;
     [SerializeField] private GameObject hitAreaRight;
     public Rigidbody whoToHit;
@@ -44,20 +48,11 @@ public class ArenaPlayerManager : MonoBehaviour
     public float hitCurrentCooldown = 0;
     [SerializeField] float hitMaxCooldown = 1;
 
-    private bool canDoStuff = true;
-    public bool dead = false;
-
-    [SerializeField] private int deadHeight;
-
-
-    [Header("Animations")]
-    [SerializeField] private Animator _animator;
-
     [Header("Sounds")]
     [SerializeField] private AudioSource audio; //for taking damage
     [SerializeField] private AudioSource audio2; // for fire
-    [SerializeField] private AudioSource audio3; //for hits
-    [SerializeField] private AudioSource audio4; //for other
+    [SerializeField] private AudioSource audio3; //for hits (taking hits?)
+    [SerializeField] private AudioSource audio4; //for everything else
     [SerializeField] private AudioClip painSound;
     [SerializeField] private AudioClip extinguishFire;
     [SerializeField] private AudioClip soundOnFire;
@@ -76,7 +71,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private AudioClip deathPuff;
     [SerializeField] private AudioClip failCast;
 
-    [Header("Projectiles")]
+    [Header("Projectiles and effects")]
     [SerializeField] private GameObject fire;
     [SerializeField] private GameObject water;
     [SerializeField] private GameObject air;
@@ -90,7 +85,6 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private GameObject airEarth;
     [SerializeField] private GameObject airAir;
     [SerializeField] private GameObject earthEarth;
-    private Vector3 previousMove = Vector3.zero;
 
     [SerializeField] private GameObject fireIMG;
     [SerializeField] private LineRenderer _lr;
@@ -117,24 +111,31 @@ public class ArenaPlayerManager : MonoBehaviour
     private Vector3 aimDirection = Vector3.zero;
 
     //-- взято из LobbyDummy
+    [Header("Movement")]
+    [SerializeField] private FixedJoystick _joystick;
+    private float initialSpeed;
+    private Vector3 previousMove = Vector3.zero;
     private Vector3 _lastDirection;
     private Vector3 _lastDirectionSmooth;
     private bool _canMove = true;
     private Vector3 _move;
     private float smoothSpeed = 0.2f;
-    public int PlayerIndex;
+    // public int PlayerIndex; //?
     private bool _notMoving = false;
     public float SPEED;
+
 
     private void Awake()
     {
         gm = FindObjectOfType<GameManagerArena>();
         _rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>(); //должно быть в awake, иначе игра ломается 
+        _joystick = FindObjectOfType<FixedJoystick>();
     }
     void Start()
     {
-
+        _animator.SetInteger("playerID", playerID);
+        _animator.Update(Time.unscaledDeltaTime);
         currentZoneDamageCooldown = -1;
         currentHP = maxHP;
         hpBar.maxValue = maxHP;
@@ -172,6 +173,9 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             _animator.SetFloat("velocity", 1);
         }
+
+        if (SystemInfo.deviceType == DeviceType.Handheld)
+            Move(new Vector2(_joystick.Horizontal, _joystick.Vertical));
     }
 
     void FixedUpdate()
@@ -179,7 +183,9 @@ public class ArenaPlayerManager : MonoBehaviour
         hitCurrentCooldown -= Time.fixedDeltaTime;
         currentZoneDamageCooldown -= Time.fixedDeltaTime;
         if (canDoStuff)
+        {
             _rb.MovePosition(_rb.position + _move * SPEED * Time.deltaTime);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -280,16 +286,30 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void OnCast(InputAction.CallbackContext context)
     {
-        if (context.started && canDoStuff)
+        if (context.started )
+        {
+            Cast();
+        }
+    }
+    public void Cast()
+    {
+        if (canDoStuff)
         {
             _animator.SetTrigger("cast");
             UseAbility();
         }
     }
-
     public void OnHit(InputAction.CallbackContext context)
     {
-        if (context.started && canDoStuff)
+        if (context.started)
+        {
+            Hit();
+        }
+    }
+
+    public void Hit()
+    {
+        if (canDoStuff)
         {
             if (hitCurrentCooldown < 0)
             {
@@ -304,7 +324,6 @@ public class ArenaPlayerManager : MonoBehaviour
             }
         }
     }
-
     void DelayedHit()
     {
         whoToHit.AddForce(hitDirection.normalized * hitPower, ForceMode.Impulse);
@@ -804,7 +823,6 @@ public class ArenaPlayerManager : MonoBehaviour
     {
         if (context.performed)
         {
-
             ready = !ready;
             if (ready)
             {

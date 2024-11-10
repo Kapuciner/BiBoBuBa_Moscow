@@ -18,10 +18,10 @@ GameObject:
   - component: {fileID: 4237637497023609813}
   - component: {fileID: 1011685959677529561}
   - component: {fileID: 187684387653839457}
-  - component: {fileID: 8874699116260475278}
   - component: {fileID: -835904410749625629}
+  - component: {fileID: 8874699116260475278}
   m_Layer: 0
-  m_Name: PlayerBlue
+  m_Name: PlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,18 +141,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 0
   nickname: "\u0421\u0438\u043D\u0438\u0439"
+  _animator: {fileID: 8874699116260475278}
   insideTheZone: 1
   maxZoneDamageCooldown: 0.5
   zoneDamage: 1
-  Skill:
-  - 
-  - 
   emptyAbilityImage: {fileID: 0}
   abilityImage: []
   skillName: []
   hpBar: {fileID: 0}
   hpTXT: {fileID: 0}
   readyTXT: {fileID: 0}
+  Skill:
+  - 
+  - 
+  dead: 0
+  deadHeight: -5
+  maxHP: 20
   hitAreaLeft: {fileID: 4096623612208281406}
   hitAreaRight: {fileID: 1338087590826072393}
   whoToHit: {fileID: 0}
@@ -160,9 +164,6 @@ MonoBehaviour:
   canHit: 0
   hitCurrentCooldown: 0
   hitMaxCooldown: 1
-  dead: 0
-  deadHeight: -5
-  _animator: {fileID: 8874699116260475278}
   audio: {fileID: 1011685959677529561}
   audio2: {fileID: 4237637497023609813}
   audio3: {fileID: 187684387653839457}
@@ -212,8 +213,8 @@ MonoBehaviour:
   lavaDamageCooldown: 0.4
   lavaDamage: 0.5
   waterPushForce: 10
-  castTime: 0.1
-  PlayerIndex: 0
+  castTime: 0.25
+  _joystick: {fileID: 0}
   SPEED: 12
 --- !u!120 &6266597811065018371
 LineRenderer:
@@ -722,27 +723,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &8874699116260475278
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332478213264126351}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2c80f614a30ceb8458d4d00cde516a96, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!82 &-835904410749625629
 AudioSource:
   m_ObjectHideFlags: 0
@@ -839,6 +819,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &8874699116260475278
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332478213264126351}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c80f614a30ceb8458d4d00cde516a96, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1338087590826072393
 GameObject:
   m_ObjectHideFlags: 0

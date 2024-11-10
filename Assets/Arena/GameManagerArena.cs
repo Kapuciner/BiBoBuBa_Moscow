@@ -31,10 +31,11 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private List<Slider> hpBar;
     [SerializeField] private List<TMP_Text> hpTXT;
     [SerializeField] private List<TMP_Text> readyTXT;
+    [SerializeField] private TMP_Text timerForReady;
 
 
     [SerializeField] private ConnectionData _connectionData;
-    [SerializeField] private GameObject[] playerPrefab;
+    [SerializeField] private GameObject playerPrefab;
 
     [SerializeField] private CameraScaler cameraScaler;
 
@@ -45,8 +46,18 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private Animator animator2;
     bool firstgame = true;
 
+    [SerializeField] private GameObject mobileUICanva;
+    [SerializeField] private Button mobileHitButton;
+    [SerializeField] private Button mobileCastButton;
     private void Start()
     {
+        if (SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            mobileUICanva.SetActive(true);
+            canvaREADY.SetActive(false);
+            StartCoroutine(StartGame());
+        }
+        
         Physics.defaultMaxDepenetrationVelocity = 20;
         SpawnPlayers();
 
@@ -92,24 +103,60 @@ public class GameManagerArena : MonoBehaviour
         }
     }
 
-    IEnumerator whileNotStarted()
+    IEnumerator whileNotStarted() //this code is running while readyCanva is open
     {
+        float timer = 3f;
         while (true)
         {
             if (playersReady == playersList.Count)
             {
-                StartCoroutine(StartGame());
-                if (FindObjectOfType<pauseManager>() != null)
-                    FindObjectOfType<pauseManager>().canPause = true;
-                break;
+                if (timer > 0)
+                {
+                    timer -= Time.unscaledDeltaTime;
+                    timerForReady.text = $"{Mathf.Round(timer)}";
+                }
+                else
+                {
+                    print(playersList.Count);
+                    StartCoroutine(StartGame());
+                    if (FindObjectOfType<pauseManager>() != null)
+                        FindObjectOfType<pauseManager>().canPause = true;
+                    break;
+                }
             }
             else
             {
-                yield return new WaitForEndOfFrame();
+                timer = 3f;
             }
+
+            timerForReady.text = $"{Mathf.Round(timer)}";
+            yield return new WaitForEndOfFrame();
         }
     }
     private void SpawnPlayers()
+    {
+        if (SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            OnMobile();
+        }
+        else
+        {
+            OnOneComputer();
+        }
+    }
+
+    private void OnMobile()
+    {
+        GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+        pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
+        AddPlayer(pl);
+        mobileHitButton.onClick.RemoveAllListeners();
+        mobileCastButton.onClick.RemoveAllListeners();
+        mobileHitButton.onClick.AddListener(pl.GetComponent<ArenaPlayerManager>().Hit);
+        mobileCastButton.onClick.AddListener(pl.GetComponent<ArenaPlayerManager>().Cast);
+    }
+
+    private void OnOneComputer()
     {
         bool firstKeyboardTaken = false;
         var players = _connectionData.ConnectedPlayersData();
@@ -119,7 +166,7 @@ public class GameManagerArena : MonoBehaviour
             int j = 0;
             foreach (var player in players)
             {
-                GameObject pl = Instantiate(playerPrefab[j], spawnPoints[playersList.Count].transform.position, playerPrefab[j].transform.rotation);
+                GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
                 j++;
                 pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
                 AddPlayer(pl);
@@ -146,7 +193,7 @@ public class GameManagerArena : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                GameObject pl = Instantiate(playerPrefab[i], spawnPoints[playersList.Count].transform.position, playerPrefab[i].transform.rotation);
+                GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
                 pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
                 AddPlayer(pl);
                 var playerInput = pl.GetComponent<PlayerInput>();
@@ -169,9 +216,7 @@ public class GameManagerArena : MonoBehaviour
 
             }
         }
-        
     }
-
     IEnumerator StartGame()
     {
         canvaREADY.SetActive(false);
