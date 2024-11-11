@@ -96,6 +96,21 @@ public class GameManagerArena : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Time.timeScale = 5;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            Time.timeScale = 1;
+            Time.fixedDeltaTime = 0.02f;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         if (canvaREADY.activeSelf)
         {
             animator1.Update(Time.unscaledDeltaTime);
@@ -327,5 +342,10 @@ public class GameManagerArena : MonoBehaviour
         skillName2[playerID].gameObject.SetActive(true);
         hpBar[playerID].gameObject.SetActive(true);
         hpTXT[playerID].gameObject.SetActive(true);
+    }
+
+    public int getPlayerCount()
+    {
+        return playersList.Count;
     }
 }

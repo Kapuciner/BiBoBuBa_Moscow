@@ -8,7 +8,7 @@ public class areaOfAttack_Arena : MonoBehaviour
     [SerializeField] private ArenaPlayerManager player;
     private void OnTriggerStay(Collider other) //для удара
     {
-        if (other != player.gameObject && other.tag == "Player")
+        if (other.gameObject != player.gameObject && other.tag == "Player")
         {
             if (player.hitCurrentCooldown < 0)
             {
@@ -32,9 +32,8 @@ public class areaOfAttack_Arena : MonoBehaviour
         }
     }
 
-    void Update()
+    private void OnDisable()
     {
-        if (!this.gameObject.activeSelf)
-            player.canHit = false;
+        player.canHit = false;
     }
 }

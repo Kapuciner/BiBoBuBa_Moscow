@@ -19,6 +19,8 @@ public class ZoneShrinking : MonoBehaviour
     private void Start()
     {
         StartCoroutine(ShrinkZoneAfterDelay(firstShirnkStartIn));
+
+        this.transform.position += new Vector3(Random.Range(-25, 25), 0, Random.Range(-25, 25));
     }
 
     private IEnumerator ShrinkZoneAfterDelay(float delay)

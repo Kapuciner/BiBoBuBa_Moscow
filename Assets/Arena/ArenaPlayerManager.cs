@@ -236,8 +236,15 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             return;
         }
-        StartCoroutine(LerpMove(direction));
-        StartCoroutine(SmoothDirection());
+
+        //change this section to the one commented right after in order to make smooth movement
+        _move = Vector3.zero;
+        _move += new Vector3(dir2D.x, 0, dir2D.y);
+        _move.Normalize();
+        _move = Quaternion.Euler(0, 45, 0) * _move;
+
+        //StartCoroutine(LerpMove(direction));
+        //StartCoroutine(SmoothDirection());
     }
     IEnumerator LerpMove(Vector3 newMove)
     {

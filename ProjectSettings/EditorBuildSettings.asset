@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Uproots/Scenes/Uproot_Main.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Potentia/BuildTry2/CODE21.unity
+    guid: bd718a28cd0e8a0429cdbb9142f7184c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: fbdfc8c663de73045824f0d9c26db79e, type: 2}
