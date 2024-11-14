@@ -156,7 +156,7 @@ MonoBehaviour:
   - 
   dead: 0
   deadHeight: -5
-  maxHP: 20
+  maxHP: 30
   hitAreaLeft: {fileID: 4096623612208281406}
   hitAreaRight: {fileID: 1338087590826072393}
   whoToHit: {fileID: 0}

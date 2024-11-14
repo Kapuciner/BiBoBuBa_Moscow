@@ -8,20 +8,18 @@ using UnityEngine.InputSystem;
 
 public class GameManagerArena : MonoBehaviour
 {
-    private int currentCountdown = 5;
     [SerializeField] int maxCountdown = 5;
-    private List<GameObject> playersList = new List<GameObject>();
+    public List<GameObject> playersList = new List<GameObject>();
     [SerializeField] private TMP_Text[] scoreCounters;
     public static List<int> winCounts = new List<int>() { 0, 0, 0, 0 };
     [SerializeField] private Transform[] spawnPoints;
-
-    public TMP_Text startTXT;
+    [SerializeField] private ZoneNewShrinking zone;
 
     [SerializeField] private int maxWinNum = 4;
-    [SerializeField] private GameObject endScreen;
     [SerializeField] private TMP_Text playerNicknameTXT;
+    static public int winnerID = 0;
 
-    bool gameOver = false;
+    public bool gameOver = false;
 
     [SerializeField] private GameObject[] playerAbilitiesUI;
     [SerializeField] private List<Image> abilityImage1; //первый скилл
@@ -44,6 +42,7 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private GameObject canvaUI;
     [SerializeField] private Animator animator1;
     [SerializeField] private Animator animator2;
+    [SerializeField] private GameObject resultScreen;
     bool firstgame = true;
 
     [SerializeField] private GameObject mobileUICanva;
@@ -69,7 +68,6 @@ public class GameManagerArena : MonoBehaviour
                 cameraScaler.Player2 = playersList[i];
         }
 
-        currentCountdown = maxCountdown;
         Time.timeScale = 0;
 
         firstgame = true;
@@ -82,8 +80,10 @@ public class GameManagerArena : MonoBehaviour
         }
 
         if (!firstgame)
-        {
-            StartCoroutine(StartGame());
+        { 
+            canvaREADY.SetActive(false);
+            canvaUI.SetActive(true);
+            resultScreen.SetActive(true);
             if (FindObjectOfType<pauseManager>() != null)
                 FindObjectOfType<pauseManager>().canPause = true;
         }
@@ -96,6 +96,7 @@ public class GameManagerArena : MonoBehaviour
 
     private void Update()
     {
+        //delete before final build \/
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             Time.timeScale = 5;
@@ -110,6 +111,7 @@ public class GameManagerArena : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        // delete before final build /\
 
         if (canvaREADY.activeSelf)
         {
@@ -202,6 +204,21 @@ public class GameManagerArena : MonoBehaviour
                     print("shouldWork");
                 }
 
+                switch (j)
+                {
+                    case 1: 
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Синий";
+                        break;
+                    case 2:
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Красный";
+                        break;
+                    case 3:
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зеленый";
+                        break;
+                    case 4:
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Желтый";
+                        break;
+                }
             }
         }
         else //по умолчанию (если без переключения между сценами)
@@ -216,10 +233,12 @@ public class GameManagerArena : MonoBehaviour
                 if (i == 0)
                 {
                     playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
+                    pl.GetComponent<ArenaPlayerManager>().nickname = "Синий";
                 }
                 else if (i == 1)
                 {
                     playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
+                    pl.GetComponent<ArenaPlayerManager>().nickname = "Красный";
                 }
                 //else if (i == 1)
                 //{
@@ -232,24 +251,13 @@ public class GameManagerArena : MonoBehaviour
             }
         }
     }
-    IEnumerator StartGame()
+    public IEnumerator StartGame()
     {
         canvaREADY.SetActive(false);
         canvaUI.SetActive(true);
-
-        while (currentCountdown > 0)
-        {
-            startTXT.text = currentCountdown.ToString();
-            yield return new WaitForSecondsRealtime(1);
-            this.GetComponent<AudioSource>().Play();
-            currentCountdown--;
-        }
-
-        startTXT.text = "Go!";
-        yield return new WaitForSecondsRealtime(1);
-
-        Time.timeScale = 1; 
-        startTXT.text = "";
+        Time.timeScale = 1;
+        zone.StartShrinking();
+        yield return null;
     }
 
 
@@ -257,7 +265,6 @@ public class GameManagerArena : MonoBehaviour
     public void CheckIfRoundEnd()
     {
         int count = 0;
-        int winnerID = 0;
         for (int i = 0; i < playersList.Count; i++)
         {
             if (playersList[i].GetComponent<ArenaPlayerManager>().dead == true)
@@ -294,6 +301,7 @@ public class GameManagerArena : MonoBehaviour
 
     IEnumerator EndGame(int winnerID)
     {
+        Time.timeScale = 0;
         for (int i = 0; i < 4; i++)
         {
             if (i < scoreCounters.Length)
@@ -301,24 +309,16 @@ public class GameManagerArena : MonoBehaviour
         }
 
         gameOver = true;
-        endScreen.SetActive(true);
+        resultScreen.SetActive(true);
         playerNicknameTXT.text = $"{playersList[winnerID].GetComponent<ArenaPlayerManager>().nickname} победил!";
+
+
+        yield return new WaitForSeconds(5f);
 
         for (int i = 0; i < winCounts.Count; i++)
         {
             winCounts[i] = 0;
-        }
-
-        yield return new WaitForSeconds(1.5f);
-
-        while (true)
-        {
-            if (Input.anyKey && gameOver)
-            {
-                SceneManager.LoadScene(0); //переход в меню (нужно сделать в buildSettings)
-            }
-            yield return new WaitForEndOfFrame();
-        }
+        } 
     }
 
     public void AddPlayer(GameObject player)

@@ -68,7 +68,35 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "d31d1013caf440e08629d4708ea43d78"
+                    "m_Id": "1e24ab39b6734fe7b8687495f847437a"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "346f7fa146054cdaae18c01335888bf2"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "88b390f4db524a09adbd853f925c2451"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "346f7fa146054cdaae18c01335888bf2"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "eb430c700c7d46288b133d03a0d8f458"
                 },
                 "m_SlotId": 0
             }
@@ -83,20 +111,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "fedd1d530abf47b2ad0e12517f8af5a3"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "d31d1013caf440e08629d4708ea43d78"
-                },
-                "m_SlotId": 2
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "1e24ab39b6734fe7b8687495f847437a"
                 },
                 "m_SlotId": 0
             }
@@ -290,10 +304,10 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"e75091649d7f072409afd9db04fa247a\",\"type\":3}}",
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"84e8002d47a68a345bb218d138613491\",\"type\":3}}",
         "m_Guid": ""
     },
-    "m_DefaultType": 0
+    "m_DefaultType": 3
 }
 
 {
@@ -334,7 +348,7 @@
             "r": 1.0,
             "g": 1.0,
             "b": 1.0,
-            "a": 0.003921568859368563
+            "a": 0.0
         },
         "mode": 0
     }
@@ -434,8 +448,8 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_TextureType": 0,
-    "m_NormalMapSpace": 0,
+    "m_TextureType": 1,
+    "m_NormalMapSpace": 1,
     "m_EnableGlobalMipBias": true,
     "m_MipSamplingMode": 0
 }

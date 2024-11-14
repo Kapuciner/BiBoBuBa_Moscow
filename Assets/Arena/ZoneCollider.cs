@@ -26,6 +26,8 @@ public class ZoneCollider : MonoBehaviour
     [SerializeField] float targetAudio;
     private void Start()
     {
+        
+
         volume.profile.TryGet<Vignette>(out vignette);
 
     }

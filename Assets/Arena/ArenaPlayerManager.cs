@@ -14,6 +14,7 @@ public class ArenaPlayerManager : MonoBehaviour
     private SpriteRenderer _sr;
     [SerializeField] private Animator _animator;
     private bool ready = false;
+    public int place = 4;
 
     [Header("Zone")]
     public bool insideTheZone = true;
@@ -139,6 +140,7 @@ public class ArenaPlayerManager : MonoBehaviour
         currentZoneDamageCooldown = -1;
         currentHP = maxHP;
         hpBar.maxValue = maxHP;
+        hpTXT.text = $"{currentHP}/{maxHP}";
         hpBar.value = currentHP;
         initialSpeed = SPEED;
     }
@@ -620,7 +622,7 @@ public class ArenaPlayerManager : MonoBehaviour
         {
             currentHP = 0;
             hpBar.value = currentHP;
-            hpTXT.text = $"{currentHP}/20";
+            hpTXT.text = $"{currentHP}/{maxHP}";
             if (!dead)
                 Die();
         }
@@ -630,7 +632,7 @@ public class ArenaPlayerManager : MonoBehaviour
             audio.Play();
             currentHP -= value;
             hpBar.value = currentHP;
-            hpTXT.text = $"{currentHP}/20";
+            hpTXT.text = $"{currentHP}/{maxHP}";
 
             GetComponent<SpriteRenderer>().color = Color.red;
             Invoke("ColorBack", 0.2f);
@@ -645,7 +647,7 @@ public class ArenaPlayerManager : MonoBehaviour
         audio.clip = deathPuff;
         audio.Play();
         dead = true;
-        hpTXT.text = $"{currentHP}/20";
+        hpTXT.text = $"{currentHP}/ {maxHP}";
         gm.CheckIfRoundEnd(); // did all players die?
     }
 
