@@ -15,6 +15,7 @@ public class ArenaPlayerManager : MonoBehaviour
     [SerializeField] private Animator _animator;
     private bool ready = false;
     public int place = 4;
+    public GameObject header;
 
     [Header("Zone")]
     public bool insideTheZone = true;
@@ -302,7 +303,7 @@ public class ArenaPlayerManager : MonoBehaviour
     }
     public void Cast()
     {
-        if (canDoStuff)
+        if (canDoStuff && !dead)
         {
             _animator.SetTrigger("cast");
             UseAbility();
@@ -318,7 +319,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void Hit()
     {
-        if (canDoStuff)
+        if (canDoStuff && !dead)
         {
             if (hitCurrentCooldown < 0)
             {
@@ -649,6 +650,20 @@ public class ArenaPlayerManager : MonoBehaviour
         dead = true;
         hpTXT.text = $"{currentHP}/ {maxHP}";
         gm.CheckIfRoundEnd(); // did all players die?
+
+        Invoke("DisappearFromTheMap", 1f);
+
+        this.gameObject.tag = "Cloud"; //tag for dead people so that it wouldn't trigger anything important. Dont want to make new tags so im using this one.
+        if (insideTheZone)
+            FindObjectOfType<ZoneCollider>().DiedInsideTheZone(true);
+        else
+            FindObjectOfType<ZoneCollider>().DiedInsideTheZone(false);
+    }
+
+    void DisappearFromTheMap()
+    {
+        header.SetActive(false);
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void ColorBack()

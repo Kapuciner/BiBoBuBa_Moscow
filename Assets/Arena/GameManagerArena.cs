@@ -109,9 +109,11 @@ public class GameManagerArena : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
+            _connectionData = null;
+            winCounts = new List<int>() { 0, 0, 0, 0 };
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        // delete before final build /\
+        // delete before final build  /\
 
         if (canvaREADY.activeSelf)
         {
@@ -223,10 +225,10 @@ public class GameManagerArena : MonoBehaviour
         }
         else //по умолчанию (если без переключения между сценами)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
-                pl.GetComponent<ArenaPlayerManager>().playerID = playersList.Count;
+                pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
                 AddPlayer(pl);
                 var playerInput = pl.GetComponent<PlayerInput>();
 
@@ -240,12 +242,32 @@ public class GameManagerArena : MonoBehaviour
                     playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
                     pl.GetComponent<ArenaPlayerManager>().nickname = "Красный";
                 }
-                //else if (i == 1)
-                //{
-                //  playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
-                //}
-
-                // для теста геймпада, поменять последний if на тот, что выше
+                else if (i == 2) // Третий игрок - геймпад 1
+                {
+                    var gamepad1 = Gamepad.all.Count > 0 ? Gamepad.all[0] : null;
+                    if (gamepad1 != null)
+                    {
+                        playerInput.SwitchCurrentControlScheme("Gamepad", gamepad1);
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зелёный";
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Геймпад 1 не подключён!");
+                    }
+                }
+                else if (i == 3) // Четвёртый игрок - геймпад 2
+                {
+                    var gamepad2 = Gamepad.all.Count > 1 ? Gamepad.all[1] : null;
+                    if (gamepad2 != null)
+                    {
+                        playerInput.SwitchCurrentControlScheme("Gamepad", gamepad2);
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Жёлтый";
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Геймпад 2 не подключён!");
+                    }
+                }
 
 
             }
@@ -348,4 +370,19 @@ public class GameManagerArena : MonoBehaviour
     {
         return playersList.Count;
     }
+
+    public int getAlivePlayerCount()
+    {
+        int count = 0;
+        for (int i = 0; i < playersList.Count; i++)
+        {
+            if (playersList[i].GetComponent<ArenaPlayerManager>().dead == false)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
 }

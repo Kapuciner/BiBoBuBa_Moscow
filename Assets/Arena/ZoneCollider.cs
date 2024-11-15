@@ -26,10 +26,7 @@ public class ZoneCollider : MonoBehaviour
     [SerializeField] float targetAudio;
     private void Start()
     {
-        
-
         volume.profile.TryGet<Vignette>(out vignette);
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,10 +36,7 @@ public class ZoneCollider : MonoBehaviour
             numOfPlayersInZone++;
             other.GetComponent<ArenaPlayerManager>().insideTheZone = true;
 
-            print($"in zone Count {numOfPlayersInZone}");
-            print($"player Count {gma.getPlayerCount()}");
-
-            if (numOfPlayersInZone == gma.getPlayerCount() && makeDark != null)
+            if (numOfPlayersInZone == gma.getAlivePlayerCount() && makeDark != null)
             {
                 StopCoroutine(makeDark);
                 makeBright = StartCoroutine(ScreenLightens());
@@ -97,5 +91,20 @@ public class ZoneCollider : MonoBehaviour
         vignette.smoothness.value = initialSmoothness;
         vignette.color.value = initialColor;
         makeBright = null;
+    }
+
+    public void DiedInsideTheZone(bool deadInside)
+    {
+        if (deadInside)
+            numOfPlayersInZone--;
+        else
+        {
+            if (numOfPlayersInZone == gma.getAlivePlayerCount() && makeDark != null)
+            {
+                StopCoroutine(makeDark);
+                makeBright = StartCoroutine(ScreenLightens());
+                makeDark = null;
+            }
+        }
     }
 }
