@@ -10,6 +10,7 @@ public class ResultScreenArena : MonoBehaviour
     [SerializeField] private TMP_Text[] placesText;
 
     [SerializeField] private GameObject[] playerIMG;
+    [SerializeField] private GameObject[] RedCrosses;
 
     [SerializeField] private GameObject[] firstPlayersStars;
     [SerializeField] private GameObject[] secondPlayersStars;
@@ -40,14 +41,22 @@ public class ResultScreenArena : MonoBehaviour
 
     private void Update()
     {
-        animators[0].Update(Time.unscaledDeltaTime);
-        animators[1].Update(Time.unscaledDeltaTime);
-        animators[2].Update(Time.unscaledDeltaTime);
-        animators[3].Update(Time.unscaledDeltaTime);
+        for (int i = 0; i < animators.Length; i++)
+        {
+            animators[i].Update(Time.unscaledDeltaTime);
+        }
     }
 
     IEnumerator ShowResult()
     {
+        for (int i = 0; i < RedCrosses.Length; i++)
+        {
+            if (i < gma.getPlayerCount())
+            {
+                RedCrosses[i].SetActive(false);
+            }
+        }
+
         ShowStars();
         for (int i = 0; i < gma.getPlayerCount(); i++)
         {
@@ -61,7 +70,7 @@ public class ResultScreenArena : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.2f);
 
-        //the last star shows up (the new one)
+        //the last star shows up (the new one)/
         for (int j = 0; j < GameManagerArena.winCounts[GameManagerArena.winnerID]; j++)
         {
             allPlayersStars[GameManagerArena.winnerID][j].SetActive(true);

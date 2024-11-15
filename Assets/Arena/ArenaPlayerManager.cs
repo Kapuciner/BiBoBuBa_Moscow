@@ -31,6 +31,8 @@ public class ArenaPlayerManager : MonoBehaviour
     public TMP_Text hpTXT;
     public TMP_Text readyTXT;
     public List<string> Skill = new List<string> { "", "" };
+    public GameObject cross;
+    public GameObject fireUI;
 
     [Header("HP and stuff")]
     public bool dead = false;
@@ -642,6 +644,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     public void Die()
     {
+        cross.SetActive(true);
         fireIMG.SetActive(false);
         _rb.constraints = RigidbodyConstraints.FreezeAll;
         _animator.SetTrigger("Death");
@@ -679,6 +682,7 @@ public class ArenaPlayerManager : MonoBehaviour
 
     IEnumerator Burn()
     {
+        fireUI.SetActive(true);
         audio2.clip = soundOnFire;
         audio2.Play();
         float passed = 0;
@@ -691,7 +695,7 @@ public class ArenaPlayerManager : MonoBehaviour
             TakeDamage(1);
         }
         fireIMG.SetActive(false);
-
+        fireUI.SetActive(false);
         burnCoroutine = null;
     }
 
@@ -704,6 +708,7 @@ public class ArenaPlayerManager : MonoBehaviour
             fireIMG.SetActive(false);
             audio2.clip = extinguishFire;
             audio2.Play();
+            fireUI.SetActive(false);
         }
     }
 

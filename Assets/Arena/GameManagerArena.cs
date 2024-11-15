@@ -21,6 +21,8 @@ public class GameManagerArena : MonoBehaviour
 
     public bool gameOver = false;
 
+    [SerializeField] private GameObject[] readyCrosses;
+
     [SerializeField] private GameObject[] playerAbilitiesUI;
     [SerializeField] private List<Image> abilityImage1; //первый скилл
     [SerializeField] private List<Image> abilityImage2; //второй скилл
@@ -30,6 +32,8 @@ public class GameManagerArena : MonoBehaviour
     [SerializeField] private List<TMP_Text> hpTXT;
     [SerializeField] private List<TMP_Text> readyTXT;
     [SerializeField] private TMP_Text timerForReady;
+    [SerializeField] private GameObject[] crosses;
+    [SerializeField] private GameObject[] fireUI;
 
 
     [SerializeField] private ConnectionData _connectionData;
@@ -40,8 +44,7 @@ public class GameManagerArena : MonoBehaviour
     public static int playersReady = 0;
     [SerializeField] private GameObject canvaREADY;
     [SerializeField] private GameObject canvaUI;
-    [SerializeField] private Animator animator1;
-    [SerializeField] private Animator animator2;
+    [SerializeField] private Animator[] animators;
     [SerializeField] private GameObject resultScreen;
     bool firstgame = true;
 
@@ -117,8 +120,10 @@ public class GameManagerArena : MonoBehaviour
 
         if (canvaREADY.activeSelf)
         {
-            animator1.Update(Time.unscaledDeltaTime);
-            animator2.Update(Time.unscaledDeltaTime);
+            for (int i = 0; i < animators.Length; i++)
+            {
+                animators[i].Update(Time.unscaledDeltaTime);
+            }
         }
     }
 
@@ -223,22 +228,27 @@ public class GameManagerArena : MonoBehaviour
                 }
             }
         }
-        else //по умолчанию (если без переключения между сценами)
+        else //по умолчанию (если без переключения между сценами) DEFAULT (IF YOU START BY NOT ENTERING LOBBY, E.G. WITH UNITY
         {
             for (int i = 0; i < 4; i++)
             {
-                GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
-                pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
-                AddPlayer(pl);
-                var playerInput = pl.GetComponent<PlayerInput>();
-
                 if (i == 0)
                 {
+                    GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                    pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;.
+                    AddPlayer(pl);
+                    var playerInput = pl.GetComponent<PlayerInput>();
+
                     playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
                     pl.GetComponent<ArenaPlayerManager>().nickname = "Синий";
                 }
                 else if (i == 1)
                 {
+                    GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                    pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
+                    AddPlayer(pl);
+                    var playerInput = pl.GetComponent<PlayerInput>();
+
                     playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
                     pl.GetComponent<ArenaPlayerManager>().nickname = "Красный";
                 }
@@ -247,6 +257,11 @@ public class GameManagerArena : MonoBehaviour
                     var gamepad1 = Gamepad.all.Count > 0 ? Gamepad.all[0] : null;
                     if (gamepad1 != null)
                     {
+                        GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                        pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
+                        AddPlayer(pl);
+                        var playerInput = pl.GetComponent<PlayerInput>();
+
                         playerInput.SwitchCurrentControlScheme("Gamepad", gamepad1);
                         pl.GetComponent<ArenaPlayerManager>().nickname = "Зелёный";
                     }
@@ -260,6 +275,11 @@ public class GameManagerArena : MonoBehaviour
                     var gamepad2 = Gamepad.all.Count > 1 ? Gamepad.all[1] : null;
                     if (gamepad2 != null)
                     {
+                        GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
+                        pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
+                        AddPlayer(pl);
+                        var playerInput = pl.GetComponent<PlayerInput>();
+
                         playerInput.SwitchCurrentControlScheme("Gamepad", gamepad2);
                         pl.GetComponent<ArenaPlayerManager>().nickname = "Жёлтый";
                     }
@@ -270,6 +290,14 @@ public class GameManagerArena : MonoBehaviour
                 }
 
 
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < playersList.Count)
+            {
+                readyCrosses[i].SetActive(false);
             }
         }
     }
@@ -355,6 +383,9 @@ public class GameManagerArena : MonoBehaviour
         player.GetComponent<ArenaPlayerManager>().hpBar = hpBar[playersList.Count - 1];
         player.GetComponent<ArenaPlayerManager>().hpTXT = hpTXT[playersList.Count - 1];
         player.GetComponent<ArenaPlayerManager>().readyTXT = readyTXT[playersList.Count - 1];
+        player.GetComponent<ArenaPlayerManager>().cross = crosses[playersList.Count - 1];
+        player.GetComponent<ArenaPlayerManager>().fireUI = fireUI[playersList.Count - 1];
+        scoreCounters[playersList.Count - 1].gameObject.SetActive(true);
     }
 
     void ShowUI(int playerID)

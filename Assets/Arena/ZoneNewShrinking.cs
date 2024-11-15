@@ -13,14 +13,17 @@ public class ZoneNewShrinking : MonoBehaviour
 
     [SerializeField] bool repetitiveMode = false;
 
+    [SerializeField] private ZoneProjector zoneProjector;
+
     private void Start()
     {
         this.transform.position = new Vector3(0, 0, 0);
-        this.transform.position += new Vector3(Random.Range(-25, 25), 0, Random.Range(-25, 25));
+        this.transform.position += new Vector3(Random.Range(-23, 23), 0, Random.Range(-23, 23));
     }
     public void StartShrinking()
     {
         StartCoroutine(ShrinkAndExpand());
+        StartCoroutine(zoneProjector.StartMarking(minimumScale, this.transform.position, (maximumScale - minimumScale) / shrinkSpeed));
     }
 
     IEnumerator ShrinkAndExpand()
@@ -50,6 +53,7 @@ public class ZoneNewShrinking : MonoBehaviour
 
     void StartIncrease()
     {
+        StartCoroutine(zoneProjector.SetDefaultSize());
         increase = true;
     }
 
@@ -59,9 +63,12 @@ public class ZoneNewShrinking : MonoBehaviour
             minimumScale -= 3;
         if (minimumScale < 8)
             minimumScale = 8;
+
         shrinkSpeed += 5f;
         decrease = true;
         this.transform.position = new Vector3(0, 0, 0);
         this.transform.position += new Vector3(Random.Range(-25, 25), 0, Random.Range(-25, 25));
+
+        StartCoroutine(zoneProjector.StartMarking(minimumScale, this.transform.position, (maximumScale - minimumScale)/shrinkSpeed));
     }
 }
