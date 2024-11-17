@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -204,6 +205,7 @@ public class PlayerController : MonoBehaviour
         if (_type.Skills != VegetableType.SkillSet.watermelon)
         {
             GetComponent<R_Player>().SoundPlayer.Play(_type.AbilitySound);
+            
         }
         _abilityTimer = _type.abilityCooldown;
     }

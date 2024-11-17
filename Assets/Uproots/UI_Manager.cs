@@ -20,6 +20,7 @@ public class UI_Manager : MonoBehaviour
         {
             portrait.GetComponentInChildren<RespawnTimer>().gameObject.SetActive(false);
         }
+        DisableExcessUI();
     }
 
     public HealthBar GetHealthBar(int id)
@@ -53,5 +54,21 @@ public class UI_Manager : MonoBehaviour
     public CooldownSlider GetCooldownSlider(int id)
     {
         return portraits[id].GetComponentInChildren<CooldownSlider>();
+    }
+
+    public void DisableExcessUI()
+    {
+        if (GameObject.FindObjectOfType<PlayerSpawner>().players.Count == 2)
+        {
+            portraits[2].gameObject.SetActive(false);
+            portraits[3].gameObject.SetActive(false);
+            GetPointsBar(2).gameObject.SetActive(false);
+            GetPointsBar(3).gameObject.SetActive(false);
+        }
+        if (GameObject.FindObjectOfType<PlayerSpawner>().players.Count == 3)
+        {
+            portraits[3].gameObject.SetActive(false);
+            GetPointsBar(3).gameObject.SetActive(false);
+        }
     }
 }

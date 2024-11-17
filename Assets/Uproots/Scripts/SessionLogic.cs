@@ -12,6 +12,8 @@ public class SessionLogic : MonoBehaviour
 
     public R_Player P1;
     public R_Player P2;
+    public R_Player P3;
+    public R_Player P4;
     
     private RootZone zone;
 
@@ -20,25 +22,50 @@ public class SessionLogic : MonoBehaviour
     public float GameTime = 240f;
 
     private bool _gameFinished = false;
+
+    public List<R_Player> Players;
     private void Start()
     {
-        P1 = FindObjectOfType<PlayerSpawner>().players[0];
-        P2 = FindObjectOfType<PlayerSpawner>().players[1];
+        Players = FindObjectOfType<PlayerSpawner>().players;
+        
+        // P1 = FindObjectOfType<PlayerSpawner>().players[0];
+        // P2 = FindObjectOfType<PlayerSpawner>().players[1];
+        // P3 = FindObjectOfType<PlayerSpawner>().players[2];
+        // P4 = FindObjectOfType<PlayerSpawner>().players[3];
+        
+        
         
         zone = GameObject.FindObjectOfType<RootZone>();
-        P1.PointsBar.SetMaxValue(PointsToWin);
-        P2.PointsBar.SetMaxValue(PointsToWin);
+        // P1.PointsBar.SetMaxValue(PointsToWin);
+        // P2.PointsBar.SetMaxValue(PointsToWin);
+        // P3.PointsBar.SetMaxValue(PointsToWin);
+        // P4.PointsBar.SetMaxValue(PointsToWin);
 
-        P1.PlayerDies += () => { StartCoroutine(DeathRoutine(P1));};
-        P2.PlayerDies += () => { StartCoroutine(DeathRoutine(P2));};
+        foreach (var player in Players)
+        {
+            player.PointsBar.SetMaxValue(PointsToWin);
+            player.PlayerDies += () => { StartCoroutine(DeathRoutine(player));};
+        }
+
+        // P1.PlayerDies += () => { StartCoroutine(DeathRoutine(P1));};
+        // P2.PlayerDies += () => { StartCoroutine(DeathRoutine(P2));};
+        // P3.PlayerDies += () => { StartCoroutine(DeathRoutine(P3));};
+        // P4.PlayerDies += () => { StartCoroutine(DeathRoutine(P4));};
 
         _time = GameTime;
     }
 
     private void Update()
     {
-        P1.PointsBar.SetValue(P1.Points);
-        P2.PointsBar.SetValue(P2.Points);
+        // P1.PointsBar.SetValue(P1.Points);
+        // P2.PointsBar.SetValue(P2.Points);
+        // P3.PointsBar.SetValue(P2.Points);
+        // P4.PointsBar.SetValue(P2.Points);
+        foreach (var player in Players)
+        {
+            player.PointsBar.SetValue(player.Points);
+        }
+            
         if (zone.RootedPlayer != null)
         {
             zone.RootedPlayer.Points += PointsPerSecond * Time.deltaTime;
@@ -67,12 +94,18 @@ public class SessionLogic : MonoBehaviour
 
     private R_Player GetPlayerWithMaximumPoints()
     {
-        if (P1.Points >= P2.Points)
+        var result = Players[0];
+        float max = 0;
+        foreach (var player in Players)
         {
-            return P1;
+            if (player.Points > max)
+            {
+                max = player.Points;
+                result = player;
+            }
         }
 
-        return P2;
+        return result;
     }
     private IEnumerator DeathRoutine(R_Player player)
     {
@@ -90,9 +123,14 @@ public class SessionLogic : MonoBehaviour
         player.Reset(player.VegetableType);
     }
 
-    public void StartGame(VegetableType _P1, VegetableType _P2)
+    public void StartGame(List<PlayerSelection.Selection> selections)
     {
-        P1.Reset(_P1);
-        P2.Reset(_P2);
+        int i = 0;
+        foreach (var selection in selections)
+        {
+            Players[i].Reset(selection.selectionInterface.SelectedType);
+            Players[i].controller.SetCanMove(true);
+            i++;
+        }
     }
 }

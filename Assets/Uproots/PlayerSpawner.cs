@@ -31,6 +31,8 @@ public class PlayerSpawner : MonoBehaviour
         int i = 0;
         R_Player P1 = null;
         R_Player P2 = null;
+        R_Player P3 = null;
+        R_Player P4 = null;
         foreach (var p in _connectionData.ConnectedPlayersData())
         {
             GameObject player_obj = Instantiate(_playerPrefab);
@@ -43,9 +45,18 @@ public class PlayerSpawner : MonoBehaviour
             {
                 P2 = player;
             }
+            else if (i==2)
+            {
+                P3 = player;
+            }
+            else if (i==3)
+            {
+                P4 = player;
+            }
             players.Add(player);
             
             player.SpawnPoint = _spawners[i];
+            player.transform.position = player.SpawnPoint.transform.position;
             // player.SetIndex(p.playerID);
             var p_input = PlayerInput.FindFirstPairedToDevice(p.Device);
             var controller = p_input.gameObject.GetComponent<R_InputHandler>();
@@ -66,7 +77,7 @@ public class PlayerSpawner : MonoBehaviour
             controller.controlledPlayer = player;
             i++;
         }
-        FindObjectOfType<CameraScaler>().SetPlayers(P1, P2);
+        FindObjectOfType<CameraScaler>().SetPlayers(P1, P2, P3, P4);
     }
     
     private void sssSpawnPlayers()

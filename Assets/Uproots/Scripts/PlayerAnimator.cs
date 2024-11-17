@@ -103,11 +103,13 @@ public class PlayerAnimator : MonoBehaviour
     IEnumerator DeathRoutine()
     {
         SetAnimation(PLAYER_DEATH);
+        yield return new WaitForEndOfFrame();
         canAnimationBeChanged = false;
         _controller.SetCanMove(false);
         _controller.StopImmediate();
         _controller.CanAttack = false;
         float time = GetCurrentAnimationLength();
+        print(time);
         StartCoroutine(DragDown(time));
         yield return new WaitForSeconds(time);
         _player.gameObject.SetActive(false);

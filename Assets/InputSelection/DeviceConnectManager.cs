@@ -25,6 +25,8 @@ public class DeviceConnectManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI GameStartingText;
 
     [SerializeField] private GameObject DeviceSelectionUI;
+
+    [SerializeField] private float ReadyTime;
     
     private void Awake()
     {
@@ -70,12 +72,26 @@ public class DeviceConnectManager : MonoBehaviour
 
     private IEnumerator ReadyRoutine()
     {
-        GetComponent<PlayerInputManager>().DisableJoining();
         GameStartingText.gameObject.SetActive(true);
         float elapsed = 0;
-        float time = 1.1f;
+        float time = ReadyTime;
+        int prev_count = ConnectedCount;
         while (elapsed < time)
         {
+            //заново таймер когда люди заходят/выходят
+            if (ConnectedCount != prev_count)
+            {
+                prev_count = ConnectedCount;
+                elapsed = 0;
+            }
+            if (ConnectedCount == 4)
+            {
+                GetComponent<PlayerInputManager>().DisableJoining();
+            }
+            else
+            {
+                GetComponent<PlayerInputManager>().EnableJoining();
+            }
             GameStartingText.text = "Начало через " + (time-elapsed).ToString("F1") + "с";
             if (ConnectedCount < 2)
             {
@@ -242,4 +258,51 @@ public class DeviceConnectManager : MonoBehaviour
     {
         return _connectionData.GetPlayerCount();
     }
+
+    public void OnDeviceDisconnect(DeviceSelection disconnectedSelection)
+    {
+        int index = disconnectedSelection.GetIndex();
+        if (IsSelectionAGap(disconnectedSelection))
+        {
+            for (int i = index + 1; i < _deviceSelections.Count; i++)
+            {
+                if (_deviceSelections[i].Selected)
+                {
+                    if (_kbSelection1 == _deviceSelections[i])
+                    {
+                        _kbSelection1 = disconnectedSelection;
+                    }
+                    if (_kbSelection2 == _deviceSelections[i])
+                    {
+                        _kbSelection2 = disconnectedSelection;
+                    }
+                    disconnectedSelection.Connect(_deviceSelections[i].Device);
+                    _deviceSelections[i].DisconnectButLeaveDevice();
+                    return;
+                }
+            } 
+        }
+    }
+
+    private bool IsSelectionAGap(DeviceSelection selection)
+    {
+        int index = selection.GetIndex();
+
+        bool right = false;
+        for (int i = index + 1; i < _deviceSelections.Count; i++)
+        {
+            if (_deviceSelections[i].Selected)
+            {
+                right = true;
+            }
+        }
+
+        if (right && selection.Selected == false)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
 }

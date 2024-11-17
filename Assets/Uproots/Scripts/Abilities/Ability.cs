@@ -8,4 +8,8 @@ public class Ability
     {
         
     }
+    public virtual void Interrupt()
+    {
+        
+    }
 }

@@ -110,7 +110,7 @@ public class Connector : MonoBehaviour
         }
         _notMoving_KB2 = false;
         value = context.ReadValue<Vector2>();
-        print(_targetPlayer);
+        //print(_targetPlayer);
         _targetPlayer.Move(value);
     }
 }

@@ -9,7 +9,7 @@ public class MelonAbility : Ability
     {
         _caster = caster;
         _speed = speed;
-        lineRenderer = _caster.GetComponentInChildren <LineRenderer>();
+        lineRenderer = _caster.GetComponentInChildren<LineRenderer>();
     }
     
     GameObject projectile =
@@ -17,11 +17,18 @@ public class MelonAbility : Ability
     
     public override void Cast()
     {
-        GameObject.FindObjectOfType<MonoHandler>().StartCoroutine(Delay(0.6f));
+        routine = GameObject.FindObjectOfType<MonoHandler>().StartCoroutine(Delay(0.6f));
     }
-    
+
+    private Coroutine routine;
+    public override void Interrupt()
+    {
+        elapsed = 6f - Time.deltaTime;
+    }
+
     private R_Player _caster;
     private float _speed;
+    private float elapsed;
     IEnumerator Delay(float t)
     {
         lineRenderer.gameObject.SetActive(true);
@@ -31,7 +38,7 @@ public class MelonAbility : Ability
         _caster.controller.StopImmediate();
         
         float duration = 6f;
-        float elapsed = 0;
+        elapsed = 0;
         float cd = 0.65f;
         float timer = cd;
         while (elapsed < duration)

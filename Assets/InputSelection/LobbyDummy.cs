@@ -31,6 +31,12 @@ public class LobbyDummy : MonoBehaviour
         _canMove = true;
         var players = FindObjectsOfType<LobbyDummy>();
         _animator.SetInteger("playerID", players.Length - 1);
+
+        //затычка пока
+        if (players.Length - 1 > 1)
+        {
+            _animator.SetInteger("playerID", 0);
+        }
     }
 
     private void Update()

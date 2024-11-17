@@ -9,6 +9,12 @@ public class ConnectManager : MonoBehaviour
 {
     [SerializeField] private PlayerInputManager _playerInputManager;
     [SerializeField] private ConnectionData _connectionData;
+
+    public int GetPlayerCount()
+    {
+        return _connectionData.GetPlayerCount();
+    }
+    
     private void Start()
     {
         ConnectPlayers();

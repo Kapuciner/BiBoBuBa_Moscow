@@ -52,6 +52,7 @@ public class R_InputHandler : MonoBehaviour
         
         foreach (var player in players)
         {
+            print(player.GetIndex());
             if (player.GetIndex() == index)
             {
                 controlledPlayer = player;

@@ -53,7 +53,17 @@ public class DeviceSelection : MonoBehaviour
         Device = null;
         _connectManager.ConnectedCount--;
         ShowSelectionSprite();
+        _connectManager.OnDeviceDisconnect(this);
         Destroy(PlayerInput.FindFirstPairedToDevice(device));
+    }
+
+    public void DisconnectButLeaveDevice()
+    {
+        Selected = false;
+        Device = null;
+        _connectManager.ConnectedCount--;
+        ShowSelectionSprite();
+        _connectManager.OnDeviceDisconnect(this);
     }
 
     public int GetIndex()

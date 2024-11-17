@@ -491,8 +491,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   P1P2: {fileID: 750255317579717393}
-  P1: {fileID: 263683134, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
-  P2: {fileID: 647669886, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
+  p1p2p3p4:
+  - {fileID: 263683134, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
+  - {fileID: 647669886, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
+  - {fileID: 1295817321, guid: 9bc84cb55e9c09e478c6f5ac765f5187, type: 3}
+  - {fileID: 2118825358, guid: 9bc84cb55e9c09e478c6f5ac765f5187, type: 3}
 --- !u!95 &884456977
 Animator:
   serializedVersion: 5

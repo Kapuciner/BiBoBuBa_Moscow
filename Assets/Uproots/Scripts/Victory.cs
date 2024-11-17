@@ -23,12 +23,7 @@ public class Victory : MonoBehaviour
         Time.timeScale = 1;
 
         Sprite screen;
-        if (winner.GetIndex() == 0)
-        {
-            screen = P1win;
-        }
-        else screen = P2win;
-        
+        screen = FindObjectOfType<UI_Manager>().GetVictoryScreen(winner.GetIndex());
         
         image.sprite = screen;
         StartCoroutine(Delay());

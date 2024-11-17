@@ -87,10 +87,16 @@ public class ConnectionData : ScriptableObject
         ClearPlayerData(p2_controlData);
         ClearPlayerData(p3_controlData);
         ClearPlayerData(p4_controlData);
+        
     }
 
     private void ClearPlayerData(PlayerControlData playerControlData)
     {
+        p1_controlData = new PlayerControlData();
+        p2_controlData = new PlayerControlData();
+        p3_controlData = new PlayerControlData();
+        p4_controlData = new PlayerControlData();
+        return;
         playerControlData.Device = null;
         playerControlData.playerID = 0;
         playerControlData._isConnected = false;

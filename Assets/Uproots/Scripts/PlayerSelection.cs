@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class PlayerSelection : MonoBehaviour
 {
-    public SelectionInterface LeftSelection;
-    private class Selection 
+    public class Selection 
     {
         public R_Player assignedPlayer;
         public SelectionInterface selectionInterface;
@@ -43,8 +42,10 @@ public class PlayerSelection : MonoBehaviour
 
     //public SelectionInterface selection1;
     //public SelectionInterface selection2;
-    private Selection _selectionLeft;
-    private Selection _selectionRight;
+    private Selection _selection1;
+    private Selection _selection2;
+    private Selection _selection3;
+    private Selection _selection4;
     private int id1;
     private int id2;
 
@@ -55,12 +56,37 @@ public class PlayerSelection : MonoBehaviour
     private bool _gameStarted = false;
     
     public List<VegetableType> VegetableTypes;
-
+    private List<Selection> _selections;
     private void Start()
     {
-        _selectionLeft = new Selection(0, VegetableTypes[0], 0);
-        _selectionRight = new Selection(1, VegetableTypes[0], 0);
-
+        _selections = new List<Selection>();
+        _selection1 = new Selection(0, VegetableTypes[0], 0);
+        _selection2 = new Selection(1, VegetableTypes[0], 0);
+        _selections.Add(_selection1);
+        _selections.Add(_selection2);
+        if (GameObject.FindObjectOfType<PlayerSpawner>().players.Count > 2)
+        {
+            if (GameObject.FindObjectOfType<PlayerSpawner>().players.Count == 3)
+            {
+                _selection3 = new Selection(2, VegetableTypes[0], 0);
+                _selections.Add(_selection3);
+            }
+            else if (GameObject.FindObjectOfType<PlayerSpawner>().players.Count == 4)
+            {
+                _selection3 = new Selection(2, VegetableTypes[0], 0);
+                _selection4 = new Selection(3, VegetableTypes[0], 0);
+                _selections.Add(_selection3);
+                _selections.Add(_selection4);
+            }
+        }
+        var interfaces = FindObjectsOfType<SelectionInterface>();
+        foreach (var i in interfaces)
+        {
+            if (i.CorrespondingPlayerIndex >= GameObject.FindObjectOfType<PlayerSpawner>().players.Count)
+            {
+                i.gameObject.SetActive(false);
+            }
+        }
         //selection1.SetVegetable(VegetableTypes[0]);
         //selection2.SetVegetable(VegetableTypes[0]);
         //id1 = 0;
@@ -71,15 +97,9 @@ public class PlayerSelection : MonoBehaviour
 
     public void ShiftSelection(int playerIndex, int increment)
     {
-        Selection s;
-        if (playerIndex == 0)
-        {
-            s = _selectionLeft;
-        }
-        else
-        {
-            s = _selectionRight;
-        }
+        Selection s = GetSelectionFromIndex(playerIndex);
+
+        
         if (s.selectionInterface.SelectedType == null)
         {
             s.selectionIndex += increment;
@@ -97,9 +117,15 @@ public class PlayerSelection : MonoBehaviour
     }
     private void Update()
     {
-        
-        if (_selectionLeft.selectionInterface.SelectedType != null 
-            && _selectionRight.selectionInterface.SelectedType != null)
+        bool allSelected = true;
+        foreach (var selection in _selections)
+        {
+            if (selection.selectionInterface.SelectedType == null)
+            {
+                allSelected = false;
+            }
+        }
+        if (allSelected)
         {
             StartGame();
         }
@@ -111,15 +137,7 @@ public class PlayerSelection : MonoBehaviour
         {
             return;
         }
-        Selection s;
-        if (playerIndex == 0)
-        {
-            s = _selectionLeft;
-        }
-        else
-        {
-            s = _selectionRight;
-        }
+        Selection s = GetSelectionFromIndex(playerIndex);
 
         if (s.selectionInterface.SelectedType == null)
         {
@@ -137,11 +155,33 @@ public class PlayerSelection : MonoBehaviour
     IEnumerator StartG()
     {
         yield return new WaitForSeconds(0.5f);
-        FindObjectOfType<SessionLogic>().StartGame(_selectionLeft.selectionInterface.SelectedType,
-            _selectionRight.selectionInterface.SelectedType);
+        FindObjectOfType<SessionLogic>().StartGame(_selections);
         gameObject.SetActive(false);
         if (FindObjectOfType<pauseManager>() != null)
             FindObjectOfType<pauseManager>().canPause = true;
         
+    }
+
+    private Selection GetSelectionFromIndex(int playerIndex)
+    {
+        Selection s;
+        if (playerIndex == 0)
+        {
+            s = _selection1;
+        }
+        else if (playerIndex == 1)
+        {
+            s = _selection2;
+        }
+        else if (playerIndex == 2)
+        {
+            s = _selection3;
+        }
+        else 
+        {
+            s = _selection4;
+        }
+
+        return s;
     }
 }

@@ -18,11 +18,20 @@ public class MenuManager : MonoBehaviour
     {
         Cursor.visible = false;
         GameManagerArena.winCounts = new List<int>() { 0, 0, 0, 0 };
-
+        
+        
+        
         if (alreadyChosenControl == false)
         {
             _connectionData.Clear();
             print("обнулили контроль при запуске игры");
+        }
+        
+        for (int i = 0; i < _connectionData.ConnectedPlayersData().Count; i++)
+        {
+            print(i.ToString() + _connectionData.ConnectedPlayersData()[i].Device.ToString());
+            print(i.ToString() + _connectionData.ConnectedPlayersData()[i]._isConnected.ToString());
+            print(i.ToString() + _connectionData.ConnectedPlayersData()[i].playerID.ToString());
         }
     }
 
@@ -46,7 +55,5 @@ public class MenuManager : MonoBehaviour
     static void OnBeforeSceneLoadRuntimeMethod()
     {
         alreadyChosenControl = false;
-        
-
     }
 }

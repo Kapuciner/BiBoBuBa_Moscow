@@ -27,15 +27,26 @@ public class LobbyManager : MonoBehaviour
     {
         int count = 0;
         var players = _connectionData.ConnectedPlayersData();
+        print("spawning: " + _connectionData.ConnectedPlayersData().Count + "players:");
+        for (int i = 0; i < _connectionData.ConnectedPlayersData().Count; i++)
+        {
+            print("player " + i.ToString() + ": " + _connectionData.ConnectedPlayersData()[i].Device.ToString());
+        }
         foreach (var player in players)
         {
+            if (PlayerInput.FindFirstPairedToDevice(player.Device) == null)
+            {
+                continue;
+            }
             GameObject p = Instantiate(DummyPrefab);
             var d = p.GetComponent<LobbyDummy>();
             var p_input = PlayerInput.FindFirstPairedToDevice(player.Device);
             Players.Add(d);
             d.PlayerIndex = count;
             count++;
-
+            
+            
+            
             var controller = p_input.gameObject.GetComponent<Connector>();
 
             if (player.Device is Keyboard)

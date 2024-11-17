@@ -44,8 +44,7 @@ public class R_Player : MonoBehaviour
     public PlayerController.PlayerAction PlayerDies;
 
     public Image P1P2;
-    public Sprite P1;
-    public Sprite P2;
+    public List<Sprite> p1p2p3p4;
 
     private void Awake()
     {
@@ -56,11 +55,7 @@ public class R_Player : MonoBehaviour
         Portrait = FindObjectOfType<UI_Manager>().GetPortrait(index);
         RespawnTimer = FindObjectOfType<UI_Manager>().GetRespawnTimer(index);
         controller.CooldownSlider = FindObjectOfType<UI_Manager>().GetCooldownSlider(index);
-        if (index == 0)
-        {
-            P1P2.sprite = P1;
-        }
-        else P1P2.sprite = P2;
+        P1P2.sprite = p1p2p3p4[index];
     }
 
     private void Start()
@@ -91,12 +86,12 @@ public class R_Player : MonoBehaviour
 
 
         var _animator = GetComponent<PlayerAnimator>();
-        if (GetIndex() == 0)
+        if (GetIndex() == 0 || GetIndex() == 2)
         {
             _animator.SetAnimator(vegetableType.Animator);
             Portrait.sprite = vegetableType.Portrait;
         }
-        if (GetIndex() == 1)
+        if (GetIndex() == 1 || GetIndex() == 3)
         {
             _animator.SetAnimator(vegetableType.Red_Animator);
             Portrait.sprite = vegetableType.Red_Portrait;
@@ -179,6 +174,7 @@ public class R_Player : MonoBehaviour
         {
             health = 0;
             SoundPlayer.Play(VegetableType.DeathSound); 
+            controller.PlayerAbility.Interrupt();
             PlayerDies?.Invoke();
         }
         _isInvincible = true;
@@ -252,7 +248,7 @@ public class R_Player : MonoBehaviour
             controller.SetMass(VegetableType.mass);
             controller.SetSpeedMultiplier(1);
         }
-
+        
         foreach (var system in GetComponentsInChildren<ParticleSystem>())
         {
             GameObject.Destroy(system);
