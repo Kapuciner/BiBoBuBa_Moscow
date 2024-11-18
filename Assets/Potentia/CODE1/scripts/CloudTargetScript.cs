@@ -11,10 +11,6 @@ public class CloudTargetScript : MonoBehaviour
     [SerializeField] LayerMask heightMask;
 
     Vector3 rawMoveDelta = Vector3.zero;
-    void Start()
-    {
-
-    }
 
     public void SetDirection(Vector2 moveVector) {
         rawMoveDelta = new Vector3(moveVector.x, 0, moveVector.y) / 20;
@@ -37,7 +33,7 @@ public class CloudTargetScript : MonoBehaviour
 
     void Update()
     {
-            //Vector3 rawMoveDelta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));
+            //Vector3 rawMoveDelta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));.
             Vector3 processedDelta = Quaternion.Euler(0, 45, 0) * rawMoveDelta;
             transform.position = transform.position + processedDelta * mouseSensitivity;
             if (transform.position.x > 60)

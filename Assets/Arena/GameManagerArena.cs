@@ -63,13 +63,6 @@ public class GameManagerArena : MonoBehaviour
         Physics.defaultMaxDepenetrationVelocity = 20;
         SpawnPlayers();
 
-        for (int i = 0; i < playersList.Count; i++)
-        {
-            if (i == 0)   //камера пока что таргетит только двоих игроков 
-                cameraScaler.Player1 = playersList[i];
-            else if (i == 1)
-                cameraScaler.Player2 = playersList[i];
-        }
 
         Time.timeScale = 0;
 
@@ -141,7 +134,6 @@ public class GameManagerArena : MonoBehaviour
                 }
                 else
                 {
-                    print(playersList.Count);
                     StartCoroutine(StartGame());
                     if (FindObjectOfType<pauseManager>() != null)
                         FindObjectOfType<pauseManager>().canPause = true;
@@ -258,7 +250,7 @@ public class GameManagerArena : MonoBehaviour
                     if (gamepad1 != null)
                     {
                         GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
-                        pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
+                        pl.GetComponent<ArenaPlayerManager>().playerID = 2; 
                         AddPlayer(pl);
                         var playerInput = pl.GetComponent<PlayerInput>();
 
@@ -276,7 +268,7 @@ public class GameManagerArena : MonoBehaviour
                     if (gamepad2 != null)
                     {
                         GameObject pl = Instantiate(playerPrefab, spawnPoints[playersList.Count].transform.position, playerPrefab.transform.rotation);
-                        pl.GetComponent<ArenaPlayerManager>().playerID = i % 2; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
+                        pl.GetComponent<ArenaPlayerManager>().playerID = 3; // change later to pl.GetComponent<ArenaPlayerManager>().playerID = i;
                         AddPlayer(pl);
                         var playerInput = pl.GetComponent<PlayerInput>();
 
@@ -303,6 +295,17 @@ public class GameManagerArena : MonoBehaviour
     }
     public IEnumerator StartGame()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < playersList.Count)
+            {
+                if (i > cameraScaler.Players.Count - 1)
+                    cameraScaler.Players.Add(playersList[i]);
+                else
+                    cameraScaler.Players[i] = playersList[i];
+            }
+        }
+
         canvaREADY.SetActive(false);
         canvaUI.SetActive(true);
         Time.timeScale = 1;
@@ -414,6 +417,18 @@ public class GameManagerArena : MonoBehaviour
         }
 
         return count;
+    }
+    public void ChangeCameraTarget(GameObject deadPlayer)
+    {
+        for (int i = 0; i < playersList.Count; i++)
+        {
+            if (playersList[i] != deadPlayer)
+            {
+                cameraScaler.Players[deadPlayer.GetComponent<ArenaPlayerManager>().playerID] = playersList[i];
+                print(deadPlayer.GetComponent<ArenaPlayerManager>().playerID);
+                break;
+            }
+        }
     }
 
 }

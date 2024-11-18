@@ -20,42 +20,7 @@ public class CloudInterface : MonoBehaviour
         nope = GetComponent<AudioSource>();
         UpdateInterface();
     }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (!useAbility()) {
-                nope.Play();
-            };
-        }
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-
-        /*if (Input.GetMouseButtonDown(1))
-        {
-            currentAbilityIndex++;
-            if (currentAbilityIndex == 5)
-                currentAbilityIndex = 0;
-            UpdateInterface();
-        }*/
-
-        //if (scroll > 0f)
-        //{
-        //    currentAbilityIndex++;
-        //    if (currentAbilityIndex == 5)
-        //        currentAbilityIndex = 0;
-        //    UpdateInterface();
-
-        //}
-        //else if (scroll < 0f)
-        //{
-        //    currentAbilityIndex--;
-        //    if (currentAbilityIndex == -1)
-        //        currentAbilityIndex = 4;
-        //    UpdateInterface();
-        //}
-    }
     public void ScrollRight() {
         currentAbilityIndex++;
         if (currentAbilityIndex == 5)
@@ -149,6 +114,5 @@ public class CloudInterface : MonoBehaviour
                 cloudEmptyEnergy[i].sprite = cloudEnergyEmpty;
             }
         }
-        Debug.Log($"current ability is {currentAbilityIndex}");
     }
 }

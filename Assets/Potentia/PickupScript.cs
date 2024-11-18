@@ -9,14 +9,12 @@ public class PickupScript : MonoBehaviour
     [SerializeField] int pickupPower;
     SpriteRenderer renderer;
     AudioSource pickUpSound;
-    [SerializeField] private CloudInterface cloudInterface;
-    [SerializeField] private GameObject pointer;
 
     bool deactivated = false;
     float sleepTime = 0;
     void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.CompareTag("Cloud") && !deactivated) {
-            if(cloudInterface.TryAddEnergy()) {
+            if(collision.gameObject.GetComponent<CloudScript>().cloudInterface.TryAddEnergy()) {
                 deactivated = true;
                 sleepTime = 0;
                 pickUpSound.Play();
@@ -33,12 +31,10 @@ public class PickupScript : MonoBehaviour
         if (deactivated)
         {
             renderer.enabled = false;
-            pointer.SetActive(false);
         }
         else
         {
             renderer.enabled = true;
-            pointer.SetActive(true);
         }
             sleepTime += Time.deltaTime;
         if (sleepTime >= pickupCooldown) deactivated = false;

@@ -124,7 +124,7 @@ MonoBehaviour:
   projectileSpeed: 0.25
   lifetime: 2
   damage: 4
-  slowTime: 6
+  slowTime: 4
   slowReductionTimes: 3
   immuneTime: 0.4
   pushForce: 10

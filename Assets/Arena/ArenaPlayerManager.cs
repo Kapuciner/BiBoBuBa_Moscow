@@ -661,6 +661,8 @@ public class ArenaPlayerManager : MonoBehaviour
             FindObjectOfType<ZoneCollider>().DiedInsideTheZone(true);
         else
             FindObjectOfType<ZoneCollider>().DiedInsideTheZone(false);
+
+        gm.ChangeCameraTarget(this.gameObject);
     }
 
     void DisappearFromTheMap()

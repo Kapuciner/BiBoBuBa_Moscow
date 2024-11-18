@@ -7,22 +7,25 @@ using UnityEditor;
 
 public class PlayerManager : MonoBehaviour
 {
+    [Header("BasicStuff")]
     public Rigidbody _rb;
     private SpriteRenderer _sr;
     [SerializeField] private player playerMage;
+    public int playerID = 0;
 
-    [SerializeField] private KeyCode up;
-    [SerializeField] private KeyCode down;
-    [SerializeField] private KeyCode left;
-    [SerializeField] private KeyCode right;
+    public bool alreadyCarrying = false; //if the player is currently carrying the book
+    public TMP_Text faliantCounterTXT;
+    public int faliantCounter = 0;
+    public int abilitiesGotten;
+    public List<int> abilitiesID;
 
-    
+    [Header("MovementAndIce")]
     [SerializeField] private float speed;
     private Vector3 move = Vector3.zero;
     [SerializeField] float icedMass;
     [SerializeField] LayerMask iceLayers;
     public bool iceMove = false;
-    public bool canMove = false;
+    public bool canMove = true;
 
     [Header("Dash Settings")]
     [SerializeField] private KeyCode dashKey;
@@ -30,7 +33,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float dashTime; 
     [SerializeField] private int dashCooldown;
     [SerializeField] private ParticleSystem dashParticle;
-    [SerializeField] public GameObject dashImage;
 
     [Header("Abilities")]
     public bool gotAbilityDash = false;
@@ -53,7 +55,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int attackCooldown;
     [SerializeField] public GameObject shieldImage;
     [SerializeField] public GameObject attackImage;
+    [SerializeField] public GameObject dashImage;
+    [SerializeField] public GameObject hpImage;
 
+    [Header("Auido")]
     public AudioClip dashA;
     public AudioClip shieldA;
     public AudioClip attackA;
@@ -64,10 +69,8 @@ public class PlayerManager : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
-    }
-    void Update()
-    {
-        HandleInput();
+        abilitiesID = new List<int> { 0, 1, 2, 3 };
+        abilitiesGotten = 0;
     }
 
     private void FixedUpdate()
@@ -117,9 +120,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void MageReady(InputAction.CallbackContext context) {
-        if(!playerMage.gm.gameStarted) playerMage.gm.mageReady = !playerMage.gm.mageReady;
-    }
+    //public void MageReady(InputAction.CallbackContext context) {
+    //    if(!playerMage.gm.gameStarted) playerMage.gm.mageReady = !playerMage.gm.mageReady;
+    //}
 
     public void TryDash() {
         if (canDash && GetVelocity() != 0 && gotAbilityDash)
@@ -167,69 +170,7 @@ public class PlayerManager : MonoBehaviour
     public void OnMoveInput(InputAction.CallbackContext context) {
         MoveMage(context.ReadValue<Vector2>());
     }
-    private void HandleInput()
-    {
-        
-        /*move = Vector3.zero;
-        if (Input.GetKey(up))
-        {
-            move += new Vector3(1f, 0f, 1f);
-        }
-        if (Input.GetKey(down))
-        {
-            move -= new Vector3(1f, 0f, 1f);
-        }
-        if (Input.GetKey(right))
-        {
-            move += new Vector3(1f, 0f, -1f);
-            _sr.flipX = false;
-        }
-        if (Input.GetKey(left))
-        {
-            move -= new Vector3(1f, 0f, -1f);
-            _sr.flipX = true;
-        }
-
-        move.Normalize(); 
-
-        if (Input.GetKeyDown(dashKey) && canDash && GetVelocity() != 0 && gotAbilityDash)
-        {
-            audioSource.clip = dashA;
-            audioSource.Play();
-            ParticleSystem dashPart = Instantiate(dashParticle);
-            dashPart.transform.position = this.transform.position;
-            Destroy(dashPart.gameObject, 2f);
-
-            speed *= dashSpeed;
-            Invoke("StopDash", dashTime);
-            canDash = false;
-            dashImage.SetActive(false);
-            StartCoroutine(CooldownRoutine(dashCooldown, dashCooldownTimer, dashImage, "canDash"));
-        }
-
-        if (Input.GetKeyDown(fireballKey) && gotAbilityAttack && canAttack)
-        {
-            audioSource.clip = attackA;
-            audioSource.Play();
-            fireball.SetActive(true);
-            canAttack = false;
-            Invoke("FireballCooldown", fireballDuration);
-            attackImage.SetActive(false);
-            StartCoroutine(CooldownRoutine(attackCooldown, attackCooldownTimer, attackImage, "canAttack"));
-        }
-
-        if (Input.GetKeyDown(shieldKey) && gotAbilityShield && canDefend)
-        {
-            audioSource.clip = shieldA;
-            audioSource.Play();
-            shield.SetActive(true);
-            playerMage.shieldOn = true;
-            canDefend = false;
-            Invoke("ShieldCooldown", shieldDuration);
-            shieldImage.SetActive(false);
-            StartCoroutine(CooldownRoutine(shieldCooldown, shieldCooldownTimer, shieldImage, "canDefend"));
-        }*/
-    }
+ 
 
     public void SwitchIceMode(bool mode) {
         if(mode) {
@@ -282,5 +223,27 @@ public class PlayerManager : MonoBehaviour
         canDash = true;
     }
 
+    public void GotAbilityDash()
+    {
+        gotAbilityDash = true;
+        dashImage.SetActive(true);
+    }
 
+    public void GotAbilityShield()
+    {
+        gotAbilityShield = true;
+        shieldImage.SetActive(true);
+    }
+
+    public void GotAbilityAttack()
+    {
+        gotAbilityAttack = true;
+        attackImage.SetActive(true);
+    }
+
+    public void GotAbilityHP()
+    {
+        gotAbilityHeal = true;
+        hpImage.SetActive(true);
+    }
 }

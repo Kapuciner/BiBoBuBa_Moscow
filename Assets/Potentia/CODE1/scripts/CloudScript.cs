@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class CloudScript : MonoBehaviour
 {
+    public int playerID = 0;
     [SerializeField] public CloudTargetScript cloudTarget;
     [SerializeField] float cloudSpeed;
     public bool isMouse = true;
@@ -41,10 +42,12 @@ public class CloudScript : MonoBehaviour
 
     private Vector3 gamepadLastDir;
     bool again = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         _animator = GetComponent<Animator>();
         cloudSprite = GetComponent<SpriteRenderer>();
         pushSound = GetComponent<AudioSource>();
@@ -53,16 +56,19 @@ public class CloudScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            processInput();
-            if(isMouse) ProcessMouseMove();
-            else {
-            
+        //processInput();
+        if(isMouse)
+        {
+            ProcessMouseMove();
+        } 
+        else 
+        {
             cloudTarget.transform.position = new Vector3(
             transform.position.x + gamepadLastDir.x*15, 
             cloudTarget.transform.position.y, 
             transform.position.z + gamepadLastDir.z*15);
             ProcessGamepadMove();
-            }
+         }
     }
 
     void ProcessGamepadMove() {
@@ -165,13 +171,17 @@ public class CloudScript : MonoBehaviour
 
     }
 
-    public void CloudReady(InputAction.CallbackContext context) {
-        if(!gm.gameStarted) gm.cloudReady = !gm.cloudReady;
-    }
+    //public void CloudReady(InputAction.CallbackContext context) {
+    //    if(!gm.gameStarted) gm.cloudReady = !gm.cloudReady;
+    //}
 
     public void OnMoveInput(InputAction.CallbackContext context) {
-        if (isMouse) cloudTarget.SetDirection(context.ReadValue<Vector2>());
-        else {
+        if (isMouse)
+        {
+            cloudTarget.SetDirection(context.ReadValue<Vector2>());
+        }
+        else
+        {
             Vector2 rawGamepadLastDir = context.ReadValue<Vector2>();
             gamepadLastDir = Quaternion.Euler(0, 45, 0) * new Vector3(rawGamepadLastDir.x, 0, rawGamepadLastDir.y);
         }
@@ -361,7 +371,7 @@ public class CloudScript : MonoBehaviour
         canCast = false;
         yield return new WaitForSeconds(1);
         GameObject ice = Instantiate(icePrefab, transform.position + Vector3.down * 2, Quaternion.Euler(90, 0, 0));;
-        ice.transform.SetParent(GameObject.Find("abc").transform);
+        ice.transform.SetParent(GameObject.Find("abcDontDelete_UsedForIce").transform);
         
         canMove = true;
         canCast = true;

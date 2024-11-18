@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -14,199 +16,295 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameObject magePrefab;
-    [SerializeField] private PlayerManager mageManagerScript;
-
-    [SerializeField] private GameObject dashImage;
-
-    [SerializeField] private TMP_Text dashCooldownTimer;
-    [SerializeField] private TMP_Text attackCooldownTimer;
-    [SerializeField] private TMP_Text shieldCooldownTimer;
-    [SerializeField] private GameObject shieldImage;
-    [SerializeField] private GameObject attackImage;
-    [SerializeField] private GameObject gameOverScreen;
-    [SerializeField] private Animator gameOverTXT;
-    [SerializeField] public TMP_Text livesCounter;
-    [SerializeField] public GameObject readyCanvas;
-    [SerializeField] public GameObject mainCanvas;
-
-    [SerializeField] public TMP_Text mageReadyText;
-    [SerializeField] public TMP_Text cloudReadyText;
-    [SerializeField] public GameObject[] hearts;  
-
-    [SerializeField] public Falliant[] faliants;
     [SerializeField] private GameObject cloudPrefab;
 
-    [SerializeField] CloudTargetScript cloudTarget;
+    private List<GameObject> players = new List<GameObject>() ;
+    private List<GameObject> mages = new List<GameObject>() ;
+    public GameObject[] magesUI;
+    [SerializeField] private GameObject[] cloudsUI;
+    [SerializeField] private GameObject[] readyCrosses;
+    [SerializeField] private GameObject[] dashImage;
+    [SerializeField] private GameObject[] shieldImage;
+    [SerializeField] private GameObject[] attackImage;
+    [SerializeField] private GameObject[] hpImage;
+    [SerializeField] private TMP_Text[] dashCooldownTimer;
+    [SerializeField] private TMP_Text[] attackCooldownTimer;
+    [SerializeField] private TMP_Text[] shieldCooldownTimer;
+    [SerializeField] public TMP_Text[] livesCounter;
+    [SerializeField] public GameObject[] heartsPlayer1;  
+    [SerializeField] public GameObject[] heartsPlayer2;  
+    [SerializeField] public GameObject[] heartsPlayer3;  
+    [SerializeField] public GameObject[] heartsPlayer4; 
+    private List<GameObject[]> hearts;
+    [SerializeField] private TMP_Text[] faliantCounters;
+    [SerializeField] private GameObject[] deathCrosses;
 
-    [SerializeField] CloudInterface cloudInterface;
+    [SerializeField] CloudTargetScript[] cloudTarget;
+    [SerializeField] CloudInterface[] cloudInterface;
+
+    [SerializeField] public Falliant[] faliants;
     [SerializeField] CameraScaler cameraScaler;
 
-    public bool mageReady = false;
-
-    public bool cloudReady = false;
+    //public bool mageReady = false;
+    //public bool cloudReady = false;
     public bool gameOver = false;
     public bool gameStarted = false;
     public bool gameCanStart = false;
 
-    public ReadyTimer readyTimer;
+
+    [SerializeField] public GameObject readyCanvas;
+    [SerializeField] public GameObject mainCanvas;
+
+
+    //public ReadyTimer readyTimer;
     public bool mageWon = false;
-    public CloudScript cs;
-    public TMP_Text startTXT;
+    public CloudScript[] cs;
+
+    //----------------------
+    [SerializeField] private List<GameObject> inputs = new List<GameObject>();
+    [SerializeField] private GameObject inputPrefab;
+    public int readyCount = 0;
+    public TMP_Text timerText;
+
+    [SerializeField] private TMP_Text allFaliantsCounter;
+    public static int faliantsCarriedAmount = 0;
+    static public int maxFaliantsNeeded;
+
     private void Awake()
     {
-        SpawnPlayers();
-        //Time.timeScale = 0;
-        cs.canMove = false;
+        SpawnInputsForChoice();
         
         StartCoroutine(StartGame());
-        StartCoroutine(StartGameAdditionalTimer());
     }
 
-    private void SpawnPlayers()
+    private void Start()
+    {
+        hearts = new List<GameObject[]> {heartsPlayer1, heartsPlayer2, heartsPlayer3, heartsPlayer4};
+        faliantsCarriedAmount = 0;
+        maxFaliantsNeeded = 0;
+    }
+
+    void SpawnInputsForChoice()
     {
         bool firstKeyboardTaken = false;
         var players = _connectionData.ConnectedPlayersData();
 
-        GameObject tempPlayer = Instantiate(magePrefab, spawnPoints[0].transform.position, magePrefab.transform.rotation);
-        AddMage(tempPlayer);
+        if (_connectionData.GetPlayerCount() > 0) 
+        {
+            int j = 0;
+            foreach (var player in players)
+            {
+                GameObject inp = Instantiate(inputPrefab);
+                inputs.Add(inp);
 
-        var playerInput = tempPlayer.GetComponent<PlayerInput>();
-        if (players[0].Device is Keyboard && firstKeyboardTaken == false)
-        {
-            playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
-            firstKeyboardTaken = true;
+                var playerInput = inp.GetComponent<PlayerInput>();
+                inp.GetComponent<CanvaReadyControl>().playerID = j;
+
+                if (player.Device is Keyboard && firstKeyboardTaken == false)
+                {
+                    playerInput.SwitchCurrentControlScheme("Keyboard1", player.Device);
+                    firstKeyboardTaken = true;
+                }
+                else if (player.Device is Keyboard && firstKeyboardTaken == true)
+                {
+                    playerInput.SwitchCurrentControlScheme("Keyboard2", player.Device);
+                }
+                else
+                {
+                    playerInput.SwitchCurrentControlScheme("GamePad", player.Device);
+                }
+
+                j++;
+            }
         }
-        else if (players[0].Device is Keyboard && firstKeyboardTaken == true)
+        else //по умолчанию (если без переключения между сценами) DEFAULT (IF YOU START BY NOT ENTERING LOBBY/
         {
-            playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
-        }
-        else
-        {
-            playerInput.SwitchCurrentControlScheme("GamePad", players[0].Device);
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 0)
+                {
+                    GameObject inp = Instantiate(inputPrefab);
+                    inp.GetComponent<CanvaReadyControl>().playerID = i;
+                    inputs.Add(inp);
+                    var playerInput = inp.GetComponent<PlayerInput>();
+                    playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
+                }
+                else if (i == 1)
+                {
+                    GameObject inp = Instantiate(inputPrefab);
+                    inp.GetComponent<CanvaReadyControl>().playerID = i;
+                    inputs.Add(inp);
+                    var playerInput = inp.GetComponent<PlayerInput>();
+                    playerInput.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
+                }
+                else if (i == 2) // Третий игрок - геймпад 1
+                {
+                    var gamepad1 = Gamepad.all.Count > 0 ? Gamepad.all[0] : null;
+                    if (gamepad1 != null)
+                    {
+                        GameObject inp = Instantiate(inputPrefab);
+                        inp.GetComponent<CanvaReadyControl>().playerID = i;
+                        inputs.Add(inp);
+                        var playerInput = inp.GetComponent<PlayerInput>();
+                        playerInput.SwitchCurrentControlScheme("Gamepad", gamepad1);
+                    }
+                }
+                else if (i == 3) // Четвёртый игрок - геймпад 2
+                {
+                    var gamepad2 = Gamepad.all.Count > 1 ? Gamepad.all[1] : null;
+                    if (gamepad2 != null)
+                    {
+                        GameObject inp = Instantiate(inputPrefab);
+                        inp.GetComponent<CanvaReadyControl>().playerID = i;
+                        inputs.Add(inp);
+                        var playerInput = inp.GetComponent<PlayerInput>();
+                        playerInput.SwitchCurrentControlScheme("Gamepad", gamepad2);
+                    }
+                }
+            }
         }
 
-        GameObject tempCs = Instantiate(cloudPrefab, spawnPoints[1].transform.position, cloudPrefab.transform.rotation);
-        AddCloud(tempCs);
+        //здесь настроить UI в зависимости от устройств
+        // сделать 3 версии объяснения управления в потенции? если только клава, если только геймпады и если оба
 
-        playerInput = tempCs.GetComponent<PlayerInput>();
-        if (players[1].Device is Keyboard && firstKeyboardTaken == false)
+        for (int i = 0; i < 4; i++)
         {
-            print("CLOUD KEY1");
-            playerInput.SwitchCurrentControlScheme("Mouse", Mouse.current);
-            firstKeyboardTaken = true;
+            if (i < inputs.Count)
+            {
+                readyCrosses[i].SetActive(false);
+            }
         }
-        else if (players[1].Device is Keyboard && firstKeyboardTaken == true)
+    }
+
+    void SpawnPlayers()
+    {
+
+        for (int i = 0; i < inputs.Count; i++)
         {
-            print("CLOUD KEY2");
-            playerInput.SwitchCurrentControlScheme("Mouse", Mouse.current);
-        }
-        else
-        {
-            print("CLOUD GAMEPAD");
-            playerInput.SwitchCurrentControlScheme("GamePad", players[1].Device);
-            //playerInput.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+            GameObject tempPlayer;
+
+            if (inputs[i].gameObject.GetComponent<CanvaReadyControl>().chosenCharacter == "mage")
+            {
+                tempPlayer = Instantiate(magePrefab, spawnPoints[i].transform.position, magePrefab.transform.rotation);
+                tempPlayer.GetComponent<PlayerManager>().playerID = i;
+                var playerInput = tempPlayer.GetComponent<PlayerInput>();
+                AddMage(tempPlayer);
+                playerInput.SwitchCurrentControlScheme(inputs[i].GetComponent<PlayerInput>().currentControlScheme, inputs[i].GetComponent<PlayerInput>().devices[0]);
+
+            }
+            else //cloud
+            {
+                tempPlayer = Instantiate(cloudPrefab, spawnPoints[i].transform.position, cloudPrefab.transform.rotation);
+                tempPlayer.GetComponent<CloudScript>().playerID = i;
+                var playerInput = tempPlayer.GetComponent<PlayerInput>();
+                if (inputs[i].GetComponent<PlayerInput>().currentControlScheme == "GamePad")
+                {
+                    tempPlayer.GetComponent<CloudScript>().isMouse = false;//
+                }
+                AddCloud(tempPlayer);
+
+                if (inputs[i].GetComponent<PlayerInput>().currentControlScheme == "GamePad")
+                    playerInput.SwitchCurrentControlScheme(inputs[i].GetComponent<PlayerInput>().currentControlScheme, inputs[i].GetComponent<PlayerInput>().devices[0]);
+                else
+                    playerInput.SwitchCurrentControlScheme("Mouse", Mouse.current);
+            }
         }
 
-        if (_connectionData.GetPlayerCount() < 2)
+        allFaliantsCounter.text = $"{faliantsCarriedAmount} / {maxFaliantsNeeded}";
+
+        foreach (Falliant fal in FindObjectsByType<Falliant>(sortMode: default))
         {
-            playerInput.SwitchCurrentControlScheme("Keyboard1", Keyboard.current);
-            playerInput.SwitchCurrentControlScheme("Mouse", Mouse.current);
+            fal.limitFalliantsAmount(maxFaliantsNeeded);
+        }
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            cameraScaler.Players[i] = players[i];
+        }
+
+        for (int i = 0; i < inputs.Count; i++)
+        {
+            Destroy(inputs[i]);
         }
     }
 
     public void AddMage(GameObject mage)
     {
+        players.Add(mage);
+        mages.Add(mage);
+        magesUI[players.Count - 1].SetActive(true);
         PlayerManager mageManager = mage.GetComponent<PlayerManager>();
-        mageManager.dashImage = dashImage; 
-        mageManagerScript = mageManager;
-        mageManager.dashCooldownTimer = dashCooldownTimer;
-        mageManager.attackCooldownTimer = attackCooldownTimer;
-        mageManager.shieldCooldownTimer = shieldCooldownTimer;
-        mageManager.shieldCooldownTimer = shieldCooldownTimer;
-
-        mageManager.shieldImage = shieldImage;
-        mageManager.attackImage = attackImage;
+        
+        //видимо что-то удалил, хз что это
+        //mageManagerScript = mageManager;
+        mageManager.dashCooldownTimer = dashCooldownTimer[players.Count - 1];
+        mageManager.attackCooldownTimer = attackCooldownTimer[players.Count - 1];
+        mageManager.shieldCooldownTimer = shieldCooldownTimer[players.Count - 1];
+        mageManager.dashImage = dashImage[players.Count - 1];
+        mageManager.shieldImage = shieldImage[players.Count - 1];
+        mageManager.attackImage = attackImage[players.Count - 1];
+        mageManager.hpImage = hpImage[players.Count - 1];
+        mageManager.faliantCounterTXT = faliantCounters[players.Count - 1];
 
         player magePlayer = mage.GetComponent<player>();
         magePlayer.gm = this;
-        magePlayer.gameOverScreen = gameOverScreen;
-        magePlayer.gameOverTXT = gameOverTXT;
-        magePlayer.livesCounter = livesCounter;
-        magePlayer.hearts = hearts;
+        magePlayer.livesCounter = livesCounter[players.Count - 1];
+        magePlayer.hearts = hearts[players.Count - 1];
         magePlayer.start = spawnPoints[0];
-
-        cameraScaler.Player1 = mage;
-
-        foreach (Falliant faliant in faliants) {
-            faliant.playerManager = mageManager;
-            faliant.player = mageManager.transform;
-        }
-
+        magePlayer.deathCross = deathCrosses[players.Count - 1];
+        if (players.Count >= 3)
+            cameraScaler.Players.Add(mage);
+        maxFaliantsNeeded += 8;
+        
     }
 
     public void AddCloud(GameObject cloud)
     {
-        
+        players.Add(cloud);
+        cloudsUI[players.Count - 1].SetActive(true);
         CloudScript cloudScript = cloud.GetComponent<CloudScript>();
-        cs = cloudScript;
+        cs[players.Count - 1] = cloudScript;
         cloudScript.gm = this;
-        cloudScript.cloudTarget = cloudTarget;
-        cloudScript.cloudInterface = cloudInterface;
-        cloudInterface.clousScript = cs;
-        if(_connectionData.ConnectedPlayersData()[1].Device is Gamepad) cloudScript.isMouse = false;
+        cloudScript.cloudTarget = cloudTarget[players.Count - 1];
+        cloudScript.cloudInterface = cloudInterface[players.Count - 1];
+        cloudInterface[players.Count - 1].clousScript = cs[players.Count - 1];
 
-        cameraScaler.Player2 = cloud;
+        if (players.Count >= 3)
+            cameraScaler.Players.Add(cloud);
+
     }
 
     IEnumerator StartGame()
     {
-        while(!gameCanStart) {
-            if(mageReady) mageReadyText.text = "Готов";
-            else mageReadyText.text = "Не готов";
+        float timer = 3f;
+        while (true) {
+            if (readyCount == inputs.Count)
+            {
+                if (timer > 0)
+                {
+                    timer -= Time.unscaledDeltaTime;
+                    timerText.text = $"{Mathf.Round(timer)}";
+                }
+                else
+                {
+                    readyCanvas.SetActive(false);
+                    mainCanvas.SetActive(true);
+                    SpawnPlayers();
+                    if (FindObjectOfType<pauseManager>() != null)
+                        FindObjectOfType<pauseManager>().canPause = true;
+                    break;
+                }
+            }
+            else
+            {
+                timer = 3f;
+            }
 
-            if(cloudReady) cloudReadyText.text = "Готов";
-            else cloudReadyText.text = "Не готов";
+            timerText.text = $"{Mathf.Round(timer)}";
             yield return new WaitForEndOfFrame();
         }
-        Time.timeScale = 0;
-        mageManagerScript.canMove = true;
-        cs.canCast = true;
-        readyCanvas.SetActive(false);
-        mainCanvas.SetActive(true);
-        int countdown = 3; // ������ �� 3 �������
 
-        while (countdown > 0)
-        {
-            startTXT.text = countdown.ToString(); 
-            yield return new WaitForSecondsRealtime(1);
-            this.GetComponent<AudioSource>().Play();
-            countdown--; 
-        }
-
-        startTXT.text = "Go!"; // ��������� � ������ ����
-        yield return new WaitForSecondsRealtime(1); // �������� �������������� �������, ���� ����� �������� ��������� "Go!"
-
-        Time.timeScale = 1; // ������� ���� � �����
-        cs.canMove = true; // ��������� ��������
-        startTXT.text = ""; // ������� ����� �������
-    }
-
-    IEnumerator StartGameAdditionalTimer()
-    {
-        
-        while(!gameCanStart) {
-            if (mageReady && cloudReady && readyTimer.gameObject.activeSelf == false) {
-                readyTimer.gameObject.SetActive(true);
-                readyTimer.timeRemaining = 3f;
-                yield return new WaitForEndOfFrame();
-            } else if (!(mageReady && cloudReady)) {
-                readyTimer.gameObject.SetActive(false);
-                yield return new WaitForEndOfFrame();
-            } else {
-                yield return new WaitForEndOfFrame();
-            }
-        }  
-        
+       
     }
 
     public void MageWon()
@@ -214,17 +312,15 @@ public class GameManager : MonoBehaviour
         winPanel.SetActive(true);
         txt.Play("TxTappear");
         mageWon = true;
-        cs.canMove = false;
         timer.StopTimer();
         RestartCoroutine();
     }
 
     private void Update()
     {
-        if (gameOver || mageWon)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //if (Input.GetKeyDown(KeyCode.R))
-           //     RestartGame();
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -238,9 +334,37 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-
     void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void UpdateFalliantCounter()
+    {
+        allFaliantsCounter.text = $"{faliantsCarriedAmount}/{maxFaliantsNeeded}";
+        if (faliantsCarriedAmount == maxFaliantsNeeded)
+        {
+            MageWon();
+        }
+    }
+    public void ChangeCameraTarget(GameObject deadMage)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i] != deadMage)
+            {
+                cameraScaler.Players[deadMage.GetComponent<PlayerManager>().playerID] = players[i];
+                break;
+            }
+        }
+    }
+    public void isGameOver()
+    {
+        
+    }
+
+    public void GameOver()
+    {
+
     }
 }

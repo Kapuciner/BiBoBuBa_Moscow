@@ -18,7 +18,7 @@ public class InputManager_P : MonoBehaviour
         print("Connect?");
         bool keyboardJoined = false;
         print(_connectionData.ConnectedPlayersData().Count);
-        foreach (var player in _connectionData.ConnectedPlayersData())
+        foreach (var player in _connectionData.ConnectedPlayersData())//
         {
             if (player.Device is Keyboard)
             {

@@ -9,10 +9,6 @@ public class player : MonoBehaviour
 {
     private SpriteRenderer _sr;
     [SerializeField] public GameManager gm;
-
-    [SerializeField] public GameObject gameOverScreen;
-    [SerializeField] public Animator gameOverTXT;
-
     [SerializeField] public TMP_Text livesCounter;
 
     [SerializeField] public GameObject[] hearts;
@@ -36,8 +32,11 @@ public class player : MonoBehaviour
     public AudioSource audioSour;
     public AudioClip damage;
     public AudioClip death;
+    public bool dead;
 
     private bool finishedDying = true;
+
+    [SerializeField] public GameObject deathCross;
 
 
     void Start()
@@ -105,21 +104,16 @@ public class player : MonoBehaviour
         }
         else
         {
-            GameOver();
+            dead = true;
+            gm.ChangeCameraTarget(this.gameObject);
+            deathCross.SetActive(true);
+            Destroy(this.gameObject, 1);
+            gm.isGameOver();
         }
 
         currentLives--;
         if (currentLives >= 0)
             livesCounter.text = $"x{currentLives}";
-    }
-
-    public void GameOver()
-    {
-        gameOverScreen.SetActive(true);
-        gm.RestartCoroutine();
-        this.gameObject.SetActive(false);
-        gm.gameOver = true;
-        gameOverTXT.Play("TxTappear");
     }
 
     IEnumerator Respawn()

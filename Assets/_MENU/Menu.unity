@@ -15638,7 +15638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd45279bd0833a842b91431d58d7b473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneToLoad: CODE21
+  SceneToLoad: POTENTIA
   playersAmount: {fileID: 837352632}
   playersAmountInfo: {fileID: 1775307720}
   timeTXT: {fileID: 1520112612}

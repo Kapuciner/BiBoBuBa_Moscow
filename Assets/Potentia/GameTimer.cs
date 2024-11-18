@@ -6,7 +6,7 @@ public class GameTimer : MonoBehaviour
 {
     public float timeRemaining = 300f; 
     public TMP_Text timerText;
-    public player playa;
+    [SerializeField] private GameManager gm;
 
     private bool timerIsRunning = false;
 
@@ -31,7 +31,7 @@ public class GameTimer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 UpdateTimerDisplay();
-                playa.GameOver();
+                gm.GameOver();
             }
         }
     }
