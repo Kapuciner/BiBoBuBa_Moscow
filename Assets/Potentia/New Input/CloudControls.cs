@@ -485,7 +485,7 @@ public partial class @CloudControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard2;Keyboard1"",
+                    ""groups"": ""Keyboard1"",
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -503,11 +503,22 @@ public partial class @CloudControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""deef31ce-6d30-4a03-8c72-d62a6d7743a9"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard2"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e33fb13d-5bd0-4c81-9be2-a5503ec6cb89"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard2;Keyboard1"",
+                    ""groups"": ""Keyboard1"",
                     ""action"": ""Fireball"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -519,6 +530,17 @@ public partial class @CloudControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamePad"",
+                    ""action"": ""Fireball"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1044176-012d-4d90-b575-dad3af2d9a1b"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard2"",
                     ""action"": ""Fireball"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -540,7 +562,18 @@ public partial class @CloudControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard2;Keyboard1"",
+                    ""groups"": ""Keyboard1"",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bfb1cca2-3f46-4a4a-817b-f4e65b835c6e"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard2"",
                     ""action"": ""Shield"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

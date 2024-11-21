@@ -50,7 +50,7 @@ public class ResultScreenPotentia : MonoBehaviour
         if (gm.mageWon)
         {
             winType = 1;
-            string whoWon = " Победа за стороной магов";
+            string whoWon = " Судьба изменена";
             for (int i = 0; i < whoWon.Length; i++)
             {
                 resultTXT.text += whoWon[i];
@@ -60,7 +60,7 @@ public class ResultScreenPotentia : MonoBehaviour
         if (gm.cloudWon)
         {
             winType = 2;
-            string whoWon = " Рок победил";
+            string whoWon = " Рок непреодолим";
             for (int i = 0; i < whoWon.Length; i++)
             {
                 resultTXT.text += whoWon[i];
@@ -114,21 +114,21 @@ public class ResultScreenPotentia : MonoBehaviour
                 yield return new WaitForSeconds(0.75f);
         }
 
-        if (cloudsCount <= magesCount - 1)
+        if (cloudsCount == 1 && magesCount == 2)
         {
-            powerUPStxt.text = "Облака получают усиление: УРОН X2";
+            powerUPStxt.text = "Облако получает усиление: СКОРОСТЬ +50%";
         }
-        else if (cloudsCount < magesCount)
+        else if (magesCount == 3)
         {
-            powerUPStxt.text = "Облака получают усиление: УРОН X3";
+            powerUPStxt.text = "Облако получает усиление: + 1 к УРОНУ\nОблако получает усиление: СКОРОСТЬ +50%";
         }
-        else if (magesCount <= cloudsCount - 1)
+        else if (cloudsCount == 2 && magesCount == 1)
         {
-            powerUPStxt.text = "Маги получают усиление: СКОРОСТЬ +50%";
+            powerUPStxt.text = "Маг получает усиление: СКОРОСТЬ +50%";
         }
-        else if (magesCount < cloudsCount )
+        else if (cloudsCount == 3)
         {
-            powerUPStxt.text = "Маги получают усиление: СКОРОСТЬ +100%";
+            powerUPStxt.text = "Маг получает усиление: СКОРОСТЬ +100%";
         }
         else
         {
@@ -137,13 +137,13 @@ public class ResultScreenPotentia : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        startTXT.text = "Начинаем игру";
+        startTXT.text = "Начинаем игру через 3";
         yield return new WaitForSeconds(0.75f);
-        startTXT.text = "Начинаем игру.";
+        startTXT.text = "Начинаем игру через 2";
         yield return new WaitForSeconds(0.75f);
-        startTXT.text = "Начинаем игру..";
-        yield return new WaitForSeconds(0.75f);
-        startTXT.text = "Начинаем игру...";
+        startTXT.text = "Начинаем игру через 1";
+        yield return new WaitForSeconds(0.5f);
+        startTXT.text = "...";
         yield return new WaitForSeconds(0.25f);
         this.gameObject.SetActive(false);
         UIcanva.SetActive(true);

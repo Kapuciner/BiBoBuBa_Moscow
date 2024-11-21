@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] magesUI;
     [SerializeField] private GameObject[] cloudsUI;
     [SerializeField] private GameObject[] readyCrosses;
+    [SerializeField] private Sprite[] labels;
     [SerializeField] private GameObject[] dashImage;
     [SerializeField] private GameObject[] shieldImage;
     [SerializeField] private GameObject[] attackImage;
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameTimer commonTimer;
     [SerializeField] private GameObject Goal;
     [SerializeField] private MeshRenderer BG;
+    [SerializeField] private TMP_Text warning;
     int deadCount = 0;
     private void Awake()
     {
@@ -204,16 +206,28 @@ public class GameManager : MonoBehaviour
             if (inputs[i].gameObject.GetComponent<CanvaReadyControl>().chosenCharacter == "mage")
             {
                 tempPlayer = Instantiate(magePrefab, spawnPoints[i].transform.position, magePrefab.transform.rotation);
-                tempPlayer.GetComponent<PlayerManager>().playerID = i;
+                PlayerManager pm = tempPlayer.GetComponent<PlayerManager>();
+                pm.playerID = i;
+                pm.label.sprite = labels[i];
+                if (readyCloudsCount == 3)
+                    pm.GetSecondBonus();
+                if (readyCloudsCount == 2 && readyMagesCount == 1)
+                    pm.GetFirstBonus();
                 var playerInput = tempPlayer.GetComponent<PlayerInput>();
                 AddMage(tempPlayer);
                 playerInput.SwitchCurrentControlScheme(inputs[i].GetComponent<PlayerInput>().currentControlScheme, inputs[i].GetComponent<PlayerInput>().devices[0]);
-
             }
             else //cloud
             {
                 tempPlayer = Instantiate(cloudPrefab, spawnPoints[i].transform.position, cloudPrefab.transform.rotation);
-                tempPlayer.GetComponent<CloudScript>().playerID = i;
+                CloudScript cls = tempPlayer.GetComponent<CloudScript>();
+                cls.playerID = i;
+                cls.label.sprite = labels[i];
+                if (readyMagesCount == 3)
+                    cls.GetSecondBonus();
+                if (readyMagesCount == 2 && readyCloudsCount == 1)
+                    cls.GetFirstBonus();
+
                 var playerInput = tempPlayer.GetComponent<PlayerInput>();
                 if (inputs[i].GetComponent<PlayerInput>().currentControlScheme == "GamePad")
                 {
@@ -301,12 +315,13 @@ public class GameManager : MonoBehaviour
 
             if (readyCount == inputs.Count)
             {
+                warning.text = "";
                 if (timer > 0)
                 {
                     timer -= Time.unscaledDeltaTime;
                     timerText.text = $"{Mathf.Round(timer)}";
                 }
-                else
+                else if (CheckConditions()) 
                 {
                     readyCanvas.SetActive(false);
                     ResultScreenPotentia rsp = resultCanvas.GetComponent<ResultScreenPotentia>();
@@ -329,6 +344,36 @@ public class GameManager : MonoBehaviour
        
     }
 
+    bool CheckConditions()
+    {
+        if (readyMagesCount == 0)
+        {
+            warning.text = "В игре должен присутстовать хотя бы один маг!";
+            return false;
+        }
+        else if (readyCloudsCount == 0)
+        {
+            warning.text = "В игре должна присутстовать хотя бы одна туча!";//
+            return false;
+        }
+
+        int countKeyboardCloud = 0;
+        for (int i = 0; i < inputs.Count; i++)
+        {
+            if (inputs[i].gameObject.GetComponent<CanvaReadyControl>().chosenCharacter == "cloud" && (inputs[i].GetComponent<PlayerInput>().currentControlScheme == "Keyboard1" || 
+                inputs[i].GetComponent<PlayerInput>().currentControlScheme == "Keyboard2"))
+            {
+                countKeyboardCloud++;
+            }
+        }
+
+        if (countKeyboardCloud >= 2)
+        {
+            warning.text = "Только один игрок может играть на туче на 1-ой клавиатуре!";
+            return false;
+        }
+        return true;
+    }
     public void RestartCoroutine()
     {
         StartCoroutine(RestartCoroutine_P());

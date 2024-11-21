@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 1039458521, guid: 3427bf1859efe2643a48534ca082741c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -251,7 +251,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6930557348776902963
+--- !u!1 &7532099987668342373
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,37 +259,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6945182800655633201}
-  - component: {fileID: 6291244383251473708}
-  m_Layer: 6
-  m_Name: MinimapPointer
+  - component: {fileID: 120651413499965320}
+  - component: {fileID: 1165567877727436945}
+  m_Layer: 0
+  m_Name: label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6945182800655633201
+--- !u!4 &120651413499965320
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6930557348776902963}
+  m_GameObject: {fileID: 7532099987668342373}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355344, y: -0.1464466, z: 0.35355335, w: 0.85355335}
-  m_LocalPosition: {x: 0, y: 1.5202795, z: -1.5202795}
-  m_LocalScale: {x: 35, y: 35, z: 0.30000016}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.013, y: 3.38, z: 0.13}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2447439064129862879}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!212 &6291244383251473708
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1165567877727436945
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6930557348776902963}
+  m_GameObject: {fileID: 7532099987668342373}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -324,12 +324,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 263683134, guid: bd2aabe19f53918449ed58d75d823095, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -375,9 +375,9 @@ Transform:
   m_Children:
   - {fileID: 2850053280522701187}
   - {fileID: 4093020491433960763}
-  - {fileID: 6945182800655633201}
   - {fileID: 7853328752667140370}
   - {fileID: 37966843979191584}
+  - {fileID: 120651413499965320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!212 &4558871598005899823
@@ -495,12 +495,13 @@ MonoBehaviour:
   _rb: {fileID: 0}
   playerMage: {fileID: 1372133927672985706}
   playerID: 0
+  label: {fileID: 1165567877727436945}
   alreadyCarrying: 0
   faliantCounterTXT: {fileID: 0}
   faliantCounter: 0
   abilitiesGotten: 0
   abilitiesID: 
-  speed: 15
+  speed: 10
   icedMass: 0.5
   iceLayers:
     serializedVersion: 2
@@ -578,6 +579,7 @@ MonoBehaviour:
   maxHearts: 6
   maxLives: 3
   playerAnimation: {fileID: 8236452946296661972}
+  playerManager: {fileID: 4929125502801509831}
   start: {fileID: 0}
   minHeight: -5
   faliantsCollected: 0
@@ -892,6 +894,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5775032029882880479, guid: cb97f4b3f2fea274997b952ba12f4a25, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5775032029882880479, guid: cb97f4b3f2fea274997b952ba12f4a25, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5775032029882880479, guid: cb97f4b3f2fea274997b952ba12f4a25, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5775032029882880479, guid: cb97f4b3f2fea274997b952ba12f4a25, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.9
       objectReference: {fileID: 0}
@@ -998,7 +1012,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Time: 1
   m_PreviewTimeScale: 1
   m_Parameters:

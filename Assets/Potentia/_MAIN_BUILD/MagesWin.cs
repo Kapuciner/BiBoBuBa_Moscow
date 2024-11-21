@@ -108,7 +108,6 @@ public class MagesWin : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(1);
         rsp.SetActive(true);
     }
 

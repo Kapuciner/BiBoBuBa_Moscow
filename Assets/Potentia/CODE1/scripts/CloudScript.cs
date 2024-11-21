@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class CloudScript : MonoBehaviour
 {
     public int playerID = 0;
+    public SpriteRenderer label;
     [SerializeField] public CloudTargetScript cloudTarget;
     [SerializeField] float cloudSpeed;
     public bool isMouse = true;
@@ -43,12 +44,19 @@ public class CloudScript : MonoBehaviour
     private Vector3 gamepadLastDir;
     bool again = false;
 
+    static public int bonusDamage = 0;
+
+    private void Awake()
+    {
+        bonusDamage = 0;
+    }
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _animator = GetComponent<Animator>();
+        _animator.SetInteger("playerID", playerID);
         cloudSprite = GetComponent<SpriteRenderer>();
         pushSound = GetComponent<AudioSource>();
     }
@@ -147,33 +155,9 @@ public class CloudScript : MonoBehaviour
             }
     }
    
-    void processInput() {
-        //Left button Input.GetMouseButton(0)
-        //if (canCast && Input.GetKey(KeyCode.Alpha2)) { 
-        //    StartCoroutine(LightningCoroutine(1));
-        //    _animator.Play("cloud_cast");
-        //} else if (canCast && Input.GetKey(KeyCode.Alpha1)) {
-        //    StartCoroutine(WallCoroutine());
-        //     _animator.Play("cloud_cast");
-        //} else if (canCast && Input.GetKey(KeyCode.Alpha3)) {
-        //    StartCoroutine(LightningCoroutine(19));
-        //    StartCoroutine(LightningLongAnimation(10f));
-        //} else if (canCast && Input.GetKey(KeyCode.Alpha4)) {
-        //    StartCoroutine(PushCoroutine());
-        //     _animator.Play("cloud_cast");
-        //} else if (canCast && Input.GetKey(KeyCode.Alpha5)) {
-        //    StartCoroutine(IceCoroutine());
-        //    _animator.Play("cloud_cast");
-        //}
-    }
-
     public void gotPickup(int power) {
 
     }
-
-    //public void CloudReady(InputAction.CallbackContext context) {
-    //    if(!gm.gameStarted) gm.cloudReady = !gm.cloudReady;
-    //}
 
     public void OnMoveInput(InputAction.CallbackContext context) {
         if (isMouse)
@@ -358,7 +342,7 @@ public class CloudScript : MonoBehaviour
             if (collider.CompareTag("Mage"))
             {
                 Vector3 cloudFixedY = new Vector3(transform.position.x, collider.transform.position.y, transform.position.z);
-                collider.GetComponent<player>().TakeDamage(pushDamage);
+                collider.GetComponent<player>().TakeDamage(pushDamage + bonusDamage);
                 collider.GetComponent<PlayerManager>()._rb.AddForce(pushForce *
                 (collider.transform.position - cloudFixedY).normalized, ForceMode.Impulse);
             }
@@ -376,7 +360,16 @@ public class CloudScript : MonoBehaviour
         canMove = true;
         canCast = true;
     }
-    
 
-    
+    public void GetFirstBonus()
+    {
+        cloudSpeed *= 1.5f;
+    }
+
+    public void GetSecondBonus()
+    {
+        cloudSpeed *= 1.5f;
+        bonusDamage = 1;
+    }
+
 }

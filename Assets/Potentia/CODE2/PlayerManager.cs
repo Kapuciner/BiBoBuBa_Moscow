@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     private SpriteRenderer _sr;
     [SerializeField] private player playerMage;
     public int playerID = 0;
+    public SpriteRenderer label;
 
     public bool alreadyCarrying = false; //if the player is currently carrying the book
     public TMP_Text faliantCounterTXT;
@@ -66,9 +67,9 @@ public class PlayerManager : MonoBehaviour
     public AudioClip attackA;
     public AudioSource audioSource;
 
-
     private void Start()
     {
+        
         _rb = GetComponent<Rigidbody>();
         _sr = GetComponent<SpriteRenderer>();
         abilitiesID = new List<int> { 0, 1, 2, 3 };
@@ -104,21 +105,30 @@ public class PlayerManager : MonoBehaviour
         if (vel <= 0.005f)
         {
             vel = 0;
+            
         }
         return vel;
     }
 
     public void MoveMage(Vector2 moveVector) {
-        if (moveVector.x >= 0)
+        if (moveVector.x > 0)
         {
-        _sr.flipX = false;
+            _sr.flipX = false;
         }
-        else _sr.flipX = true;
-        if(canMove){
+        else if (moveVector.x < 0)
+        {
+            _sr.flipX = true;
+        }
+
+        if (canMove){
         move = Vector3.zero;
         move += new Vector3(moveVector.x, 0, moveVector.y);
         move.Normalize();
         move = Quaternion.Euler(0, 45, 0) * move;
+        }
+        else
+        {
+            move = Vector3.zero;
         }
     }
 
@@ -247,5 +257,15 @@ public class PlayerManager : MonoBehaviour
     {
         gotAbilityHeal = true;
         hpImage.SetActive(true);
+    }
+
+    public void GetFirstBonus()
+    {
+        speed *= 1.5f;
+    }
+
+    public void GetSecondBonus()
+    {
+        speed *= 2f;
     }
 }

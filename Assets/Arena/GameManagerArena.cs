@@ -92,25 +92,6 @@ public class GameManagerArena : MonoBehaviour
 
     private void Update()
     {
-        //delete before final build \/
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            Time.timeScale = 5;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            Time.timeScale = 1;
-            Time.fixedDeltaTime = 0.02f;
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _connectionData = null;
-            winCounts = new List<int>() { 0, 0, 0, 0 };
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-        // delete before final build  /\
-
         if (canvaREADY.activeSelf)
         {
             for (int i = 0; i < animators.Length; i++)

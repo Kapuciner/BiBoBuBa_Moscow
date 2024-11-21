@@ -46,7 +46,7 @@ public class lightningScript : MonoBehaviour
         {
             if (collider.CompareTag("Mage"))
             {
-                collider.gameObject.GetComponent<player>().TakeDamage(lightningDamage);
+                collider.gameObject.GetComponent<player>().TakeDamage(lightningDamage + CloudScript.bonusDamage);
             }
         }
         Destroy(c_filled.gameObject);

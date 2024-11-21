@@ -18,6 +18,7 @@ public class player : MonoBehaviour
     [SerializeField] private int maxLives;
 
     [SerializeField] private PlayerAnimation playerAnimation;
+    [SerializeField] private PlayerManager playerManager;
 
     [SerializeField] public Transform start;
     [SerializeField] private int minHeight; //for falling
@@ -110,6 +111,8 @@ public class player : MonoBehaviour
         }
         else
         {
+            playerManager.canMove = false;
+            playerAnimation.DeathAnimation(true);
             dead = true;
             gm.ChangeCameraTarget(this.gameObject);
             deathCross.SetActive(true);
@@ -126,13 +129,20 @@ public class player : MonoBehaviour
         audioSour.clip = death;
         audioSour.Play();
         playerAnimation.blockAnimation = true;
-        
-        playerAnimation.SetAnimation("magDeath");
+
+        playerManager.canMove = false;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        playerAnimation.DeathAnimation(true);
+
         yield return new WaitForSeconds(1);
+
         playerAnimation.blockAnimation = false;
-        currentHearts = maxHearts+1;
+        playerAnimation.DeathAnimation(false);
+        currentHearts = maxHearts;
         UpdateHP();
         this.transform.position = start.transform.position;
+
+        playerManager.canMove = true;
         finishedDying = true;
         respawn = null;
     }

@@ -13,7 +13,7 @@ public class PlayerAnimation : MonoBehaviour
     public bool blockAnimation = false;
     void Start()
     {
-        
+        _animator.SetInteger("playerID", _playerManager.playerID);
     }
 
     private void Update()
@@ -21,17 +21,29 @@ public class PlayerAnimation : MonoBehaviour
         if(!blockAnimation){
         if (_playerManager.GetVelocity() == 0)
         {
-            SetAnimation(player_idle);
+                _animator.SetFloat("velocity", 0);
         }
         else
         {
-            SetAnimation(player_walk);
-        }
+                _animator.SetFloat("velocity", 1);
+            }
         }
     }
 
     public void SetAnimation(string animation)
     {
         _animator.Play(animation);
+    }
+
+    public void DeathAnimation(bool run)
+    {
+        if (run)
+        {
+            _animator.SetInteger("death", 1);
+        }
+        else
+        {
+            _animator.SetInteger("death", 0);
+        }
     }
 }
