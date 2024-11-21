@@ -38,6 +38,8 @@ public class player : MonoBehaviour
 
     [SerializeField] public GameObject deathCross;
 
+    Coroutine respawn = null;
+
 
     void Start()
     {
@@ -100,7 +102,11 @@ public class player : MonoBehaviour
         if (currentLives >= 1)
         {
             //playerAnimation.SetAnimation("player_die");
-            StartCoroutine(Respawn());
+            if (respawn is null)
+            {
+                respawn = StartCoroutine(Respawn());
+                currentLives--;
+            }
         }
         else
         {
@@ -111,7 +117,6 @@ public class player : MonoBehaviour
             gm.isGameOver();
         }
 
-        currentLives--;
         if (currentLives >= 0)
             livesCounter.text = $"x{currentLives}";
     }
@@ -121,6 +126,7 @@ public class player : MonoBehaviour
         audioSour.clip = death;
         audioSour.Play();
         playerAnimation.blockAnimation = true;
+        
         playerAnimation.SetAnimation("magDeath");
         yield return new WaitForSeconds(1);
         playerAnimation.blockAnimation = false;
@@ -128,6 +134,7 @@ public class player : MonoBehaviour
         UpdateHP();
         this.transform.position = start.transform.position;
         finishedDying = true;
+        respawn = null;
     }
 
     void ColorBack()
@@ -154,6 +161,6 @@ public class player : MonoBehaviour
     {
         currentLives++;
         livesCounter.text = $"x{currentLives}";
-        this.gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 1.2f);
+        this.gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 1.4f);
     }
 }

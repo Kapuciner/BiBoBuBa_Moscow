@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -19,7 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject cloudPrefab;
 
     private List<GameObject> players = new List<GameObject>() ;
-    private List<GameObject> mages = new List<GameObject>() ;
+    public List<GameObject> mages = new List<GameObject>() ;
+    public List<GameObject> clouds = new List<GameObject>() ;
     public GameObject[] magesUI;
     [SerializeField] private GameObject[] cloudsUI;
     [SerializeField] private GameObject[] readyCrosses;
@@ -39,37 +41,50 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text[] faliantCounters;
     [SerializeField] private GameObject[] deathCrosses;
 
+    [SerializeField] public Image[] emptyEnergyPlayer1;
+    [SerializeField] public Image[] emptyEnergyPlayer2;
+    [SerializeField] public Image[] emptyEnergyPlayer3;
+    [SerializeField] public Image[] emptyEnergyPlayer4;
+    private List<Image[]> allEnergyPlayers;
+
     [SerializeField] CloudTargetScript[] cloudTarget;
     [SerializeField] CloudInterface[] cloudInterface;
 
     [SerializeField] public Falliant[] faliants;
     [SerializeField] CameraScaler cameraScaler;
 
-    //public bool mageReady = false;
-    //public bool cloudReady = false;
     public bool gameOver = false;
     public bool gameStarted = false;
     public bool gameCanStart = false;
 
 
-    [SerializeField] public GameObject readyCanvas;
-    [SerializeField] public GameObject mainCanvas;
+    [SerializeField] private GameObject readyCanvas;
+    [SerializeField] private GameObject mainCanvas;
+    [SerializeField] private GameObject resultCanvas;
 
 
-    //public ReadyTimer readyTimer;
+    public bool playersChosen = false;
     public bool mageWon = false;
+    public bool cloudWon = false;
     public CloudScript[] cs;
 
     //----------------------
     [SerializeField] private List<GameObject> inputs = new List<GameObject>();
     [SerializeField] private GameObject inputPrefab;
     public int readyCount = 0;
+    public int readyMagesCount = 0;
+    public int readyCloudsCount = 0;
     public TMP_Text timerText;
 
     [SerializeField] private TMP_Text allFaliantsCounter;
     public static int faliantsCarriedAmount = 0;
     static public int maxFaliantsNeeded;
+    [SerializeField] private MagesWin winAnimationSequence;
 
+    [SerializeField] private GameTimer commonTimer;
+    [SerializeField] private GameObject Goal;
+    [SerializeField] private MeshRenderer BG;
+    int deadCount = 0;
     private void Awake()
     {
         SpawnInputsForChoice();
@@ -79,9 +94,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
         hearts = new List<GameObject[]> {heartsPlayer1, heartsPlayer2, heartsPlayer3, heartsPlayer4};
+        allEnergyPlayers = new List<Image[]> {emptyEnergyPlayer1, emptyEnergyPlayer2, emptyEnergyPlayer3, emptyEnergyPlayer4};
         faliantsCarriedAmount = 0;
         maxFaliantsNeeded = 0;
+        BG.sortingOrder = -4;
     }
 
     void SpawnInputsForChoice()
@@ -176,7 +194,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SpawnPlayers()
+    public void SpawnPlayers()
     {
 
         for (int i = 0; i < inputs.Count; i++)
@@ -245,6 +263,7 @@ public class GameManager : MonoBehaviour
         mageManager.attackImage = attackImage[players.Count - 1];
         mageManager.hpImage = hpImage[players.Count - 1];
         mageManager.faliantCounterTXT = faliantCounters[players.Count - 1];
+        mageManager.mageEmptyEnergy = allEnergyPlayers[players.Count - 1];
 
         player magePlayer = mage.GetComponent<player>();
         magePlayer.gm = this;
@@ -261,6 +280,7 @@ public class GameManager : MonoBehaviour
     public void AddCloud(GameObject cloud)
     {
         players.Add(cloud);
+        clouds.Add(cloud);
         cloudsUI[players.Count - 1].SetActive(true);
         CloudScript cloudScript = cloud.GetComponent<CloudScript>();
         cs[players.Count - 1] = cloudScript;
@@ -278,6 +298,7 @@ public class GameManager : MonoBehaviour
     {
         float timer = 3f;
         while (true) {
+
             if (readyCount == inputs.Count)
             {
                 if (timer > 0)
@@ -288,10 +309,11 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     readyCanvas.SetActive(false);
-                    mainCanvas.SetActive(true);
-                    SpawnPlayers();
-                    if (FindObjectOfType<pauseManager>() != null)
-                        FindObjectOfType<pauseManager>().canPause = true;
+                    ResultScreenPotentia rsp = resultCanvas.GetComponent<ResultScreenPotentia>();
+                    rsp.magesCount = readyMagesCount;
+                    rsp.cloudsCount = readyCloudsCount;
+                    rsp.StartScreen();
+                    playersChosen = true;
                     break;
                 }
             }
@@ -305,23 +327,6 @@ public class GameManager : MonoBehaviour
         }
 
        
-    }
-
-    public void MageWon()
-    {
-        winPanel.SetActive(true);
-        txt.Play("TxTappear");
-        mageWon = true;
-        timer.StopTimer();
-        RestartCoroutine();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(0);
-        }
     }
 
     public void RestartCoroutine()
@@ -344,7 +349,7 @@ public class GameManager : MonoBehaviour
         allFaliantsCounter.text = $"{faliantsCarriedAmount}/{maxFaliantsNeeded}";
         if (faliantsCarriedAmount == maxFaliantsNeeded)
         {
-            MageWon();
+            GameOver("mages");
         }
     }
     public void ChangeCameraTarget(GameObject deadMage)
@@ -360,11 +365,41 @@ public class GameManager : MonoBehaviour
     }
     public void isGameOver()
     {
-        
+        deadCount++;
+        if (deadCount == mages.Count)
+        {
+            cloudWon = true;
+            GameOver("clouds");
+        }
     }
 
-    public void GameOver()
+    public void GameOver(string winner)
     {
+        if (gameOver) //because it should work only once
+            return;
 
+        for (int i = 0; i < cameraScaler.Players.Count; i++)
+        {
+            cameraScaler.Players[i] = Goal;
+        }
+
+        winAnimationSequence.StartAnimationSequence(winner);
+
+        gameOver = true;
+        if (winner == "mages")
+            mageWon = true;
+        if (winner == "clouds")
+            cloudWon = true;
+
+        commonTimer.StopTimer();
+    }
+
+    public void MageWon()
+    {
+        winPanel.SetActive(true);
+        txt.Play("TxTappear");
+        mageWon = true;
+        timer.StopTimer();
+        RestartCoroutine();
     }
 }

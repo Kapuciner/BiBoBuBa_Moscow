@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEditor;
@@ -57,6 +58,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] public GameObject attackImage;
     [SerializeField] public GameObject dashImage;
     [SerializeField] public GameObject hpImage;
+    public Image[] mageEmptyEnergy;
 
     [Header("Auido")]
     public AudioClip dashA;

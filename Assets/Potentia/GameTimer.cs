@@ -31,7 +31,7 @@ public class GameTimer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 UpdateTimerDisplay();
-                gm.GameOver();
+                gm.GameOver("clouds");
             }
         }
     }

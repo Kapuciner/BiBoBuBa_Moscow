@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 
 public class Falliant : MonoBehaviour
 {
     [SerializeField] private int groupID;
+    static List<int> IDs;
+    int randID;
 
     [SerializeField] private GameManager gm;
 
@@ -19,10 +22,12 @@ public class Falliant : MonoBehaviour
     [SerializeField] private float followSpeed;
     public bool taken = false;
     public bool carried = false;
+    public bool follow = false;
     private Vector3 targetFollow;
 
     [SerializeField] private Sprite mageEnergyFull;
-    [SerializeField] private Image[] mageEmptyEnergy;
+
+    [SerializeField] private MeshRenderer pedestal = null;
 
     private Vector3 startPosition;
 
@@ -31,16 +36,23 @@ public class Falliant : MonoBehaviour
     public AudioClip vitalityA;
     public AudioSource audioSource;
 
+    private void Awake()
+    {
+        IDs = new List<int> { 8, 8, 8 };
+    }
 
     private void Start()
     {
         startPosition = this.transform.position;
+
+        getRandomID();
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Mage" && carried == false && collision.gameObject.GetComponent<PlayerManager>().alreadyCarrying == false)
+        if (collision.gameObject.tag == "Mage" && carried == false && collision.gameObject.GetComponent<PlayerManager>().alreadyCarrying == false && taken == false)
         {
             taken = true;
+            follow = true;
             playerManager = collision.gameObject.GetComponent<PlayerManager>();
             playerManager.alreadyCarrying = true;
             player = collision.gameObject.transform;
@@ -49,7 +61,7 @@ public class Falliant : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Goal")
+        if (other.tag == "Goal" && !gm.gameOver)
         {
             this.GetComponent<Animator>().Play("faliant_open");
             other.GetComponent<AudioSource>().Play();
@@ -63,7 +75,7 @@ public class Falliant : MonoBehaviour
 
             if (playerManager.faliantCounter % 2 != 0 && playerManager.faliantCounter < 8)
             {
-                mageEmptyEnergy[playerManager.abilitiesGotten].sprite = mageEnergyFull;
+                playerManager.mageEmptyEnergy[playerManager.abilitiesGotten].sprite = mageEnergyFull;
                 playerManager.abilitiesGotten++;
 
                 rand = Random.Range(0, playerManager.abilitiesID.Count);
@@ -96,7 +108,7 @@ public class Falliant : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (taken)
+        if (follow)
         {
             StartCoroutine(Follow());
         }
@@ -116,7 +128,7 @@ public class Falliant : MonoBehaviour
             yield return null; 
         }
 
-        taken = false;
+        follow = false;
 
         if (returnBack == false)
             Invoke("QuickPause", 0.25f);
@@ -125,7 +137,7 @@ public class Falliant : MonoBehaviour
             Invoke("ReturnBackInverse", 3f);
         }
     }
-
+    
     void ReturnBackInverse()
     {
         returnBack = false;
@@ -146,7 +158,7 @@ public class Falliant : MonoBehaviour
 
     void QuickPause()
     {
-        taken = true;
+        follow = true;
     }
 
     public void ReturnToTheStart()
@@ -165,10 +177,31 @@ public class Falliant : MonoBehaviour
         if (maxFall < 24 && groupID == 3)
         {
             this.gameObject.SetActive(false);
+            if (pedestal != null)
+                pedestal.enabled = false;
         }
         if (maxFall < 16 && groupID == 2)
         {
             this.gameObject.SetActive(false);
+            if (pedestal != null)
+                pedestal.enabled = false;
         }
+    }
+
+    void getRandomID()
+    {
+        if (!IDs.Any(id => id > 0))
+        {
+            return;
+        }
+
+        int randID;
+        do
+        {
+            randID = Random.Range(0, IDs.Count);
+        } while (IDs[randID] == 0);
+
+        IDs[randID]--;
+        groupID = randID + 1;
     }
 }

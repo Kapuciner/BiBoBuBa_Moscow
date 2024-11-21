@@ -370,7 +370,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
   m_LocalPosition: {x: -4.46, y: 0.66, z: 3.27}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2850053280522701187}
@@ -494,8 +494,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 0}
   playerMage: {fileID: 1372133927672985706}
+  playerID: 0
   alreadyCarrying: 0
-  speed: 8
+  faliantCounterTXT: {fileID: 0}
+  faliantCounter: 0
+  abilitiesGotten: 0
+  abilitiesID: 
+  speed: 15
   icedMass: 0.5
   iceLayers:
     serializedVersion: 2
@@ -526,6 +531,7 @@ MonoBehaviour:
   attackImage: {fileID: 0}
   dashImage: {fileID: 0}
   hpImage: {fileID: 0}
+  mageEmptyEnergy: []
   dashA: {fileID: 8300000, guid: 91b00623ae7e4e84b9e80c4cd2962270, type: 3}
   shieldA: {fileID: 8300000, guid: 9a9e8fc6dbfdbe9408eee1664cfc3ba8, type: 3}
   attackA: {fileID: 8300000, guid: 230594919f71dfc4292905485d92fbe2, type: 3}
@@ -561,8 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 0}
-  gameOverScreen: {fileID: 0}
-  gameOverTXT: {fileID: 0}
   livesCounter: {fileID: 0}
   hearts:
   - {fileID: 0}
@@ -582,6 +586,8 @@ MonoBehaviour:
   audioSour: {fileID: 4826035295486543596}
   damage: {fileID: 8300000, guid: e490404c04744fb4fa7db52654842cb6, type: 3}
   death: {fileID: 8300000, guid: e490404c04744fb4fa7db52654842cb6, type: 3}
+  dead: 0
+  deathCross: {fileID: 0}
 --- !u!95 &1438535722255611123
 Animator:
   serializedVersion: 5
