@@ -232,6 +232,7 @@ public class GameManager : MonoBehaviour
                 var playerInput = tempPlayer.GetComponent<PlayerInput>();
                 if (inputs[i].GetComponent<PlayerInput>().currentControlScheme == "GamePad")
                 {
+                    print(1);
                     tempPlayer.GetComponent<CloudScript>().isMouse = false;//
                 }
                 AddCloud(tempPlayer);
