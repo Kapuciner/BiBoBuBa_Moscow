@@ -62,6 +62,22 @@ public class CloudScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+            if (transform.position.x > 90)
+            {
+                transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+            }
+            else if (transform.position.x < -80)
+            {
+                transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+            }
+            else if (transform.position.z > 90)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+            }
+            else if (transform.position.z < -75)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            }
         //processInput();
         if(isMouse)
         {
