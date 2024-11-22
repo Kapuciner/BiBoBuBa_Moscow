@@ -8,10 +8,23 @@ public class ArenaMapGenerator : MonoBehaviour
     [SerializeField] private GameObject[] maps;
     private int rnd;
 
-    void Start()
+    [SerializeField] private Transform[] spawners;
+    [SerializeField] private Transform[] spawnPointsMap1;
+    [SerializeField] private Transform[] spawnPointsMap2;
+    [SerializeField] private Transform[] spawnPointsMap3;
+    List<Transform[]> allSpawnPoints;
+
+    void Awake()
     {
+        allSpawnPoints = new List<Transform[]> { spawnPointsMap1, spawnPointsMap2, spawnPointsMap3 };
         GetRnd();
         Instantiate(maps[rnd]);
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            spawners[i].position = allSpawnPoints[rnd][i].position;
+            print(allSpawnPoints[rnd][i]);
+        }
     }
 
     void GetRnd()
@@ -23,4 +36,5 @@ public class ArenaMapGenerator : MonoBehaviour
         else
             previousID = rnd;
     }
+
 }

@@ -70,7 +70,7 @@ public class ResultScreenArena : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.2f);
 
-        //the last star shows up (the new one)/
+        //the last star shows up (the new one)
         for (int j = 0; j < GameManagerArena.winCounts[GameManagerArena.winnerID]; j++)
         {
             allPlayersStars[GameManagerArena.winnerID][j].SetActive(true);

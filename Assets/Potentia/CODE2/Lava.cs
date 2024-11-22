@@ -4,17 +4,42 @@ using UnityEngine;
 
 public class Lava : MonoBehaviour
 {
-    private float cooldown = 1f;
-    private static bool inCooldown = false;
+    private float cooldown = 0.75f;
+    private bool inCooldown = false;
+
+    bool showFire = false;
+    
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Mage" && inCooldown == false)
         {
-            collision.gameObject.GetComponent<player>().TakeDamage(1);
-            inCooldown = true;
-            Invoke("Reset", cooldown);
+            collision.gameObject.GetComponent<PlayerManager>().showFire = true;
+            if (inCooldown == false)
+            {
+                collision.gameObject.GetComponent<PlayerManager>().fire.SetActive(true);
+                collision.gameObject.GetComponent<player>().TakeDamage(1);
+                inCooldown = true;
+                Invoke("Reset", cooldown);
+            }
         }
     }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Mage")
+        {
+            collision.gameObject.GetComponent<PlayerManager>().showFire = false;
+            StartCoroutine(NoFire(collision.gameObject.GetComponent<PlayerManager>()));
+        }
+    }
+
+    IEnumerator NoFire(PlayerManager pm)
+    {
+        yield return new WaitForSeconds(2);
+        if (pm.showFire == false)
+            pm.fire.SetActive(false);
+    }
+
 
     private void Reset()
     {

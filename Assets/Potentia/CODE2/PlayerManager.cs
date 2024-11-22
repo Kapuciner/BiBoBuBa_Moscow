@@ -21,6 +21,9 @@ public class PlayerManager : MonoBehaviour
     public int abilitiesGotten;
     public List<int> abilitiesID;
 
+    public GameObject fire;
+    public bool showFire;
+
     [Header("MovementAndIce")]
     [SerializeField] private float speed;
     private Vector3 move = Vector3.zero;
@@ -268,4 +271,6 @@ public class PlayerManager : MonoBehaviour
     {
         speed *= 2f;
     }
+
+
 }

@@ -141,7 +141,7 @@ public class player : MonoBehaviour
         currentHearts = maxHearts;
         UpdateHP();
         this.transform.position = start.transform.position;
-
+        playerManager.fire.SetActive(false);
         playerManager.canMove = true;
         finishedDying = true;
         respawn = null;
