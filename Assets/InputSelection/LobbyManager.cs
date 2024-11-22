@@ -8,8 +8,9 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject DummyPrefab;
     [SerializeField] private ConnectionData _connectionData;
     [SerializeField] private List<GameObject> _spawnPoints;
-    
-    
+
+    [SerializeField] private Transform revivePoint;
+
     private List<LobbyDummy> Players;
     private int _keyboardCount = 0;
     public void OnStarted()
@@ -44,6 +45,7 @@ public class LobbyManager : MonoBehaviour
             Players.Add(d);
             d.PlayerIndex = count;
             d._animator.SetInteger("playerID", count);
+            d.spawnPoint = revivePoint;
             count++;
             
             

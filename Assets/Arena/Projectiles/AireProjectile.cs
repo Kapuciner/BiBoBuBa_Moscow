@@ -55,5 +55,12 @@ public class AireProjectile : MonoBehaviour
             other.GetComponent<AudioSource>().Play();
             Destroy(this.gameObject);
         }
+        if (other.tag == "fireball")
+        {
+            print(23124);
+            other.GetComponent<AudioSource>().Play();
+            other.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.right * 30);
+            Destroy(this.gameObject);
+        }
     }
 }

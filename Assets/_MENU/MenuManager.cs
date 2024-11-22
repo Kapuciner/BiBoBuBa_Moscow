@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
-        Physics.defaultMaxDepenetrationVelocity = 20;
+        Physics.defaultMaxDepenetrationVelocity = 40;
     }
     void Start()
     {

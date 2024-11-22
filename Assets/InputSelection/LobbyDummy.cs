@@ -21,7 +21,7 @@ public class LobbyDummy : MonoBehaviour
     [SerializeField] private SpriteRenderer _sr;
     public Animator _animator;
     [SerializeField] private float minHeight;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] public Transform spawnPoint;
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Image spritePlace;
     
@@ -50,7 +50,7 @@ public class LobbyDummy : MonoBehaviour
         }
 
         if (this.gameObject.transform.position.y < minHeight)
-            this.gameObject.transform.position = new Vector3(-2.5f, 12f, 0.84f);
+            this.gameObject.transform.position = spawnPoint.transform.position;
     }
 
     private void FixedUpdate()
