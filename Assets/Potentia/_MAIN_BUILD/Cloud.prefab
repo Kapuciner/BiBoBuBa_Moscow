@@ -56,7 +56,7 @@ MonoBehaviour:
   label: {fileID: 794844425456692661}
   cloudTarget: {fileID: 0}
   cloudSpeed: 0.3
-  isMouse: 1
+  isMouse: 0
   canMove: 1
   canCast: 1
   pushSound: {fileID: 0}
