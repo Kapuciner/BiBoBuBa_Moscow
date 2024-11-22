@@ -286,6 +286,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "right",
+                    "id": "2ac609b5-1d96-449f-a68e-685e21e29d66",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard1",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "ARROWS",
                     "id": "9753be79-a916-4071-80fd-ec20b0b10dc5",
                     "path": "2DVector",
@@ -341,6 +352,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "right",
+                    "id": "50ae20f7-5135-42a4-8749-3da77ecabd0b",
+                    "path": "<Keyboard>/rightCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard2",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "GAMEPAD",
                     "id": "81ec8eb7-afa1-426c-8954-55b9a486eccb",
                     "path": "2DVector",
@@ -388,6 +410,50 @@
                     "name": "right",
                     "id": "cdb9f5bc-321b-4040-b553-17f4d7ffdfce",
                     "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "0877b8ba-78bb-42c6-8521-f2e0d15d4e98",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "73dd8333-4575-4a97-b71e-eda894599586",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "df093169-ccc8-4968-9d36-aa0e8771c623",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Ready",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "893c8a22-a39c-4165-8747-467428453008",
+                    "path": "<Gamepad>/leftStick/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad",

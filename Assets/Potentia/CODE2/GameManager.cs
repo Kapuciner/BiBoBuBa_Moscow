@@ -222,6 +222,7 @@ public class GameManager : MonoBehaviour
                 tempPlayer = Instantiate(cloudPrefab, spawnPoints[i].transform.position, cloudPrefab.transform.rotation);
                 CloudScript cls = tempPlayer.GetComponent<CloudScript>();
                 cls.playerID = i;
+                cls._animator.SetInteger("playerID", i);
                 cls.label.sprite = labels[i];
                 if (readyMagesCount == 3)
                     cls.GetSecondBonus();
@@ -283,7 +284,7 @@ public class GameManager : MonoBehaviour
         magePlayer.gm = this;
         magePlayer.livesCounter = livesCounter[players.Count - 1];
         magePlayer.hearts = hearts[players.Count - 1];
-        magePlayer.start = spawnPoints[0];
+        magePlayer.start = spawnPoints[players.Count - 1];
         magePlayer.deathCross = deathCrosses[players.Count - 1];
         if (players.Count >= 3)
             cameraScaler.Players.Add(mage);

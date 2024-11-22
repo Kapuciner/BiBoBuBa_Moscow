@@ -143,6 +143,7 @@ MonoBehaviour:
   _animator: {fileID: 8874699116260475278}
   place: 4
   header: {fileID: 8192243487313454517}
+  label: {fileID: 2786474647713311927}
   insideTheZone: 1
   maxZoneDamageCooldown: 0.5
   zoneDamage: 1
@@ -156,6 +157,7 @@ MonoBehaviour:
   - 
   - 
   cross: {fileID: 0}
+  fireUI: {fileID: 0}
   dead: 0
   deadHeight: -5
   maxHP: 30
@@ -1313,7 +1315,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &4825044778219865434
 MonoBehaviour:

@@ -22,6 +22,7 @@ public class GameManagerArena : MonoBehaviour
     public bool gameOver = false;
 
     [SerializeField] private GameObject[] readyCrosses;
+    [SerializeField] private Sprite[] labels;
 
     [SerializeField] private GameObject[] playerAbilitiesUI;
     [SerializeField] private List<Image> abilityImage1; //первый скилл
@@ -193,10 +194,10 @@ public class GameManagerArena : MonoBehaviour
                         pl.GetComponent<ArenaPlayerManager>().nickname = "Красный";
                         break;
                     case 3:
-                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зеленый";
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Жёлтый";
                         break;
                     case 4:
-                        pl.GetComponent<ArenaPlayerManager>().nickname = "Желтый";
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зелёный";
                         break;
                 }
             }
@@ -236,7 +237,7 @@ public class GameManagerArena : MonoBehaviour
                         var playerInput = pl.GetComponent<PlayerInput>();
 
                         playerInput.SwitchCurrentControlScheme("Gamepad", gamepad1);
-                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зелёный";
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Жёлтый";
                     }
                     else
                     {
@@ -254,7 +255,7 @@ public class GameManagerArena : MonoBehaviour
                         var playerInput = pl.GetComponent<PlayerInput>();
 
                         playerInput.SwitchCurrentControlScheme("Gamepad", gamepad2);
-                        pl.GetComponent<ArenaPlayerManager>().nickname = "Жёлтый";
+                        pl.GetComponent<ArenaPlayerManager>().nickname = "Зелёный";
                     }
                     else
                     {
@@ -369,6 +370,7 @@ public class GameManagerArena : MonoBehaviour
         player.GetComponent<ArenaPlayerManager>().readyTXT = readyTXT[playersList.Count - 1];
         player.GetComponent<ArenaPlayerManager>().cross = crosses[playersList.Count - 1];
         player.GetComponent<ArenaPlayerManager>().fireUI = fireUI[playersList.Count - 1];
+        player.GetComponent<ArenaPlayerManager>().label.sprite = labels[playersList.Count - 1];
         scoreCounters[playersList.Count - 1].gameObject.SetActive(true);
     }
 

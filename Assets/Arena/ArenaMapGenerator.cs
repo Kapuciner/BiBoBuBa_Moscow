@@ -1,6 +1,7 @@
     using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ArenaMapGenerator : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ArenaMapGenerator : MonoBehaviour
     [SerializeField] private Transform[] spawnPointsMap3;
     List<Transform[]> allSpawnPoints;
 
+    [SerializeField] TMP_Text nextMap;
+
     void Awake()
     {
         allSpawnPoints = new List<Transform[]> { spawnPointsMap1, spawnPointsMap2, spawnPointsMap3 };
@@ -24,6 +27,23 @@ public class ArenaMapGenerator : MonoBehaviour
         {
             spawners[i].position = allSpawnPoints[rnd][i].position;
             print(allSpawnPoints[rnd][i]);
+        }
+    }
+
+    private void Start()
+    {
+        switch (rnd)
+        {
+            case 0:
+                nextMap.text = "Cледующая карта: Парящий остров";
+                break;
+            case 1:
+                nextMap.text = "Cледующая карта: Колизей";
+                break;
+            case 2:
+                nextMap.text = "Cледующая карта: Заброшенная крепость";
+                break;
+
         }
     }
 

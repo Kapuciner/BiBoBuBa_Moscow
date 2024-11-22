@@ -25,6 +25,7 @@ public class ResultScreenArena : MonoBehaviour
     [SerializeField] private GameObject pressAnyButton;
     [SerializeField] private float time = 3;
 
+    [SerializeField] TMP_Text nextMap;
     private void Awake()
     {
         allPlayersStars = new List<GameObject[]> {firstPlayersStars, secondPlayersStars, thirdPlayersStars, fourthPlayersStars};
@@ -126,6 +127,7 @@ public class ResultScreenArena : MonoBehaviour
 
     IEnumerator ShowEndResult()
     {
+        nextMap.text = "";
         Clear();
 
         timerTXT.gameObject.SetActive(false);

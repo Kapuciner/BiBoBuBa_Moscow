@@ -21,7 +21,7 @@ public class CloudScript : MonoBehaviour
     [SerializeField] GameObject icePrefab;
 
     SpriteRenderer cloudSprite;
-    Animator _animator;
+    public Animator _animator;
     bool canAnimationBeChanged = true;
 
     [SerializeField] float iceFieldLifetime;
@@ -55,8 +55,6 @@ public class CloudScript : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        _animator = GetComponent<Animator>();
-        _animator.SetInteger("playerID", playerID);
         cloudSprite = GetComponent<SpriteRenderer>();
         pushSound = GetComponent<AudioSource>();
     }
@@ -88,7 +86,7 @@ public class CloudScript : MonoBehaviour
                 {
                     cloudSprite.flipX = true;
                 }
-                else cloudSprite.flipX = false;
+                else if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) < 0) cloudSprite.flipX = false;
 
                 Vector3 deltaVec = new Vector3(
                     cloudTarget.transform.position.x - transform.position.x, 
@@ -189,13 +187,15 @@ public class CloudScript : MonoBehaviour
     public void Ability1()
     {
         StartCoroutine(LightningCoroutine(1));
-        _animator.Play("cloud_cast");
+        string animName = "cloud_cast" + playerID.ToString();
+        _animator.Play(animName);
     }
 
     public void Ability2()
     {
         StartCoroutine(WallCoroutine());
-        _animator.Play("cloud_cast");
+        string animName = "cloud_cast" + playerID.ToString();
+        _animator.Play(animName);
 
     }
 
@@ -208,13 +208,15 @@ public class CloudScript : MonoBehaviour
     public void Ability4()
     { 
         StartCoroutine(PushCoroutine());
-        _animator.Play("cloud_cast");
+        string animName = "cloud_cast" + playerID.ToString();
+        _animator.Play(animName);
     }
 
     public void Ability5()
     {
             StartCoroutine(IceCoroutine());
-        _animator.Play("cloud_cast");
+        string animName = "cloud_cast" + playerID.ToString();
+        _animator.Play(animName);
     }
     IEnumerator LightningCoroutine(int lightningCount) {
         
@@ -246,10 +248,11 @@ public class CloudScript : MonoBehaviour
     }
 
     IEnumerator LightningLongAnimation(float time) {
-            _animator.SetBool("longCast", true);
-            _animator.Play("cloud_cast");
-            yield return new WaitForSeconds(time - 1.05f);
-            _animator.SetBool("longCast", false);
+        _animator.SetBool("longCast", true);
+        string animName = "cloud_cast" + playerID.ToString();
+        _animator.Play(animName);
+        yield return new WaitForSeconds(time - 1.05f);
+        _animator.SetBool("longCast", false);
     }
 
     IEnumerator WallCoroutine() {
@@ -303,7 +306,8 @@ public class CloudScript : MonoBehaviour
 
     IEnumerator FireBallCoroutine()
     {
-        _animator.Play("cloud_stun");
+        string animName = "cloud_stun" + playerID.ToString();
+        _animator.Play(animName);
         SpriteRenderer _sr = GetComponent<SpriteRenderer>();
         for (int i = 0; i < 6; i++)
         {

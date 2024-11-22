@@ -16,6 +16,8 @@ public class ArenaPlayerManager : MonoBehaviour
     private bool ready = false;
     public int place = 4;
     public GameObject header;
+    public Image label;
+    
 
     [Header("Zone")]
     public bool insideTheZone = true;
