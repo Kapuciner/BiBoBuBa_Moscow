@@ -54,7 +54,7 @@ public class CloudScript : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.visible = false;
         cloudSprite = GetComponent<SpriteRenderer>();
         pushSound = GetComponent<AudioSource>();
     }

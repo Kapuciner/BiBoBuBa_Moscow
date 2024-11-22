@@ -3295,127 +3295,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361104637}
   m_CullTransparentMesh: 1
---- !u!1001 &367791414
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1561121571273793867, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1561121571273793867, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_Constraints
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 1561121571273793867, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1561121571273793867, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2465129766922304116, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_TagString
-      value: fireball
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 13.726
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3807469215823649601, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4079466609655363047, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_TagString
-      value: fireball
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557006818007208138, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557006818007208138, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_Constraints
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557006818007208138, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4557006818007208138, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4583830684511437307, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_Name
-      value: map2 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4583830684511437307, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878343313544457150, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878343313544457150, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_Constraints
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878343313544457150, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4878343313544457150, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7064340736597051958, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
-      propertyPath: m_TagString
-      value: fireball
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c6757d02cd5a3f84b90c49309938ff44, type: 3}
 --- !u!1 &374053438
 GameObject:
   m_ObjectHideFlags: 0
@@ -10258,7 +10137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1031550307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20416,7 +20295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2017428447
 Transform:
   m_ObjectHideFlags: 0
@@ -21949,4 +21828,3 @@ SceneRoots:
   - {fileID: 1021035594}
   - {fileID: 374053442}
   - {fileID: 1897369218}
-  - {fileID: 367791414}
