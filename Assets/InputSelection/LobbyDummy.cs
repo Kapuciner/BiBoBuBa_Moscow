@@ -19,7 +19,7 @@ public class LobbyDummy : MonoBehaviour
     public float SPEED;
 
     [SerializeField] private SpriteRenderer _sr;
-    [SerializeField] private Animator _animator;
+    public Animator _animator;
     [SerializeField] private float minHeight;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Sprite[] sprites;
@@ -32,11 +32,8 @@ public class LobbyDummy : MonoBehaviour
         var players = FindObjectsOfType<LobbyDummy>();
         _animator.SetInteger("playerID", players.Length - 1);
 
-        //затычка пока
-        if (players.Length - 1 > 1)
-        {
-            _animator.SetInteger("playerID", 0);
-        }
+
+        
     }
 
     private void Update()

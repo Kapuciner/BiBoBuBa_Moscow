@@ -43,6 +43,7 @@ public class LobbyManager : MonoBehaviour
             var p_input = PlayerInput.FindFirstPairedToDevice(player.Device);
             Players.Add(d);
             d.PlayerIndex = count;
+            d._animator.SetInteger("playerID", count);
             count++;
             
             
