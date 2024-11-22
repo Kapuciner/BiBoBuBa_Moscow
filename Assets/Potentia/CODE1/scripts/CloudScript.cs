@@ -81,13 +81,13 @@ public class CloudScript : MonoBehaviour
             if (canMove)
             {
                 Vector3 targetDelta = cloudTarget.transform.position - transform.position;
-
+                if(targetDelta.sqrMagnitude > 1) {
                 if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) > 0)
                 {
                     cloudSprite.flipX = true;
                 }
                 else if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) < 0) cloudSprite.flipX = false;
-
+                }
                 Vector3 deltaVec = new Vector3(
                     cloudTarget.transform.position.x - transform.position.x, 
                     0,
@@ -124,7 +124,7 @@ public class CloudScript : MonoBehaviour
                     {
                         cloudSprite.flipX = true;
                     }
-                    else cloudSprite.flipX = false;
+                    else if (Mathf.Sign((Quaternion.Euler(0, 45, 0) * targetDelta).z) < 0) cloudSprite.flipX = false;
 
                     Vector3 deltaVec = new Vector3(
                         cloudTarget.transform.position.x - transform.position.x, 

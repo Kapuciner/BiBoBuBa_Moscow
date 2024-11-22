@@ -36,19 +36,19 @@ public class CloudTargetScript : MonoBehaviour
             //Vector3 rawMoveDelta = new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y"));.
             Vector3 processedDelta = Quaternion.Euler(0, 45, 0) * rawMoveDelta;
             transform.position = transform.position + processedDelta * mouseSensitivity;
-            if (transform.position.x > 60)
+            if (transform.position.x > 90)
             {
                 transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
             }
-            else if (transform.position.x < -50)
+            else if (transform.position.x < -80)
             {
                 transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
             }
-            else if (transform.position.z > 60)
+            else if (transform.position.z > 90)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
             }
-            else if (transform.position.z < -45)
+            else if (transform.position.z < -75)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
             }
