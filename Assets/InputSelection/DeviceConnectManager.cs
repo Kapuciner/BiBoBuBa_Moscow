@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class DeviceConnectManager : MonoBehaviour
 {
@@ -57,7 +58,11 @@ public class DeviceConnectManager : MonoBehaviour
     }
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            MenuManager.alreadyChosenControl = false;
+            SceneManager.LoadScene(0);
+        }
         
         if (ConnectedCount >= 2 && _readyRoutine == null)
         {
@@ -215,7 +220,6 @@ public class DeviceConnectManager : MonoBehaviour
         GetEmptySelection()?.Connect(device);
     }
     
-
 
     public DeviceSelection GetEmptySelection()
     {
