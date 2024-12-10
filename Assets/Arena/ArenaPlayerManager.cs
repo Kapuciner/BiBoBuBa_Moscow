@@ -671,6 +671,7 @@ public class ArenaPlayerManager : MonoBehaviour
     {
         header.SetActive(false);
         this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        this.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
     void ColorBack()

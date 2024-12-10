@@ -121,11 +121,11 @@ public class CloudScript : MonoBehaviour
                     Vector3 horizontalMove = new Vector3(cloudTarget.transform.position.x, 
                     transform.position.y + 550/(rayHitAngle.distance - 0.6f), 
                     cloudTarget.transform.position.z);
-                    transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed);
+                    transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed);
+                    transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed * Time.deltaTime);
                 }
                 
             }
@@ -159,11 +159,11 @@ public class CloudScript : MonoBehaviour
                         Vector3 horizontalMove = new Vector3(cloudTarget.transform.position.x, 
                         transform.position.y + 550/(rayHitAngle.distance - 0.6f), 
                         cloudTarget.transform.position.z);
-                        transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed);
+                        transform.position = Vector3.MoveTowards(transform.position, horizontalMove, cloudSpeed * Time.deltaTime);
                     }
                     else
                     {
-                        transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed);
+                        transform.position = Vector3.MoveTowards(transform.position, cloudTarget.transform.position, cloudSpeed * Time.deltaTime);
                     }
                 }
             }

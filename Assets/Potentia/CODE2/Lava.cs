@@ -8,15 +8,19 @@ public class Lava : MonoBehaviour
     private bool inCooldown = false;
 
     bool showFire = false;
+
+    [SerializeField] bool isWater;
     
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Mage" && inCooldown == false)
         {
-            collision.gameObject.GetComponent<PlayerManager>().showFire = true;
+            if (!isWater)
+                collision.gameObject.GetComponent<PlayerManager>().showFire = true;
             if (inCooldown == false)
             {
-                collision.gameObject.GetComponent<PlayerManager>().fire.SetActive(true);
+                if (!isWater)
+                    collision.gameObject.GetComponent<PlayerManager>().fire.SetActive(true);
                 collision.gameObject.GetComponent<player>().TakeDamage(1);
                 inCooldown = true;
                 Invoke("Reset", cooldown);
@@ -26,7 +30,7 @@ public class Lava : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "Mage")
+        if (collision.gameObject.tag == "Mage" && !isWater)
         {
             collision.gameObject.GetComponent<PlayerManager>().showFire = false;
             StartCoroutine(NoFire(collision.gameObject.GetComponent<PlayerManager>()));

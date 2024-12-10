@@ -18,6 +18,7 @@ public class Falliant : MonoBehaviour
 
     [SerializeField] public Transform player;
     [SerializeField] public PlayerManager playerManager;
+    [SerializeField] public player playerScript;
     [SerializeField] private Transform goal;
     [SerializeField] private float followSpeed;
     public bool taken = false;
@@ -54,6 +55,8 @@ public class Falliant : MonoBehaviour
             taken = true;
             follow = true;
             playerManager = collision.gameObject.GetComponent<PlayerManager>();
+            playerScript = collision.gameObject.GetComponent<player>();
+            playerScript.fal = this;
             playerManager.alreadyCarrying = true;
             player = collision.gameObject.transform;
         }
@@ -66,6 +69,7 @@ public class Falliant : MonoBehaviour
             this.GetComponent<Animator>().Play("faliant_open");
             other.GetComponent<AudioSource>().Play();
             playerManager.alreadyCarrying = false;
+            playerScript.fal = null;
             taken = false;
             carried = true;
             GameManager.faliantsCarriedAmount++;

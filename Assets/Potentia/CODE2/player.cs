@@ -7,6 +7,8 @@ using TMPro;
 
 public class player : MonoBehaviour
 {
+    public Falliant fal = null;
+
     private SpriteRenderer _sr;
     [SerializeField] public GameManager gm;
     [SerializeField] public TMP_Text livesCounter;
@@ -94,11 +96,9 @@ public class player : MonoBehaviour
 
     public void Die()
     {
-        faliants = GameObject.FindGameObjectsWithTag("faliant");
-        for (int i = 0; i < faliants.Length; i++)
-        {
-            faliants[i].GetComponent<Falliant>().ReturnToTheStart();
-        }
+        if (fal != null)
+            fal.ReturnToTheStart();
+        fal = null;
 
         if (currentLives >= 1)
         {
